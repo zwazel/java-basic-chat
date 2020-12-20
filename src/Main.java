@@ -22,16 +22,19 @@ public class Main {
         System.out.println("Hosten (0) oder Joinen (1)? >");
         int num = scanner.nextInt();
 
-        if (num == 0) {
-            new Server();
-             return true;
-        } else if (num == 1) {
-            new Client();
-            return true;
-        }
+        switch (num) {
+            case 0:
+                new Server();
+                return true;
 
-        System.out.println(errorWrongInput);
-        return false;
+            case 1:
+                new Client();
+                return true;
+
+            default:
+                System.out.println(errorWrongInput);
+                return false;
+        }
     }
 
     public static String getString(String command) {
