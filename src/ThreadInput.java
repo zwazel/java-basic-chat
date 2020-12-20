@@ -7,8 +7,8 @@ public class ThreadInput implements Runnable {
     Socket s;
     String username;
 
-    public ThreadInput(String username, String name, Socket s) {
-        threadName = name;
+    public ThreadInput(String username, String threadName, Socket s) {
+        this.threadName = threadName;
         this.s = s;
         this.username = username;
     }
@@ -21,7 +21,6 @@ public class ThreadInput implements Runnable {
 
         while (!text.equals("/dc")) {
             try {
-
                 Main.sendMessageToNetwork(s, username, text);
             } catch (IOException e) {
                 e.printStackTrace();

@@ -19,18 +19,10 @@ public class Client {
 
         this.username = Main.getString("Your username");
 
-        boolean lol = true;
-
-        while (lol) {
-            System.out.println(Main.getMessageFromNetwork(s));
-        }
-
-        String text = Main.getString("Send message to Server");
-
-        while (!text.equals("/dc")) {
-            Main.sendMessageToNetwork(s, username, text);
-            text = Main.getString("Send message to clients");
-        }
+        ThreadOutput threadOutput = new ThreadOutput("ThreadOutputClient", s);
+        threadOutput.start();
+        ThreadInput threadInput = new ThreadInput(username, "ThreadInputClient", s);
+        threadInput.start();
     }
 
 
