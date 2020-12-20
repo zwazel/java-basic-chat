@@ -21,11 +21,7 @@ public class Server {
 
         System.out.println("client connected");
 
-        String text = Main.getString("Send message to Clients");
-
-        while (!text.equals("/dc")) {
-            Main.sendMessageToNetwork(s, username, "Clients", text);
-            text = Main.getString("Send message to clients");
-        }
+        ThreadInput threadInput = new ThreadInput(username, "ThreadInputServer", s);
+        threadInput.start();
     }
 }

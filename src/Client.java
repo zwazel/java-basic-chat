@@ -19,15 +19,19 @@ public class Client {
 
         this.username = Main.getString("Your username");
 
-        while (true) {
+        boolean lol = true;
+
+        while (lol) {
             System.out.println(Main.getMessageFromNetwork(s));
         }
 
         String text = Main.getString("Send message to Server");
 
         while (!text.equals("/dc")) {
-            Main.sendMessageToNetwork(s, username, "Server", text);
+            Main.sendMessageToNetwork(s, username, text);
             text = Main.getString("Send message to clients");
         }
     }
+
+
 }

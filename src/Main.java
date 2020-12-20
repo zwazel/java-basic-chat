@@ -19,7 +19,7 @@ public class Main {
     }
 
     private boolean init(Scanner scanner) throws IOException {
-        System.out.print("Hosten (0) oder Joinen (1)? >");
+        System.out.print("Hosten (0) oder Joinen (1)?" + stringAfterCommand);
         int num = scanner.nextInt();
 
         switch (num) {
@@ -63,9 +63,9 @@ public class Main {
         return str;
     }
 
-    public static void sendMessageToNetwork(Socket s, String username, String target, String message) throws IOException {
+    public static void sendMessageToNetwork(Socket s, String username, String message) throws IOException {
         PrintWriter pr = new PrintWriter(s.getOutputStream()); // Printer
-        pr.println(username + ": " + message + "Send message to " + target); // Print to targets
+        pr.println(username + ": " + message);
         pr.flush();
     }
 }
