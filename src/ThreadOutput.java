@@ -15,15 +15,17 @@ public class ThreadOutput implements Runnable {
     public void run() {
         System.out.println("Thread running" + threadName);
 
-        try {
-            System.out.println(Main.getMessageFromNetwork(s));
-        } catch (IOException e) {
-            e.printStackTrace();
+        while(true) {
+            try {
+                System.out.println(Main.getMessageFromNetwork(s));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void start() {
-        System.out.println("THREAD STARTEEED");
+        System.out.println("THREAD " + threadName + " STARTED");
         if (threadOutput == null) {
             threadOutput = new Thread(this, threadName);
             threadOutput.start();
