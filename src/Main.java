@@ -19,7 +19,7 @@ public class Main {
     }
 
     private boolean init(Scanner scanner) throws IOException {
-        System.out.print("Hosten (0) oder Joinen (1)?" + stringAfterCommand);
+        System.out.print("Do you want to host (0) or to join (1)?" + stringAfterCommand);
         int num = scanner.nextInt();
 
         switch (num) {
