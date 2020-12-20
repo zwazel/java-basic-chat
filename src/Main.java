@@ -19,7 +19,7 @@ public class Main {
     }
 
     private boolean init(Scanner scanner) throws IOException {
-        System.out.println("Hosten (0) oder Joinen (1)? >");
+        System.out.print("Hosten (0) oder Joinen (1)? >");
         int num = scanner.nextInt();
 
         switch (num) {
@@ -57,16 +57,15 @@ public class Main {
 
     public static String getMessageFromNetwork(Socket s) throws IOException {
         InputStreamReader in = new InputStreamReader(s.getInputStream()); // Inputs stuff into buffered reader... or something idk
-        BufferedReader bf = new BufferedReader(in); // Reader that reads messages from client, maybe?
-
-        String str = bf.readLine(); // Read message that we got from client
+        BufferedReader bf = new BufferedReader(in); // Reader that reads messages from client/Server, maybe?
+        String str = bf.readLine(); // Read message that we got from client/server
 
         return str;
     }
 
-    public static void sendMessageToNetwork(Socket s, String username, String target) throws IOException {
+    public static void sendMessageToNetwork(Socket s, String username, String target, String message) throws IOException {
         PrintWriter pr = new PrintWriter(s.getOutputStream()); // Printer
-        pr.println(username + ": " + getString("Send message to " + target)); // Print to targets
-        pr.flush(); // Clear
+        pr.println(username + ": " + message + "Send message to " + target); // Print to targets
+        pr.flush();
     }
 }

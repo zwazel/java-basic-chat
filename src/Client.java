@@ -19,8 +19,15 @@ public class Client {
 
         this.username = Main.getString("Your username");
 
-        Main.sendMessageToNetwork(s, username, "Server");
+        while (true) {
+            System.out.println(Main.getMessageFromNetwork(s));
+        }
 
-        System.out.println(Main.getMessageFromNetwork(s));
+        String text = Main.getString("Send message to Server");
+
+        while (!text.equals("/dc")) {
+            Main.sendMessageToNetwork(s, username, "Server", text);
+            text = Main.getString("Send message to clients");
+        }
     }
 }

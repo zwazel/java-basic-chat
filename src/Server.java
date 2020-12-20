@@ -4,8 +4,8 @@ import java.net.*;
 public class Server {
     int port;
     String username;
-    //int idCounter = 0;
-    //int myId = idCounter;
+    int idCounter = 0;
+    int myId = idCounter;
 
     public static void main(String[] args) throws IOException {
         new Server();
@@ -21,8 +21,11 @@ public class Server {
 
         System.out.println("client connected");
 
-        System.out.println(Main.getMessageFromNetwork(s));
+        String text = Main.getString("Send message to Clients");
 
-        Main.sendMessageToNetwork(s, username, "Clients");
+        while (!text.equals("/dc")) {
+            Main.sendMessageToNetwork(s, username, "Clients", text);
+            text = Main.getString("Send message to clients");
+        }
     }
 }
