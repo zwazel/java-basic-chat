@@ -30,7 +30,7 @@ public class ThreadInput implements Runnable {
     }
 
     public void start() {
-        System.out.println("THREAD STARTEEED");
+        System.out.println("THREAD " + threadName + " STARTED");
         if (threadInput == null) {
             threadInput = new Thread(this, threadName);
             threadInput.start();
