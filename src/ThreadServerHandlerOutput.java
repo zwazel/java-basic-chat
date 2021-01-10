@@ -8,11 +8,13 @@ public class ThreadServerHandlerOutput implements Runnable {
     Socket s;
     private DataInputStream dIn;
     private ThreadServerHandlerInput threadServerHandlerInput;
+    private int id;
 
-    public ThreadServerHandlerOutput(String threadName, Socket s, ThreadServerHandlerInput threadServerHandlerInput) {
+    public ThreadServerHandlerOutput(String threadName, Socket s, ThreadServerHandlerInput threadServerHandlerInput, int id) {
         this.threadName = threadName;
         this.s = s;
         this.threadServerHandlerInput = threadServerHandlerInput;
+        this.id = id;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class ThreadServerHandlerOutput implements Runnable {
             try {
                 String message = getMessageFromClient(s);
                 System.out.println(message);
-
+                threadServerHandlerInput.sendMessageFromClientToClients(id, message);
             } catch (IOException e) {
                 e.printStackTrace();
             }

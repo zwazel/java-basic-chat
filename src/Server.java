@@ -67,7 +67,7 @@ public class Server extends ServerAndClient {
         threadServerHandlerInput.addSocketToMap(s, clientUsername, idCounter);
 
         // Start the Threads
-        ThreadClientHandlerOutput threadClientHandlerOutput = new ThreadClientHandlerOutput("ThreadOutputServer", s);
-        threadClientHandlerOutput.start();
+        ThreadServerHandlerOutput threadServerHandlerOutput = new ThreadServerHandlerOutput("threadServerHandlerOutput", s, threadServerHandlerInput, idCounter);
+        threadServerHandlerOutput.start();
     }
 }
