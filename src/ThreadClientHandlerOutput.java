@@ -2,13 +2,13 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ThreadOutput implements Runnable {
+public class ThreadClientHandlerOutput implements Runnable {
     private Thread threadOutput;
     private final String threadName;
     Socket s;
     private DataInputStream dIn;
 
-    public ThreadOutput(String threadName, Socket s) {
+    public ThreadClientHandlerOutput(String threadName, Socket s) {
         this.threadName = threadName;
         this.s = s;
     }

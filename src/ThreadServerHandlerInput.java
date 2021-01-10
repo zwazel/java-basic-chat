@@ -3,14 +3,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class ThreadHandlingServerInput extends ServerAndClient implements Runnable {
+public class ThreadServerHandlerInput extends ServerAndClient implements Runnable {
     private Thread threadHandlingServerOutput;
     private final String threadName;
     private DataOutputStream dOut;
 
     private HashMap<Integer, ServerClient> clientsHashMap = new HashMap<Integer, ServerClient>();
 
-    public ThreadHandlingServerInput(String threadName, String username) {
+    public ThreadServerHandlerInput(String threadName, String username) {
         this.threadName = threadName;
         this.username = username;
     }
@@ -18,11 +18,17 @@ public class ThreadHandlingServerInput extends ServerAndClient implements Runnab
     @Override
     public void run() {
         System.out.println("Thread running " + threadName);
-        try {
-            sendMessageToClients();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        String message;
+        do {
+            message = getString("Send message");
+
+            try {
+                sendMessageToClients(username, message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } while(!message.equals("/dc"));
     }
 
     public void start() {
@@ -33,19 +39,28 @@ public class ThreadHandlingServerInput extends ServerAndClient implements Runnab
         }
     }
 
-    private void sendMessageToClients() throws IOException {
-        String message;
-        do {
-            message = getString("Send message");
+    private void sendMessageToClients(String username, String message) throws IOException {
+        for (int i : clientsHashMap.keySet()) {
+            Socket s = clientsHashMap.get(i).getSocket();
 
-            for (int i : clientsHashMap.keySet()) {
+            dOut = new DataOutputStream(s.getOutputStream());
+            dOut.writeUTF(username + ": " + message);
+            dOut.flush(); // Send off the data
+        }
+    }
+
+    public void sendMessageFromClientToClients(int id, String message) throws IOException {
+        //String username = clientsHashMap.get(id).getUsername();
+
+        for (int i : clientsHashMap.keySet()) {
+            if (i != id) { // Don't send message to myself
                 Socket s = clientsHashMap.get(i).getSocket();
 
                 dOut = new DataOutputStream(s.getOutputStream());
-                dOut.writeUTF(username + ": " + message);
+                dOut.writeUTF(message);
                 dOut.flush(); // Send off the data
             }
-        } while(!message.equals("/dc"));
+        }
     }
 
     public void listAllConnectedClients() {

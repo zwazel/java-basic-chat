@@ -12,7 +12,7 @@ public class Server extends ServerAndClient {
     private DataOutputStream dOut;
     private DataInputStream dIn;
 
-    ThreadHandlingServerInput threadHandlingServerInput;
+    ThreadServerHandlerInput threadServerHandlerInput;
 
     public static void main(String[] args) throws IOException {
         new Server();
@@ -36,8 +36,8 @@ public class Server extends ServerAndClient {
 
         ss = new ServerSocket(port);
 
-        threadHandlingServerInput = new ThreadHandlingServerInput("ThreadHandlingServerOutput", username);
-        threadHandlingServerInput.start();
+        threadServerHandlerInput = new ThreadServerHandlerInput("ThreadHandlingServerOutput", username);
+        threadServerHandlerInput.start();
 
         System.out.println("Waiting for client to connect...");
 
@@ -64,10 +64,10 @@ public class Server extends ServerAndClient {
         System.out.println(clientUsername + " connected with ID " + idCounter); // Print username and id
 
         // Add client to the map
-        threadHandlingServerInput.addSocketToMap(s, clientUsername, idCounter);
+        threadServerHandlerInput.addSocketToMap(s, clientUsername, idCounter);
 
         // Start the Threads
-        ThreadOutput threadOutput = new ThreadOutput("ThreadOutputServer", s);
-        threadOutput.start();
+        ThreadClientHandlerOutput threadClientHandlerOutput = new ThreadClientHandlerOutput("ThreadOutputServer", s);
+        threadClientHandlerOutput.start();
     }
 }

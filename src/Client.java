@@ -29,9 +29,9 @@ public class Client extends ServerAndClient {
         dOut.writeUTF(username);
         dOut.flush(); // Send off the data
 
-        ThreadOutput threadOutput = new ThreadOutput("ThreadOutputClient", socket);
-        threadOutput.start();
-        ThreadInput threadInput = new ThreadInput(username, "ThreadInputClient", socket, 'c');
-        threadInput.start();
+        ThreadClientHandlerOutput threadClientHandlerOutput = new ThreadClientHandlerOutput("ThreadOutputClient", socket);
+        threadClientHandlerOutput.start();
+        ThreadClientHandlerInput threadClientHandlerInput = new ThreadClientHandlerInput(username, "ThreadInputClient", socket, 'c');
+        threadClientHandlerInput.start();
     }
 }
