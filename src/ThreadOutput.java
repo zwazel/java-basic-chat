@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ThreadOutput implements Runnable {
-    Thread threadOutput;
+    private Thread threadOutput;
     private String threadName;
     Socket s;
 
