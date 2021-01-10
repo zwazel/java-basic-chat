@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.net.Socket;
 
-public class ThreadInput implements Runnable {
+public class ThreadInput extends ServerAndClient implements Runnable {
     private Thread threadInput;
     private String threadName;
     Socket s;
@@ -17,15 +17,15 @@ public class ThreadInput implements Runnable {
     public void run() {
         System.out.println("Thread running" + threadName);
 
-        String text = Main.getString("Send message to Clients");
+        String text = getString("Send message to Clients");
 
         while (!text.equals("/dc")) {
             try {
-                Main.sendMessageToNetwork(s, username, text);
+                sendMessageToNetwork(s, username, text);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            text = Main.getString("Send message to clients");
+            text = getString("Send message to clients");
         }
     }
 

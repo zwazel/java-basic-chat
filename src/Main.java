@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Main {
-    final private static String stringAfterCommand = " > ";
+    final public static String stringAfterCommand = " > ";
     final private static String errorWrongInput = "Invalid Input! Try again";
 
     public Main() throws IOException {
@@ -35,37 +35,5 @@ public class Main {
                 System.out.println(errorWrongInput);
                 return false;
         }
-    }
-
-    public static String getString(String command) {
-        if (!command.equals("-1")) {
-            System.out.print(command + stringAfterCommand);
-        }
-
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
-    }
-
-    public static int getInt(String command) {
-        if (!command.equals("-1")) {
-            System.out.print(command + stringAfterCommand);
-        }
-
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
-    }
-
-    public static String getMessageFromNetwork(Socket s) throws IOException {
-        InputStreamReader in = new InputStreamReader(s.getInputStream()); // Inputs stuff into buffered reader... or something idk
-        BufferedReader bf = new BufferedReader(in); // Reader that reads messages from client/Server, maybe?
-        String str = bf.readLine(); // Read message that we got from client/server
-
-        return str;
-    }
-
-    public static void sendMessageToNetwork(Socket s, String username, String message) throws IOException {
-        PrintWriter pr = new PrintWriter(s.getOutputStream()); // Printer
-        pr.println(username + ": " + message);
-        pr.flush();
     }
 }

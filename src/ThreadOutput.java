@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.net.Socket;
 
-public class ThreadOutput implements Runnable {
+public class ThreadOutput extends ServerAndClient implements Runnable {
     private Thread threadOutput;
     private String threadName;
     Socket s;
@@ -17,7 +17,7 @@ public class ThreadOutput implements Runnable {
 
         while(true) {
             try {
-                System.out.println(Main.getMessageFromNetwork(s));
+                System.out.println(getMessageFromNetwork(s));
             } catch (IOException e) {
                 e.printStackTrace();
             }

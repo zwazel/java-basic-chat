@@ -1,9 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-public class Server {
-    int port;
-    String username;
+public class Server extends ServerAndClient {
     int idCounter = 0;
     int myId = idCounter;
 
@@ -12,8 +10,8 @@ public class Server {
     }
 
     public Server() throws IOException {
-        this.port = Main.getInt("The Port you are hosting on");
-        this.username = Main.getString("Your username");
+        this.port = getInt("The Port you are hosting on");
+        this.username = getString("Your username");
 
         ServerSocket ss = new ServerSocket(port);
         System.out.println("Waiting for client to connect...");
