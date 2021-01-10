@@ -8,7 +8,29 @@ public class ThreadServerAcceptSocket implements Runnable {
     private String threadName;
     DataOutputStream dOut;
 
-    public ThreadServerAcceptSocket(String username, ServerSocket ss, int idCounter) throws IOException {
+    ServerSocket ss;
+    String username;
+    int idCounter;
+
+    public ThreadServerAcceptSocket(String username, String threadName, ServerSocket ss, int idCounter) {
+        this.threadName = threadName;
+        this.username = username;
+        this.ss = ss;
+        this.idCounter = idCounter;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Thread running" + threadName);
+
+        try {
+            acceptConnections();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void acceptConnections() throws IOException {
         while(true) {
             Socket s = ss.accept();
             System.out.println("client connected");
@@ -22,11 +44,6 @@ public class ThreadServerAcceptSocket implements Runnable {
             ThreadInput threadInput = new ThreadInput(username, "ThreadInputServer", s, 's');
             threadInput.start();
         }
-    }
-
-    @Override
-    public void run() {
-        System.out.println("Thread running" + threadName);
     }
 
     public void start() {

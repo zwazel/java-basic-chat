@@ -4,7 +4,7 @@ import java.net.Socket;
 
 public class ThreadInput extends ServerAndClient implements Runnable {
     private Thread threadInput;
-    private String threadName;
+    private final String threadName;
     Socket s;
     String username;
     char type;

@@ -20,7 +20,7 @@ public class Server extends ServerAndClient {
         ServerSocket ss = new ServerSocket(port);
         System.out.println("Waiting for client to connect...");
 
-        ThreadServerAcceptSocket threadServerAcceptSocket = new ThreadServerAcceptSocket(username, ss, idCounter);
+        ThreadServerAcceptSocket threadServerAcceptSocket = new ThreadServerAcceptSocket(username, "ThreadServerAcceptSocket", ss, idCounter);
         threadServerAcceptSocket.start();
     }
 }
