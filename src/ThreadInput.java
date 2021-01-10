@@ -23,7 +23,7 @@ public class ThreadInput extends ServerAndClient implements Runnable {
         if (type == 's') {
             username += " (Server)";
         }
-        
+
         String text = getString("Send message");
 
         while (!text.equals("/dc")) {
