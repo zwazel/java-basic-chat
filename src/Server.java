@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Server extends ServerAndClient {
     int idCounter = 0;
     int myId = idCounter;
-    HashMap<Integer, String> clients = new HashMap<Integer, String>();
+    //HashMap<Integer, String> clients = new HashMap<Integer, String>();
 
     public static void main(String[] args) throws IOException {
         new Server();
