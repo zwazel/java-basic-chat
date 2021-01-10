@@ -1,10 +1,12 @@
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class Client extends ServerAndClient {
     String ipOfServer;
     private DataInputStream dIn;
+    private DataOutputStream dOut;
 
     public static void main(String[] args) throws IOException {
         new Client();
@@ -17,11 +19,15 @@ public class Client extends ServerAndClient {
         this.username = getString("Your username");
 
         Socket s = new Socket(ipOfServer, port); // Create socket, connect with host on port
+        dIn = new DataInputStream(s.getInputStream());
         System.out.println("Connected with server on IP " + ipOfServer + " and Port " + port);
 
-        dIn = new DataInputStream(s.getInputStream());
         myId = dIn.readInt();
         System.out.println("My ID: " + myId);
+
+        dOut = new DataOutputStream(s.getOutputStream());
+        dOut.writeUTF(username);
+        dOut.flush(); // Send off the data
 
         ThreadOutput threadOutput = new ThreadOutput("ThreadOutputClient", s);
         threadOutput.start();

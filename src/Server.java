@@ -1,18 +1,32 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
 
 public class Server extends ServerAndClient {
     int idCounter = 0;
     int myId = idCounter;
     int maxAmountClients;
-    //HashMap<Integer, String> clients = new HashMap<Integer, String>();
+    ServerSocket ss;
+    private DataOutputStream dOut;
+    private DataInputStream dIn;
+    HashMap<Integer, String> clientsHashMap = new HashMap<Integer, String>();
 
     public static void main(String[] args) throws IOException {
         new Server();
     }
 
-    public Server() throws IOException {
+    public Server() {
+        try {
+            run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void run() throws IOException {
         port = getInt("The Port you are hosting on");
         maxAmountClients = getInt("How many Clients are allowed (-1 for a lot)");
 
@@ -20,10 +34,38 @@ public class Server extends ServerAndClient {
 
         System.out.println("My ID: " + myId);
 
-        ServerSocket ss = new ServerSocket(port);
+        clientsHashMap.put(idCounter, username);
+
+        ss = new ServerSocket(port);
         System.out.println("Waiting for client to connect...");
 
-        ThreadServerAcceptSocket threadServerAcceptSocket = new ThreadServerAcceptSocket(username, "ThreadServerAcceptSocket", ss, idCounter, maxAmountClients);
-        threadServerAcceptSocket.start();
+        if (maxAmountClients == -1) {
+            maxAmountClients = 999;
+        }
+        for(int i = 0; i < maxAmountClients; i++) {
+            acceptSockets();
+        }
+    }
+
+    private void acceptSockets() throws IOException {
+        // Wait for a connection request, and accept it
+        Socket s = ss.accept();
+
+        // Tell the client what ID he has
+        dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
+        dOut.writeInt(++idCounter); // increase id then write id
+        dOut.flush(); // Send off the data
+
+        // get the username from the client that just connected
+        dIn = new DataInputStream(s.getInputStream()); // Create new input stream
+        String clientUsername = dIn.readUTF(); // Read text
+        clientsHashMap.put(idCounter, clientUsername); // add client to map
+        System.out.println(clientUsername + " connected with ID " + idCounter); // Print username and id
+
+        // Start the Threads
+        ThreadOutput threadOutput = new ThreadOutput("ThreadOutputServer", s);
+        threadOutput.start();
+        ThreadInput threadInput = new ThreadInput(username, "ThreadInputServer", s);
+        threadInput.start();
     }
 }
