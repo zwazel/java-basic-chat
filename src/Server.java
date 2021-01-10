@@ -14,11 +14,9 @@ public class Server extends ServerAndClient {
 
     public Server() throws IOException {
         port = getInt("The Port you are hosting on");
-        maxAmountClients = getInt("How many Clients are allowed");
+        maxAmountClients = getInt("How many Clients are allowed (-1 for a lot)");
 
-        username = getString("Your username");
-
-        System.out.println("My Username: " + username);
+        username = "Server";
 
         System.out.println("My ID: " + myId);
 

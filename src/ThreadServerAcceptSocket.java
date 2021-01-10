@@ -33,6 +33,10 @@ public class ThreadServerAcceptSocket implements Runnable {
     }
 
     private void acceptConnections() throws IOException {
+        if (maxAmountClients == -1) {
+            maxAmountClients = 255;
+        }
+
         for(int i = 0; i < maxAmountClients; i++) {
             Socket s = ss.accept();
             System.out.println("client connected");
@@ -41,9 +45,10 @@ public class ThreadServerAcceptSocket implements Runnable {
             dOut.writeInt(++idCounter);
             dOut.flush(); // Send off the data
 
+            // Start the Threads
             ThreadOutput threadOutput = new ThreadOutput("ThreadOutputServer", s);
             threadOutput.start();
-            ThreadInput threadInput = new ThreadInput(username, "ThreadInputServer", s, 's');
+            ThreadInput threadInput = new ThreadInput(username, "ThreadInputServer", s);
             threadInput.start();
         }
     }

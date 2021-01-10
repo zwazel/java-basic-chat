@@ -7,22 +7,16 @@ public class ThreadInput extends ServerAndClient implements Runnable {
     private final String threadName;
     Socket s;
     String username;
-    char type;
 
-    public ThreadInput(String username, String threadName, Socket s, char type) {
+    public ThreadInput(String username, String threadName, Socket s) {
         this.threadName = threadName;
         this.s = s;
         this.username = username;
-        this.type = type;
     }
 
     @Override
     public void run() {
         System.out.println("Thread running " + threadName);
-
-        if (type == 's') {
-            username += " (Server)";
-        }
 
         String text = getString("Send message");
 
