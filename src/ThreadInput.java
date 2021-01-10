@@ -1,5 +1,5 @@
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ThreadInput extends ServerAndClient implements Runnable {
@@ -7,6 +7,7 @@ public class ThreadInput extends ServerAndClient implements Runnable {
     private final String threadName;
     Socket s;
     String username;
+    private DataOutputStream dOut;
 
     public ThreadInput(String username, String threadName, Socket s) {
         this.threadName = threadName;
@@ -39,8 +40,8 @@ public class ThreadInput extends ServerAndClient implements Runnable {
     }
 
     private void sendMessageToNetwork(Socket s, String username, String message) throws IOException {
-        PrintWriter pr = new PrintWriter(s.getOutputStream()); // Printer
-        pr.println(username + ": " + message);
-        pr.flush(); // Send off the data
+        dOut = new DataOutputStream(s.getOutputStream());
+        dOut.writeUTF(username+ ": " + message);
+        dOut.flush(); // Send off the data
     }
 }

@@ -6,7 +6,7 @@ import java.net.Socket;
 public class ThreadServerAcceptSocket implements Runnable {
     private Thread threadServerAcceptSocket;
     private final String threadName;
-    DataOutputStream dOut;
+    private DataOutputStream dOut;
 
     ServerSocket ss;
     String username;
@@ -34,7 +34,7 @@ public class ThreadServerAcceptSocket implements Runnable {
 
     private void acceptConnections() throws IOException {
         if (maxAmountClients == -1) {
-            maxAmountClients = 255;
+            maxAmountClients = 999;
         }
 
         for(int i = 0; i < maxAmountClients; i++) {

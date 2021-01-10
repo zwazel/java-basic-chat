@@ -4,14 +4,14 @@ import java.net.Socket;
 
 public class Client extends ServerAndClient {
     String ipOfServer;
-    DataInputStream dIn;
+    private DataInputStream dIn;
 
     public static void main(String[] args) throws IOException {
         new Client();
     }
 
     public Client() throws IOException {
-        this.ipOfServer = getString("The IP of the server");
+        this.ipOfServer = getString("The IP of the server").toLowerCase();
         this.port = getInt("The open Port of the server");
 
         this.username = getString("Your username");
