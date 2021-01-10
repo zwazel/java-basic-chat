@@ -8,18 +8,29 @@ public class ThreadInput extends ServerAndClient implements Runnable {
     private String threadName;
     Socket s;
     String username;
+    char type;
+    String clientOrServer;
 
-    public ThreadInput(String username, String threadName, Socket s) {
+    public ThreadInput(String username, String threadName, Socket s, char type) {
         this.threadName = threadName;
         this.s = s;
         this.username = username;
+        this.type = type;
     }
 
     @Override
     public void run() {
         System.out.println("Thread running" + threadName);
 
-        String text = getString("Send message to Clients");
+        String toWho;
+        if (type == 'c') {
+            toWho = "Server";
+        } else if (type == 's') {
+            toWho = "Clients";
+        } else {
+            toWho = "not defined";
+        }
+        String text = getString("Send message to " + toWho);
 
         while (!text.equals("/dc")) {
             try {
@@ -27,7 +38,7 @@ public class ThreadInput extends ServerAndClient implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            text = getString("Send message to clients");
+            text = getString("Send message to " + toWho);
         }
     }
 

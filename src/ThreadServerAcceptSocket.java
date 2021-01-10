@@ -19,7 +19,7 @@ public class ThreadServerAcceptSocket implements Runnable {
 
             ThreadOutput threadOutput = new ThreadOutput("ThreadOutputServer", s);
             threadOutput.start();
-            ThreadInput threadInput = new ThreadInput(username, "ThreadInputServer", s);
+            ThreadInput threadInput = new ThreadInput(username, "ThreadInputServer", s, 's');
             threadInput.start();
         }
     }

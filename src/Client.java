@@ -24,7 +24,7 @@ public class Client extends ServerAndClient {
 
         ThreadOutput threadOutput = new ThreadOutput("ThreadOutputClient", s);
         threadOutput.start();
-        ThreadInput threadInput = new ThreadInput(username, "ThreadInputClient", s);
+        ThreadInput threadInput = new ThreadInput(username, "ThreadInputClient", s, 'c');
         threadInput.start();
     }
 
