@@ -5,18 +5,20 @@ import java.net.Socket;
 
 public class ThreadServerAcceptSocket implements Runnable {
     Thread threadServerAcceptSocket;
-    private String threadName;
+    private final String threadName;
     DataOutputStream dOut;
 
     ServerSocket ss;
     String username;
     int idCounter;
+    int maxAmountClients;
 
-    public ThreadServerAcceptSocket(String username, String threadName, ServerSocket ss, int idCounter) {
+    public ThreadServerAcceptSocket(String username, String threadName, ServerSocket ss, int idCounter, int maxAmountClients) {
         this.threadName = threadName;
         this.username = username;
         this.ss = ss;
         this.idCounter = idCounter;
+        this.maxAmountClients = maxAmountClients;
     }
 
     @Override
@@ -31,7 +33,7 @@ public class ThreadServerAcceptSocket implements Runnable {
     }
 
     private void acceptConnections() throws IOException {
-        while(true) {
+        for(int i = 0; i < maxAmountClients; i++) {
             Socket s = ss.accept();
             System.out.println("client connected");
 

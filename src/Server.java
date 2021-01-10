@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class Server extends ServerAndClient {
     int idCounter = 0;
     int myId = idCounter;
+    int maxAmountClients;
     //HashMap<Integer, String> clients = new HashMap<Integer, String>();
 
     public static void main(String[] args) throws IOException {
@@ -12,15 +13,19 @@ public class Server extends ServerAndClient {
     }
 
     public Server() throws IOException {
-        this.port = getInt("The Port you are hosting on");
-        this.username = getString("Your username");
+        port = getInt("The Port you are hosting on");
+        maxAmountClients = getInt("How many Clients are allowed");
+
+        username = getString("Your username");
+
+        System.out.println("My Username: " + username);
 
         System.out.println("My ID: " + myId);
 
         ServerSocket ss = new ServerSocket(port);
         System.out.println("Waiting for client to connect...");
 
-        ThreadServerAcceptSocket threadServerAcceptSocket = new ThreadServerAcceptSocket(this.username, "ThreadServerAcceptSocket", ss, idCounter);
+        ThreadServerAcceptSocket threadServerAcceptSocket = new ThreadServerAcceptSocket(username, "ThreadServerAcceptSocket", ss, idCounter, maxAmountClients);
         threadServerAcceptSocket.start();
     }
 }
