@@ -9,7 +9,6 @@ public class Main {
     public Main() throws IOException {
         scanner = new Scanner(System.in);
         while (!init());
-        scanner.close();
     }
 
     public static void main(String[] args) throws IOException {
