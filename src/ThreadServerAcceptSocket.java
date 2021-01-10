@@ -4,7 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ThreadServerAcceptSocket implements Runnable {
-    Thread threadServerAcceptSocket;
+    private Thread threadServerAcceptSocket;
     private final String threadName;
     DataOutputStream dOut;
 

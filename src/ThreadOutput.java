@@ -5,7 +5,7 @@ import java.net.Socket;
 
 public class ThreadOutput implements Runnable {
     private Thread threadOutput;
-    private String threadName;
+    private final String threadName;
     Socket s;
 
     public ThreadOutput(String threadName, Socket s) {
@@ -37,8 +37,7 @@ public class ThreadOutput implements Runnable {
     private String getMessageFromNetwork(Socket s) throws IOException {
         InputStreamReader in = new InputStreamReader(s.getInputStream()); // Inputs stuff into buffered reader... or something idk
         BufferedReader bf = new BufferedReader(in); // Reader that reads messages from client/Server, maybe?
-        String str = bf.readLine(); // Read message that we got from client/server
 
-        return str;
+        return bf.readLine();
     }
 }

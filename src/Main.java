@@ -19,18 +19,19 @@ public class Main {
     private boolean init() throws IOException {
         System.out.print("Do you want to host (0) or to join (1)?" + stringAfterCommand);
 
-        switch(Integer.parseInt(scanner.nextLine())) {
-            case 0:
+        switch (Integer.parseInt(scanner.nextLine())) {
+            case 0 -> {
                 new Server();
                 return true;
-
-            case 1:
+            }
+            case 1 -> {
                 new Client();
                 return true;
-
-            default:
+            }
+            default -> {
                 System.out.println(errorWrongInput);
                 return false;
+            }
         }
     }
 }
