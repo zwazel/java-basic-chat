@@ -1,7 +1,9 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class ThreadOutput extends ServerAndClient implements Runnable {
+public class ThreadOutput implements Runnable {
     private Thread threadOutput;
     private String threadName;
     Socket s;
@@ -30,5 +32,13 @@ public class ThreadOutput extends ServerAndClient implements Runnable {
             threadOutput = new Thread(this, threadName);
             threadOutput.start();
         }
+    }
+
+    private String getMessageFromNetwork(Socket s) throws IOException {
+        InputStreamReader in = new InputStreamReader(s.getInputStream()); // Inputs stuff into buffered reader... or something idk
+        BufferedReader bf = new BufferedReader(in); // Reader that reads messages from client/Server, maybe?
+        String str = bf.readLine(); // Read message that we got from client/server
+
+        return str;
     }
 }

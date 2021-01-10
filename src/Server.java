@@ -15,13 +15,8 @@ public class Server extends ServerAndClient {
 
         ServerSocket ss = new ServerSocket(port);
         System.out.println("Waiting for client to connect...");
-        Socket s = ss.accept();
 
-        System.out.println("client connected");
-
-        ThreadOutput threadOutput = new ThreadOutput("ThreadOutputServer", s);
-        threadOutput.start();
-        ThreadInput threadInput = new ThreadInput(username, "ThreadInputServer", s);
-        threadInput.start();
+        ThreadServerAcceptSocket threadServerAcceptSocket = new ThreadServerAcceptSocket(username, ss, idCounter);
+        threadServerAcceptSocket.start();
     }
 }

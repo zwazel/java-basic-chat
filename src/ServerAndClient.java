@@ -30,18 +30,4 @@ public class ServerAndClient {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
-
-    protected String getMessageFromNetwork(Socket s) throws IOException {
-        InputStreamReader in = new InputStreamReader(s.getInputStream()); // Inputs stuff into buffered reader... or something idk
-        BufferedReader bf = new BufferedReader(in); // Reader that reads messages from client/Server, maybe?
-        String str = bf.readLine(); // Read message that we got from client/server
-
-        return str;
-    }
-
-    protected void sendMessageToNetwork(Socket s, String username, String message) throws IOException {
-        PrintWriter pr = new PrintWriter(s.getOutputStream()); // Printer
-        pr.println(username + ": " + message);
-        pr.flush();
-    }
 }
