@@ -1,16 +1,13 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.Scanner;
 
 public class ServerAndClient {
+    Scanner scanner;
     int port;
     String username;
     int myId;
 
     public ServerAndClient() {
+        scanner = new Scanner(System.in);
     }
 
     protected String getString(String command) {
@@ -18,7 +15,6 @@ public class ServerAndClient {
             System.out.print(command + Main.stringAfterCommand);
         }
 
-        Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
 
@@ -27,7 +23,6 @@ public class ServerAndClient {
             System.out.print(command + Main.stringAfterCommand);
         }
 
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        return Integer.parseInt(scanner.nextLine());
     }
 }

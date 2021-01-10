@@ -1,4 +1,3 @@
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -9,7 +8,6 @@ public class ThreadInput extends ServerAndClient implements Runnable {
     Socket s;
     String username;
     char type;
-    String clientOrServer;
 
     public ThreadInput(String username, String threadName, Socket s, char type) {
         this.threadName = threadName;
@@ -22,15 +20,11 @@ public class ThreadInput extends ServerAndClient implements Runnable {
     public void run() {
         System.out.println("Thread running" + threadName);
 
-        String toWho;
-        if (type == 'c') {
-            toWho = "Server";
-        } else if (type == 's') {
-            toWho = "Clients";
-        } else {
-            toWho = "not defined";
+        if (type == 's') {
+            username += " (Server)";
         }
-        String text = getString("Send message to " + toWho);
+        
+        String text = getString("Send message");
 
         while (!text.equals("/dc")) {
             try {
@@ -38,7 +32,7 @@ public class ThreadInput extends ServerAndClient implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            text = getString("Send message to " + toWho);
+            text = getString("Send message");
         }
     }
 
