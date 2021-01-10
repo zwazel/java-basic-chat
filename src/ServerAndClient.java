@@ -11,7 +11,6 @@ public class ServerAndClient {
     int myId;
 
     public ServerAndClient() {
-
     }
 
     protected String getString(String command) {
