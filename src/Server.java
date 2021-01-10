@@ -11,7 +11,7 @@ public class Server extends ServerAndClient {
 
     public Server() throws IOException {
         this.port = getInt("The Port you are hosting on");
-        this.username = getString("Your username");
+        this.username = getString("Your username") + " (server)";
 
         System.out.println("My ID: " + myId);
 
