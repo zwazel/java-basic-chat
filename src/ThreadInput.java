@@ -5,13 +5,12 @@ import java.net.Socket;
 public class ThreadInput extends ServerAndClient implements Runnable {
     private Thread threadInput;
     private final String threadName;
-    Socket s;
     String username;
     private DataOutputStream dOut;
 
     public ThreadInput(String username, String threadName, Socket s) {
         this.threadName = threadName;
-        this.s = s;
+        this.socket = s;
         this.username = username;
     }
 
@@ -23,7 +22,7 @@ public class ThreadInput extends ServerAndClient implements Runnable {
 
         while (!text.equals("/dc")) {
             try {
-                sendMessageToNetwork(s, username, text);
+                sendMessageToServer(socket, username, text);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -39,9 +38,13 @@ public class ThreadInput extends ServerAndClient implements Runnable {
         }
     }
 
-    private void sendMessageToNetwork(Socket s, String username, String message) throws IOException {
+    private void sendMessageToServer(Socket s, String username, String message) throws IOException {
         dOut = new DataOutputStream(s.getOutputStream());
         dOut.writeUTF(username+ ": " + message);
         dOut.flush(); // Send off the data
+    }
+
+    private void sendMessageToClients() {
+
     }
 }

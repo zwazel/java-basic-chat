@@ -1,6 +1,8 @@
+import java.net.Socket;
 import java.util.Scanner;
 
 public class ServerAndClient {
+    Socket socket;
     Scanner scanner;
     int port;
     String username;

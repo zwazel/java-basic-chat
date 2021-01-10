@@ -18,20 +18,20 @@ public class Client extends ServerAndClient {
 
         this.username = getString("Your username");
 
-        Socket s = new Socket(ipOfServer, port); // Create socket, connect with host on port
-        dIn = new DataInputStream(s.getInputStream());
+        socket = new Socket(ipOfServer, port); // Create socket, connect with host on port
+        dIn = new DataInputStream(socket.getInputStream());
         System.out.println("Connected with server on IP " + ipOfServer + " and Port " + port);
 
         myId = dIn.readInt();
         System.out.println("My ID: " + myId);
 
-        dOut = new DataOutputStream(s.getOutputStream());
+        dOut = new DataOutputStream(socket.getOutputStream());
         dOut.writeUTF(username);
         dOut.flush(); // Send off the data
 
-        ThreadOutput threadOutput = new ThreadOutput("ThreadOutputClient", s);
+        ThreadOutput threadOutput = new ThreadOutput("ThreadOutputClient", socket);
         threadOutput.start();
-        ThreadInput threadInput = new ThreadInput(username, "ThreadInputClient", s);
+        ThreadInput threadInput = new ThreadInput(username, "ThreadInputClient", socket);
         threadInput.start();
     }
 }

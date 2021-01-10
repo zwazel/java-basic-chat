@@ -65,7 +65,5 @@ public class Server extends ServerAndClient {
         // Start the Threads
         ThreadOutput threadOutput = new ThreadOutput("ThreadOutputServer", s);
         threadOutput.start();
-        ThreadInput threadInput = new ThreadInput(username, "ThreadInputServer", s);
-        threadInput.start();
     }
 }
