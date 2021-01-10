@@ -13,6 +13,8 @@ public class Server extends ServerAndClient {
         this.port = getInt("The Port you are hosting on");
         this.username = getString("Your username");
 
+        System.out.println("My ID: " + myId);
+
         ServerSocket ss = new ServerSocket(port);
         System.out.println("Waiting for client to connect...");
 
