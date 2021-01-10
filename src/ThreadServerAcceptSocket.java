@@ -14,7 +14,7 @@ public class ThreadServerAcceptSocket implements Runnable {
             System.out.println("client connected");
 
             dOut = new DataOutputStream(s.getOutputStream());
-            dOut.writeByte(++idCounter);
+            dOut.writeInt(++idCounter);
             dOut.flush(); // Send off the data
 
             ThreadOutput threadOutput = new ThreadOutput("ThreadOutputServer", s);

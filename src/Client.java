@@ -19,7 +19,7 @@ public class Client extends ServerAndClient {
         System.out.println("Connected with server on IP " + ipOfServer + " and Port " + port);
 
         dIn = new DataInputStream(s.getInputStream());
-        myId = dIn.readByte();
+        myId = dIn.readInt();
         System.out.println("My ID: " + myId);
 
         ThreadOutput threadOutput = new ThreadOutput("ThreadOutputClient", s);
