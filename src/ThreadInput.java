@@ -7,27 +7,29 @@ public class ThreadInput extends ServerAndClient implements Runnable {
     private final String threadName;
     String username;
     private DataOutputStream dOut;
+    char type;
 
-    public ThreadInput(String username, String threadName, Socket s) {
+    public ThreadInput(String username, String threadName, Socket s, char type) {
         this.threadName = threadName;
         this.socket = s;
         this.username = username;
+        this.type = type;
     }
 
     @Override
     public void run() {
         System.out.println("Thread running " + threadName);
 
-        String text = getString("Send message");
+        String text;
 
-        while (!text.equals("/dc")) {
+        do {
+            text = getString("Send message");
             try {
                 sendMessageToServer(socket, username, text);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            text = getString("Send message");
-        }
+        } while (!text.equals("/dc"));
     }
 
     public void start() {
@@ -42,9 +44,5 @@ public class ThreadInput extends ServerAndClient implements Runnable {
         dOut = new DataOutputStream(s.getOutputStream());
         dOut.writeUTF(username+ ": " + message);
         dOut.flush(); // Send off the data
-    }
-
-    private void sendMessageToClients() {
-
     }
 }

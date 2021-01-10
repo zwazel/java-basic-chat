@@ -3,7 +3,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 
 public class Server extends ServerAndClient {
     int idCounter = 0;
@@ -12,7 +11,8 @@ public class Server extends ServerAndClient {
     ServerSocket ss;
     private DataOutputStream dOut;
     private DataInputStream dIn;
-    HashMap<Integer, String> clientsHashMap = new HashMap<Integer, String>();
+
+    ThreadHandlingServerInput threadHandlingServerInput;
 
     public static void main(String[] args) throws IOException {
         new Server();
@@ -34,9 +34,11 @@ public class Server extends ServerAndClient {
 
         System.out.println("My ID: " + myId);
 
-        clientsHashMap.put(idCounter, username);
-
         ss = new ServerSocket(port);
+
+        threadHandlingServerInput = new ThreadHandlingServerInput("ThreadHandlingServerOutput");
+        threadHandlingServerInput.start();
+
         System.out.println("Waiting for client to connect...");
 
         if (maxAmountClients == -1) {
@@ -59,8 +61,10 @@ public class Server extends ServerAndClient {
         // get the username from the client that just connected
         dIn = new DataInputStream(s.getInputStream()); // Create new input stream
         String clientUsername = dIn.readUTF(); // Read text
-        clientsHashMap.put(idCounter, clientUsername); // add client to map
         System.out.println(clientUsername + " connected with ID " + idCounter); // Print username and id
+
+        // Add client to the map
+        threadHandlingServerInput.addSocketToMap(s, clientUsername, idCounter);
 
         // Start the Threads
         ThreadOutput threadOutput = new ThreadOutput("ThreadOutputServer", s);

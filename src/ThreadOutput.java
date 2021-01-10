@@ -19,7 +19,7 @@ public class ThreadOutput implements Runnable {
 
         while(true) {
             try {
-                System.out.println(getMessageFromNetwork(s));
+                System.out.println(getMessageFromServer(s));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -34,7 +34,7 @@ public class ThreadOutput implements Runnable {
         }
     }
 
-    private String getMessageFromNetwork(Socket s) throws IOException {
+    private String getMessageFromServer(Socket s) throws IOException {
         dIn = new DataInputStream(s.getInputStream());
         return dIn.readUTF();
     }
