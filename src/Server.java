@@ -36,7 +36,7 @@ public class Server extends ServerAndClient {
 
         ss = new ServerSocket(port);
 
-        threadHandlingServerInput = new ThreadHandlingServerInput("ThreadHandlingServerOutput");
+        threadHandlingServerInput = new ThreadHandlingServerInput("ThreadHandlingServerOutput", username);
         threadHandlingServerInput.start();
 
         System.out.println("Waiting for client to connect...");
