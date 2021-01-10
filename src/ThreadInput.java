@@ -18,7 +18,7 @@ public class ThreadInput extends ServerAndClient implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Thread running" + threadName);
+        System.out.println("Thread running " + threadName);
 
         if (type == 's') {
             username += " (Server)";

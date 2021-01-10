@@ -4,7 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ThreadServerAcceptSocket implements Runnable {
-    Thread threadInput;
+    Thread threadServerAcceptSocket;
     private String threadName;
     DataOutputStream dOut;
 
@@ -21,7 +21,7 @@ public class ThreadServerAcceptSocket implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Thread running" + threadName);
+        System.out.println("Thread running " + threadName);
 
         try {
             acceptConnections();
@@ -48,9 +48,9 @@ public class ThreadServerAcceptSocket implements Runnable {
 
     public void start() {
         System.out.println("THREAD " + threadName + " STARTED");
-        if (threadInput == null) {
-            threadInput = new Thread(this, threadName);
-            threadInput.start();
+        if (threadServerAcceptSocket == null) {
+            threadServerAcceptSocket = new Thread(this, threadName);
+            threadServerAcceptSocket.start();
         }
     }
 }

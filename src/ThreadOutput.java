@@ -15,7 +15,7 @@ public class ThreadOutput implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Thread running" + threadName);
+        System.out.println("Thread running " + threadName);
 
         while(true) {
             try {
