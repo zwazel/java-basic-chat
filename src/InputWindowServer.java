@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -51,8 +50,8 @@ public class InputWindowServer extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String content = textField.getText();
-            System.out.println("Message: " + content);
-            threadServerHandlerInput.sendMessage(content);
+            //System.out.println("Message: " + content);
+            threadServerHandlerInput.sendMessageFromInputField(content);
             textField.setText("");
         }
     }

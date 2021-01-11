@@ -20,22 +20,11 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
     public void run() {
         System.out.println("Thread running " + threadName);
         inputWindow = InputWindowServer.startWindow(this);
-
-        String message = "";
-        do {
-            message = getString("Send message");
-            //message = inputWindow.getText();
-
-            try {
-                sendMessageToClients(username, message);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } while(!message.equals("/dc"));
     }
 
-    public void sendMessage(String message) {
+    public void sendMessageFromInputField(String message) {
         try {
+            System.out.println(username + " (Me): " + message);
             sendMessageToClients(username, message);
         } catch (IOException e) {
             e.printStackTrace();
