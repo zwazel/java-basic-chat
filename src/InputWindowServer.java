@@ -9,10 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class InputWindow extends JPanel {
+public class InputWindowServer extends JPanel {
+    static ThreadServerHandlerInput threadServerHandlerInput;
     private static JTextField textField;
+    static InputWindowServer inputWindowServer;
 
-    public InputWindow() {
+    public InputWindowServer() {
         setLayout(new BorderLayout());
 
         JPanel northPanel = new JPanel();
@@ -32,21 +34,17 @@ public class InputWindow extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    public static void main(String[] args) {
-        startWindow();
-    }
+    public static InputWindowServer startWindow(ThreadServerHandlerInput _threadServerHandlerInput) {
+        threadServerHandlerInput = _threadServerHandlerInput;
 
-    private static void startWindow() {
         JFrame frame = new JFrame("InputWindow");
-        frame.add(new InputWindow());
+        inputWindowServer = new InputWindowServer();
+        frame.add(inputWindowServer);
         frame.setVisible(true);
         frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
 
-    public String getText() {
-
-        return "";
+        return inputWindowServer;
     }
 
     private static class BtnListener implements ActionListener {
@@ -54,6 +52,7 @@ public class InputWindow extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String content = textField.getText();
             System.out.println("Message: " + content);
+            threadServerHandlerInput.sendMessage(content);
             textField.setText("");
         }
     }

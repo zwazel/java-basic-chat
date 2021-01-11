@@ -7,24 +7,24 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
     private Thread threadHandlingServerOutput;
     private final String threadName;
     private DataOutputStream dOut;
-    InputWindow inputWindow;
+    InputWindowServer inputWindow;
 
     private HashMap<Integer, ServerClient> clientsHashMap = new HashMap<Integer, ServerClient>();
 
     public ThreadServerHandlerInput(String threadName, String username) {
         this.threadName = threadName;
         this.username = username;
-
-        inputWindow = new InputWindow();
     }
 
     @Override
     public void run() {
         System.out.println("Thread running " + threadName);
+        inputWindow = InputWindowServer.startWindow(this);
 
-        String message;
+        String message = "";
         do {
-            message = inputWindow.getText();
+            message = getString("Send message");
+            //message = inputWindow.getText();
 
             try {
                 sendMessageToClients(username, message);
@@ -32,6 +32,14 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
                 e.printStackTrace();
             }
         } while(!message.equals("/dc"));
+    }
+
+    public void sendMessage(String message) {
+        try {
+            sendMessageToClients(username, message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void start() {
