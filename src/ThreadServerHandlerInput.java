@@ -22,10 +22,9 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
         inputWindow = InputWindowServer.startWindow(this);
     }
 
-    public void sendMessageFromInputField(String message) {
+    public void getMessageFromInputField(String message) {
         try {
-            System.out.println(username + " (Me): " + message);
-            sendMessageToClients(username, message);
+            sendMessageToClients(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,7 +38,9 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
         }
     }
 
-    private void sendMessageToClients(String username, String message) throws IOException {
+    private void sendMessageToClients(String message) throws IOException {
+        System.out.println(username + " (Me): " + message);
+
         for (int i : clientsHashMap.keySet()) {
             Socket s = clientsHashMap.get(i).getSocket();
 
@@ -50,7 +51,7 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
     }
 
     public void sendMessageFromClientToClients(int id, String message) throws IOException {
-        //String username = clientsHashMap.get(id).getUsername();
+        //String username = clientsHashMap.get(id).getUsername(); // We already have the username inside of the message, so this is not needed
 
         for (int i : clientsHashMap.keySet()) {
             if (i != id) { // Don't send message to myself

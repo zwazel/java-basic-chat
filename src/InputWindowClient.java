@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,7 +52,7 @@ public class InputWindowClient extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String content = textField.getText();
             //System.out.println("Message: " + content);
-            threadClientHandlerInput.sendMessageFromInputField(content);
+            threadClientHandlerInput.getMesageFromInputField(content);
             textField.setText("");
         }
     }

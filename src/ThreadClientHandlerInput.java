@@ -23,10 +23,9 @@ public class ThreadClientHandlerInput extends ServerAndClient implements Runnabl
         inputWindow = InputWindowClient.startWindow(this);
     }
 
-    public void sendMessageFromInputField(String message) {
+    public void getMesageFromInputField(String message) {
         try {
-            System.out.println(username + " (Me): " + message);
-            sendMessageToServer(socket, username, message);
+            sendMessageToServer(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,9 +39,10 @@ public class ThreadClientHandlerInput extends ServerAndClient implements Runnabl
         }
     }
 
-    private void sendMessageToServer(Socket s, String username, String message) throws IOException {
-        DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
-        dOut.writeUTF(username+ ": " + message);
+    private void sendMessageToServer(String message) throws IOException {
+        System.out.println(username + " (Me): " + message);
+        DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+        dOut.writeUTF(username + ": " + message);
         dOut.flush(); // Send off the data
     }
 }

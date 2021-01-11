@@ -51,7 +51,7 @@ public class InputWindowServer extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String content = textField.getText();
             //System.out.println("Message: " + content);
-            threadServerHandlerInput.sendMessageFromInputField(content);
+            threadServerHandlerInput.getMessageFromInputField(content);
             textField.setText("");
         }
     }
