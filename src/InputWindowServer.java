@@ -36,7 +36,7 @@ public class InputWindowServer extends JPanel {
     public static InputWindowServer startWindow(ThreadServerHandlerInput _threadServerHandlerInput) {
         threadServerHandlerInput = _threadServerHandlerInput;
 
-        JFrame frame = new JFrame("InputWindow");
+        JFrame frame = new JFrame(threadServerHandlerInput.username + " InputWindowServer");
         inputWindowServer = new InputWindowServer();
         frame.add(inputWindowServer);
         frame.setVisible(true);

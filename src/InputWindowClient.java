@@ -36,7 +36,7 @@ public class InputWindowClient extends JPanel {
     public static InputWindowClient startWindow(ThreadClientHandlerInput _threadClientHandlerInput) {
         threadClientHandlerInput = _threadClientHandlerInput;
 
-        JFrame frame = new JFrame("InputWindow");
+        JFrame frame = new JFrame(threadClientHandlerInput.username + " InputWindowClient");
         inputWindowClient = new InputWindowClient();
         frame.add(inputWindowClient);
         frame.setVisible(true);
