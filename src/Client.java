@@ -5,8 +5,6 @@ import java.net.Socket;
 
 public class Client extends ServerAndClient {
     String ipOfServer;
-    private DataInputStream dIn;
-    private DataOutputStream dOut;
 
     public static void main(String[] args) throws IOException {
         new Client();
@@ -19,13 +17,13 @@ public class Client extends ServerAndClient {
         this.username = getString("Your username");
 
         socket = new Socket(ipOfServer, port); // Create socket, connect with host on port
-        dIn = new DataInputStream(socket.getInputStream());
+        DataInputStream dIn = new DataInputStream(socket.getInputStream());
         System.out.println("Connected with server on IP " + ipOfServer + " and Port " + port);
 
         myId = dIn.readInt();
         System.out.println("My ID: " + myId);
 
-        dOut = new DataOutputStream(socket.getOutputStream());
+        DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
         dOut.writeUTF(username);
         dOut.flush(); // Send off the data
 

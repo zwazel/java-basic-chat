@@ -6,9 +6,8 @@ public class ThreadServerHandlerOutput implements Runnable {
     private Thread threadServerHandlerOutput;
     private final String threadName;
     Socket s;
-    private DataInputStream dIn;
-    private ThreadServerHandlerInput threadServerHandlerInput;
-    private int id;
+    private final ThreadServerHandlerInput threadServerHandlerInput;
+    private final int id;
 
     public ThreadServerHandlerOutput(String threadName, Socket s, ThreadServerHandlerInput threadServerHandlerInput, int id) {
         this.threadName = threadName;
@@ -41,7 +40,8 @@ public class ThreadServerHandlerOutput implements Runnable {
     }
 
     private String getMessageFromClient(Socket s) throws IOException {
-        dIn = new DataInputStream(s.getInputStream());
+        DataInputStream dIn = new DataInputStream(s.getInputStream());
+
         return dIn.readUTF();
     }
 }

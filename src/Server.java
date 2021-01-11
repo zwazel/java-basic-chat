@@ -9,12 +9,10 @@ public class Server extends ServerAndClient {
     int myId = idCounter;
     int maxAmountClients;
     ServerSocket ss;
-    private DataOutputStream dOut;
-    private DataInputStream dIn;
 
     ThreadServerHandlerInput threadServerHandlerInput;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         new Server();
     }
 
@@ -54,12 +52,12 @@ public class Server extends ServerAndClient {
         Socket s = ss.accept();
 
         // Tell the client what ID he has
-        dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
+        DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
         dOut.writeInt(++idCounter); // increase id then write id
         dOut.flush(); // Send off the data
 
         // get the username from the client that just connected
-        dIn = new DataInputStream(s.getInputStream()); // Create new input stream
+        DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
         String clientUsername = dIn.readUTF(); // Read text
         threadServerHandlerInput.sendMessageToClients(clientUsername + " connected with ID " + idCounter); // Print username and id
 

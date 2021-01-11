@@ -9,7 +9,7 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
     private DataOutputStream dOut;
     InputWindowServer inputWindow;
 
-    private HashMap<Integer, ServerClient> clientsHashMap = new HashMap<Integer, ServerClient>();
+    private final HashMap<Integer, ServerClient> clientsHashMap = new HashMap<>();
 
     public ThreadServerHandlerInput(String threadName, String username) {
         this.threadName = threadName;
