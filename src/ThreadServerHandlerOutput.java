@@ -42,6 +42,14 @@ public class ThreadServerHandlerOutput implements Runnable {
     private String getMessageFromClient(Socket s) throws IOException {
         DataInputStream dIn = new DataInputStream(s.getInputStream());
 
+        switch(dIn.readByte()) {
+            case 0: // Disconnect
+                break;
+
+            case 1: // Normal message
+                break;
+        }
+
         return dIn.readUTF();
     }
 }

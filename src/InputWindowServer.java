@@ -1,7 +1,5 @@
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -39,10 +37,18 @@ public class InputWindowServer extends JPanel {
         JFrame frame = new JFrame(threadServerHandlerInput.username + " InputWindowServer");
         inputWindowServer = new InputWindowServer();
         frame.add(inputWindowServer);
-        frame.setVisible(true);
         frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        WindowListener listener = new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                Frame frame = (Frame) evt.getSource();
+                System.out.println("Closing = " + frame.getTitle());
+            }
+        };
+        frame.addWindowListener(listener);
+
+        frame.setVisible(true);
         return inputWindowServer;
     }
 
