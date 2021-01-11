@@ -50,9 +50,10 @@ public class InputWindowClient extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String content = textField.getText();
-            //System.out.println("Message: " + content);
-            threadClientHandlerInput.getMesageFromInputField(content);
-            textField.setText("");
+            if (!content.equals("")) {
+                threadClientHandlerInput.getMesageFromInputField(content);
+                textField.setText("");
+            }
         }
     }
 }
