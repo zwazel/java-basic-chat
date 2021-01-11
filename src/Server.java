@@ -61,7 +61,7 @@ public class Server extends ServerAndClient {
         // get the username from the client that just connected
         dIn = new DataInputStream(s.getInputStream()); // Create new input stream
         String clientUsername = dIn.readUTF(); // Read text
-        System.out.println(clientUsername + " connected with ID " + idCounter); // Print username and id
+        threadServerHandlerInput.sendMessageToClients(clientUsername + " connected with ID " + idCounter); // Print username and id
 
         // Add client to the map
         threadServerHandlerInput.addSocketToMap(s, clientUsername, idCounter);

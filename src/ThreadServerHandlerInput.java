@@ -38,7 +38,7 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
         }
     }
 
-    private void sendMessageToClients(String message) throws IOException {
+    public void sendMessageToClients(String message) throws IOException {
         System.out.println(username + " (Me): " + message);
 
         for (int i : clientsHashMap.keySet()) {
