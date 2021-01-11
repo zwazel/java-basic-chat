@@ -7,12 +7,15 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
     private Thread threadHandlingServerOutput;
     private final String threadName;
     private DataOutputStream dOut;
+    InputWindow inputWindow;
 
     private HashMap<Integer, ServerClient> clientsHashMap = new HashMap<Integer, ServerClient>();
 
     public ThreadServerHandlerInput(String threadName, String username) {
         this.threadName = threadName;
         this.username = username;
+
+        inputWindow = new InputWindow();
     }
 
     @Override
@@ -21,7 +24,7 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
 
         String message;
         do {
-            message = getString("Send message");
+            message = inputWindow.getText();
 
             try {
                 sendMessageToClients(username, message);

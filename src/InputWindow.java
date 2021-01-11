@@ -24,7 +24,6 @@ public class InputWindow extends JPanel {
         northPanel.add(textField);
         add(northPanel, BorderLayout.NORTH);
 
-
         JPanel centerPanel = new JPanel();
         JButton btn = new JButton("Send message");
         btn.addActionListener(new BtnListener());
@@ -34,6 +33,10 @@ public class InputWindow extends JPanel {
     }
 
     public static void main(String[] args) {
+        startWindow();
+    }
+
+    private static void startWindow() {
         JFrame frame = new JFrame("InputWindow");
         frame.add(new InputWindow());
         frame.setVisible(true);
@@ -41,18 +44,17 @@ public class InputWindow extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void startWindow() {
-        JFrame frame = new JFrame("InputWindow");
-        frame.add(new InputWindow());
-        frame.setVisible(true);
-        frame.setSize(300, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public String getText() {
+
+        return "";
     }
 
     private static class BtnListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String content = textField.getText();
+            System.out.println("Message: " + content);
+            textField.setText("");
         }
     }
 }
