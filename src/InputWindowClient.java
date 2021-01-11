@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -44,6 +45,11 @@ public class InputWindowClient extends JPanel {
             public void windowClosing(WindowEvent evt) {
                 Frame frame = (Frame) evt.getSource();
                 System.out.println("Closing = " + frame.getTitle());
+                try {
+                    threadClientHandlerInput.disconnect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         };
         frame.addWindowListener(listener);

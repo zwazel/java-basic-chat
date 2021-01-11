@@ -70,8 +70,12 @@ public class ThreadServerHandlerInput extends ServerAndClient implements Runnabl
         }
     }
 
-    public void addSocketToMap(Socket s, String clientUsername, int idCounter) {
-        ServerClient client = new ServerClient(s, clientUsername, idCounter);
-        clientsHashMap.put(idCounter, client);
+    public void addSocketToMap(Socket s, String clientUsername, int id) {
+        ServerClient client = new ServerClient(s, clientUsername, id);
+        clientsHashMap.put(id, client);
+    }
+    
+    public void removeSocketFromMap(int id) {
+        clientsHashMap.remove(id);
     }
 }
