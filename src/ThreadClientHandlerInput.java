@@ -8,6 +8,7 @@ public class ThreadClientHandlerInput extends ServerAndClient implements Runnabl
     String username;
     private DataOutputStream dOut;
     char type;
+    InputWindowClient inputWindow;
 
     public ThreadClientHandlerInput(String username, String threadName, Socket s, char type) {
         this.threadName = threadName;
@@ -20,16 +21,16 @@ public class ThreadClientHandlerInput extends ServerAndClient implements Runnabl
     public void run() {
         System.out.println("Thread running " + threadName);
 
-        String text;
+        inputWindow = InputWindowClient.startWindow(this);
+    }
 
-        do {
-            text = getString("Send message");
-            try {
-                sendMessageToServer(socket, username, text);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } while (!text.equals("/dc"));
+    public void sendMessageFromInputField(String message) {
+        try {
+            System.out.println(username + " (Me): " + message);
+            sendMessageToServer(socket, username, message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void start() {
