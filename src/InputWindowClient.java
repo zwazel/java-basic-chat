@@ -9,7 +9,7 @@ import javax.swing.JTextField;
 public class InputWindowClient extends JPanel {
     static ThreadClientHandlerInput threadClientHandlerInput;
     private static JTextField textField;
-    static InputWindowClient inputWindowClient;
+    static InputWindow inputWindow;
 
     public InputWindowClient() {
         setLayout(new BorderLayout());
@@ -31,12 +31,12 @@ public class InputWindowClient extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    public static InputWindowClient startWindow(ThreadClientHandlerInput _threadClientHandlerInput) {
+    public static InputWindow startWindow(ThreadClientHandlerInput _threadClientHandlerInput) {
         threadClientHandlerInput = _threadClientHandlerInput;
 
         JFrame frame = new JFrame(threadClientHandlerInput.username + " InputWindowClient");
-        inputWindowClient = new InputWindowClient();
-        frame.add(inputWindowClient);
+        inputWindow = new InputWindow();
+        frame.add(inputWindow);
         frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -49,7 +49,7 @@ public class InputWindowClient extends JPanel {
         frame.addWindowListener(listener);
 
         frame.setVisible(true);
-        return inputWindowClient;
+        return inputWindow;
     }
 
     private static class BtnListener implements ActionListener {

@@ -7,7 +7,7 @@ public class ThreadClientHandlerInput extends ServerAndClient implements Runnabl
     private final String threadName;
     String username;
     char type;
-    InputWindowClient inputWindow;
+    InputWindow inputWindow;
 
     public ThreadClientHandlerInput(String username, String threadName, Socket s, char type) {
         this.threadName = threadName;
@@ -20,7 +20,7 @@ public class ThreadClientHandlerInput extends ServerAndClient implements Runnabl
     public void run() {
         System.out.println("Thread running " + threadName);
 
-        inputWindow = InputWindowClient.startWindow(this);
+        //inputWindow = InputWindow.startWindow(this);
     }
 
     public void getMesageFromInputField(String message) {

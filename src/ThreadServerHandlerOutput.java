@@ -6,13 +6,13 @@ public class ThreadServerHandlerOutput implements Runnable {
     private Thread threadServerHandlerOutput;
     private final String threadName;
     Socket s;
-    private final ThreadServerHandlerInput threadServerHandlerInput;
+    private final ThreadHandleInput threadHandleInput;
     private final int id;
 
-    public ThreadServerHandlerOutput(String threadName, Socket s, ThreadServerHandlerInput threadServerHandlerInput, int id) {
+    public ThreadServerHandlerOutput(String threadName, Socket s, ThreadHandleInput threadHandleInput, int id) {
         this.threadName = threadName;
         this.s = s;
-        this.threadServerHandlerInput = threadServerHandlerInput;
+        this.threadHandleInput = threadHandleInput;
         this.id = id;
     }
 
@@ -24,7 +24,7 @@ public class ThreadServerHandlerOutput implements Runnable {
             try {
                 String message = getMessageFromClient(s);
                 System.out.println(message);
-                threadServerHandlerInput.sendMessageFromClientToClients(id, message);
+                threadHandleInput.sendMessageToClients(message);
             } catch (IOException e) {
                 e.printStackTrace();
             }

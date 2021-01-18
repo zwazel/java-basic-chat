@@ -10,6 +10,8 @@ public class ThreadHandleInput implements Runnable {
     private Thread threadHandleInput;
     private final String threadName;
 
+    private InputWindow inputWindow;
+
     Socket serverSocket;
     String username;
 
@@ -21,7 +23,7 @@ public class ThreadHandleInput implements Runnable {
         this.username = username;
 
         // TODO: GUI
-        //inputWindow = InputWindowServer.startWindow(this);
+        inputWindow = InputWindow.startWindow(this);
     }
 
     public void sendMessageToClients(String message) throws IOException {
@@ -33,20 +35,6 @@ public class ThreadHandleInput implements Runnable {
             dOut = new DataOutputStream(s.getOutputStream());
             dOut.writeUTF(username + ": " + message);
             dOut.flush(); // Send off the data
-        }
-    }
-
-    public void sendMessageFromClientToClients(int id, String message) throws IOException {
-        //String username = clientsHashMap.get(id).getUsername(); // We already have the username inside of the message, so this is not needed
-
-        for (int i : clientsHashMap.keySet()) {
-            if (i != id) { // Don't send message to myself
-                Socket s = clientsHashMap.get(i).getSocket();
-
-                dOut = new DataOutputStream(s.getOutputStream());
-                dOut.writeUTF(message);
-                dOut.flush(); // Send off the data
-            }
         }
     }
 
@@ -62,7 +50,7 @@ public class ThreadHandleInput implements Runnable {
         //inputWindow = InputWindowClient.startWindow(this);
     }
 
-    private void sendMessageToServer(String message) throws IOException {
+    public void sendMessageToServer(String message) throws IOException {
         System.out.println(username + " (Me): " + message);
         DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
         dOut.writeByte(1);

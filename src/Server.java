@@ -10,7 +10,7 @@ public class Server extends ServerAndClient {
     int maxAmountClients;
     ServerSocket ss;
 
-    ThreadServerHandlerInput threadServerHandlerInput;
+    ThreadHandleInput threadHandleInput;
 
     public static void main(String[] args) {
         new Server();
@@ -34,8 +34,8 @@ public class Server extends ServerAndClient {
 
         ss = new ServerSocket(port);
 
-        threadServerHandlerInput = new ThreadServerHandlerInput("ThreadHandlingServerOutput", username);
-        threadServerHandlerInput.start();
+        threadHandleInput = new ThreadHandleInput("ThreadHandlingServerOutput", username);
+        threadHandleInput.start();
 
         System.out.println("Waiting for client to connect...");
 
@@ -59,13 +59,13 @@ public class Server extends ServerAndClient {
         // get the username from the client that just connected
         DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
         String clientUsername = dIn.readUTF(); // Read text
-        threadServerHandlerInput.sendMessageToClients(clientUsername + " connected with ID " + idCounter); // Print username and id
+        threadHandleInput.sendMessageToClients(clientUsername + " connected with ID " + idCounter); // Print username and id
 
         // Add client to the map
-        threadServerHandlerInput.addSocketToMap(s, clientUsername, idCounter);
+        threadHandleInput.addSocketToMap(s, clientUsername, idCounter);
 
         // Start the Threads
-        ThreadServerHandlerOutput threadServerHandlerOutput = new ThreadServerHandlerOutput("threadServerHandlerOutput", s, threadServerHandlerInput, idCounter);
+        ThreadServerHandlerOutput threadServerHandlerOutput = new ThreadServerHandlerOutput("threadServerHandlerOutput", s, threadHandleInput, idCounter);
         threadServerHandlerOutput.start();
     }
 }
