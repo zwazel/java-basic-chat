@@ -38,7 +38,6 @@ public class ThreadServerHandlerOutput implements Runnable {
             threadServerHandlerOutput.start();
         }
     }
-
     private String getMessageFromClient(Socket s) throws IOException {
         DataInputStream dIn = new DataInputStream(s.getInputStream());
 
