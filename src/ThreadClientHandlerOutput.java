@@ -6,7 +6,7 @@ public class ThreadClientHandlerOutput implements Runnable {
     private Thread threadOutput;
     private final String threadName;
     Socket s;
-    private boolean running = true;
+    private DataInputStream dIn;
 
     public ThreadClientHandlerOutput(String threadName, Socket s) {
         this.threadName = threadName;
@@ -17,18 +17,13 @@ public class ThreadClientHandlerOutput implements Runnable {
     public void run() {
         System.out.println("Thread running " + threadName);
 
-        while(running) {
+        while(true) {
             try {
                 System.out.println(getMessageFromServer(s));
             } catch (IOException e) {
-                System.out.println("Lost connection to server");
-                running = false;
+                e.printStackTrace();
             }
         }
-
-        //s.close();
-        //System.out.println("Closed socket");
-        System.out.println("Thread stopped " + threadName);
     }
 
     public void start() {
@@ -40,7 +35,7 @@ public class ThreadClientHandlerOutput implements Runnable {
     }
 
     private String getMessageFromServer(Socket s) throws IOException {
-        DataInputStream dIn = new DataInputStream(s.getInputStream());
+        dIn = new DataInputStream(s.getInputStream());
         return dIn.readUTF();
     }
 }

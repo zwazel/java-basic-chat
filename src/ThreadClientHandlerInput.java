@@ -23,14 +23,6 @@ public class ThreadClientHandlerInput extends ServerAndClient implements Runnabl
         inputWindow = InputWindowClient.startWindow(this);
     }
 
-    public void start() {
-        System.out.println("THREAD " + threadName + " STARTED");
-        if (threadInput == null) {
-            threadInput = new Thread(this, threadName);
-            threadInput.start();
-        }
-    }
-
     public void getMesageFromInputField(String message) {
         try {
             sendMessageToServer(message);
@@ -42,10 +34,17 @@ public class ThreadClientHandlerInput extends ServerAndClient implements Runnabl
     public void disconnect() throws IOException {
         System.out.println("Disconnecting...");
         DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-        dOut.writeUTF(username);
+        dOut.writeByte(0);
+        dOut.writeUTF(username + " disconnected...");
         dOut.flush(); // Send off the data
+    }
 
-        //socket.close();
+    public void start() {
+        System.out.println("THREAD " + threadName + " STARTED");
+        if (threadInput == null) {
+            threadInput = new Thread(this, threadName);
+            threadInput.start();
+        }
     }
 
     private void sendMessageToServer(String message) throws IOException {

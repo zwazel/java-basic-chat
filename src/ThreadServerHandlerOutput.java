@@ -8,7 +8,6 @@ public class ThreadServerHandlerOutput implements Runnable {
     Socket s;
     private final ThreadServerHandlerInput threadServerHandlerInput;
     private final int id;
-    private boolean running = true;
 
     public ThreadServerHandlerOutput(String threadName, Socket s, ThreadServerHandlerInput threadServerHandlerInput, int id) {
         this.threadName = threadName;
@@ -21,23 +20,15 @@ public class ThreadServerHandlerOutput implements Runnable {
     public void run() {
         System.out.println("Thread running " + threadName);
 
-        while(running) {
+        while(true) {
             try {
-                String message = getMessageFromClient();
-                if (!message.equals("/SystemUserDisconnected")) {
-                    System.out.println(message);
-                    threadServerHandlerInput.sendMessageFromClientToClients(id, message);
-                } else {
-                    //running = false;
-                    disconnectSocket();
-                    break;
-                }
+                String message = getMessageFromClient(s);
+                System.out.println(message);
+                threadServerHandlerInput.sendMessageFromClientToClients(id, message);
             } catch (IOException e) {
-                System.out.println("Can't disconnect Socket " + id + " VERY BAD");
-                running = false;
+                e.printStackTrace();
             }
         }
-        System.out.println("Thread stopped " + threadName);
     }
 
     public void start() {
@@ -48,34 +39,17 @@ public class ThreadServerHandlerOutput implements Runnable {
         }
     }
 
-    private String getMessageFromClient() throws IOException {
+    private String getMessageFromClient(Socket s) throws IOException {
         DataInputStream dIn = new DataInputStream(s.getInputStream());
 
-        String text = "";
-        try {
-            text = dIn.readUTF();
-        } catch(IOException e) {
-            return "/SystemUserDisconnected";
+        switch(dIn.readByte()) {
+            case 0: // Disconnect
+                break;
+
+            case 1: // Normal message
+                break;
         }
 
-        return text;
-    }
-
-    private void disconnectSocket() throws IOException {
-        DataInputStream dIn = new DataInputStream(s.getInputStream());
-        String disconnectingUsername = dIn.readUTF();
-
-        System.out.println("Lost connection to Socket " + id);
-
-        threadServerHandlerInput.removeSocketFromMap(id);
-        System.out.println("Removed socket " + id);
-
-        String message = disconnectingUsername+ " disconnected";
-        System.out.println(message);
-        threadServerHandlerInput.sendMessageToClients(message);
-
-        running = false;
-
-        s.close();
+        return dIn.readUTF();
     }
 }
