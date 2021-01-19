@@ -45,6 +45,8 @@ public class Server extends ServerAndClient {
         for(int i = 0; i < maxAmountClients; i++) {
             acceptSockets();
         }
+
+        System.out.println("Reached Client max Amount of " + maxAmountClients);
     }
 
     private void acceptSockets() throws IOException {
