@@ -28,8 +28,8 @@ public class Server {
             System.out.println("Cant create server socket! VERY BAD");
         }
 
-        ThreadHandleMessages threadHandleMessages = new ThreadHandleMessages("threadServerHandlerOutput");
-        threadHandleMessages.start();
+        ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput");
+        threadHandleMessagesServer.start();
 
         acceptConnections();
     }

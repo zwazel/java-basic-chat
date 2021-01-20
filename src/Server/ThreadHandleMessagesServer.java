@@ -7,11 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class ThreadHandleMessages extends JFrame implements Runnable, ActionListener, WindowListener {
-    private Thread threadHandleMessages;
+public class ThreadHandleMessagesServer extends JFrame implements Runnable, ActionListener, WindowListener {
+    private Thread threadHandleMessagesServer;
     private final String threadName;
 
-    public ThreadHandleMessages(String threadName) {
+    public ThreadHandleMessagesServer(String threadName) {
         this.threadName = threadName;
 
         initInputWindow();
@@ -49,9 +49,9 @@ public class ThreadHandleMessages extends JFrame implements Runnable, ActionList
 
     public void start() {
         System.out.println("THREAD " + threadName + " STARTED");
-        if (threadHandleMessages == null) {
-            threadHandleMessages = new Thread(this, threadName);
-            threadHandleMessages.start();
+        if (threadHandleMessagesServer == null) {
+            threadHandleMessagesServer = new Thread(this, threadName);
+            threadHandleMessagesServer.start();
         }
     }
 
