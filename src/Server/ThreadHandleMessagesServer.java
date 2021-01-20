@@ -61,7 +61,6 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO: Send message
         server.sendMessageToClients(textInput.getText());
         textInput.setText("");
     }

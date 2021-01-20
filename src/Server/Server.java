@@ -49,16 +49,13 @@ public class Server {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
                 String clientUsername = dIn.readUTF(); // Read text
 
-                //TODO: Send message to all clients
-                System.out.println("Client " + clientUsername + " connected with ID " + idCounter);
+                sendMessageToClients("Client " + clientUsername + " connected with ID " + idCounter);
 
                 addClientToMap(idCounter, clientUsername, s);
 
                 ThreadHandleClient threadHandleClient = new ThreadHandleClient("threadServerHandleClients", this, s);
                 threadHandleClient.start();
 
-                //TODO: remove sout
-                System.out.println("Increasing ID by 1, Next ID: " + (idCounter+1));
                 idCounter++;
             } catch (IOException e) {
                 System.out.println("Can't accept socket connection! VERY BAD");
@@ -66,7 +63,6 @@ public class Server {
         }
     }
 
-    // TODO: Actually use those two methods
     public void sendMessageToClients(String message) {
         System.out.println(username + " (Me): " + message);
 
