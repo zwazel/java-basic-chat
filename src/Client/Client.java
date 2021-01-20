@@ -38,6 +38,10 @@ public class Client {
             DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
             dOut.writeUTF(username); // increase id then write id
             dOut.flush(); // Send off the data
+
+            // Start thread
+            ThreadHandleMessagesClient threadHandleMessagesClient = new ThreadHandleMessagesClient("threadClientHandleMessages");
+            threadHandleMessagesClient.start();
         } catch (IOException e) {
             System.out.println("Can't create new socket! VERY BAD");
         }
