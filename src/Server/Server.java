@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Server {
+    String username = "Server";
     private Scanner scanner;
     int port;
     int idCounter = 0;
@@ -28,7 +29,7 @@ public class Server {
             System.out.println("Cant create server socket! VERY BAD");
         }
 
-        ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput");
+        ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this);
         threadHandleMessagesServer.start();
 
         acceptConnections();
@@ -53,14 +54,50 @@ public class Server {
 
                 addClientToMap(idCounter, clientUsername, s);
 
-                ThreadHandleClients threadHandleClients = new ThreadHandleClients("threadServerHandleClients", s);
-                threadHandleClients.start();
+                ThreadHandleClient threadHandleClient = new ThreadHandleClient("threadServerHandleClients", this, s);
+                threadHandleClient.start();
 
                 //TODO: remove sout
                 System.out.println("Increasing ID by 1, Next ID: " + (idCounter+1));
                 idCounter++;
             } catch (IOException e) {
                 System.out.println("Can't accept socket connection! VERY BAD");
+            }
+        }
+    }
+
+    // TODO: Actually use those two methods
+    public void sendMessageToClients(String message) {
+        System.out.println(username + " (Me): " + message);
+
+        for (int i : clientMap.keySet()) {
+            Socket s = clientMap.get(i).getSocket();
+
+            try {
+                DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
+                dOut.writeUTF(username + ": " + message);
+                dOut.flush(); // Send off the data
+            } catch (IOException e) {
+                System.out.println("Can't send message from Server to clients! VERY BAD");
+            }
+        }
+    }
+
+    public void sendMessageFromClientToClients(int id, String message) {
+        //String username = clientsHashMap.get(id).getUsername(); // We already have the username inside of the message, so this is not needed
+
+        System.out.println(message);
+        for (int i : clientMap.keySet()) {
+            if (i != id) { // Don't send message to myself
+                Socket s = clientMap.get(i).getSocket();
+
+                try {
+                    DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
+                    dOut.writeUTF(message);
+                    dOut.flush(); // Send off the data
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

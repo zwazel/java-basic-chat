@@ -40,10 +40,24 @@ public class Client {
             dOut.flush(); // Send off the data
 
             // Start thread
-            ThreadHandleMessagesClient threadHandleMessagesClient = new ThreadHandleMessagesClient("threadClientHandleMessages");
+            ThreadHandleMessagesClient threadHandleMessagesClient = new ThreadHandleMessagesClient("threadClientHandleMessages", username, myId, s);
             threadHandleMessagesClient.start();
+
+            printMessagesFromServer();
         } catch (IOException e) {
             System.out.println("Can't create new socket! VERY BAD");
+        }
+    }
+
+    private void printMessagesFromServer() {
+        while (true) {
+            DataInputStream dIn = null;
+            try {
+                dIn = new DataInputStream(s.getInputStream());
+                System.out.println(dIn.readUTF());
+            } catch (IOException e) {
+                System.out.println("Can't print message! VERY BAD");
+            }
         }
     }
 

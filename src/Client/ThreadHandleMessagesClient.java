@@ -6,13 +6,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 public class ThreadHandleMessagesClient extends JFrame implements Runnable, ActionListener, WindowListener {
     private Thread threadMessageHandlerClient;
     private final String threadName;
+    private String username;
+    private Socket serverSocket;
+    private JTextField textInput;
+    private int myId;
 
-    public ThreadHandleMessagesClient(String threadName) {
+    public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket) {
         this.threadName = threadName;
+        this.username = username;
+        this.myId = myId;
+        this.serverSocket = serverSocket;
         initInputWindow();
     }
 
@@ -24,7 +34,8 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
 
-        northPanel.add(new JTextField(15));
+        textInput = new JTextField(15);
+        northPanel.add(textInput);
         add(northPanel, BorderLayout.NORTH);
 
         JButton sendMessageButton = new JButton("Send Message");
@@ -47,6 +58,19 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
     }
 
+    private void sendMessageToServer(String message) {
+        System.out.println(username + " (Me): " + message);
+        try {
+            DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
+            dOut.writeByte(1); // Declare type of message
+            dOut.writeInt(myId); // Send id
+            dOut.writeUTF(username + ": " + message);
+            dOut.flush(); // Send off the data
+        } catch (IOException e) {
+            System.out.println("Can't send message in thread " + threadName + ", VERY BAD");
+        }
+    }
+
     public void start() {
         System.out.println("THREAD " + threadName + " STARTED");
         if (threadMessageHandlerClient == null) {
@@ -57,8 +81,8 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO: Send message
-        System.out.println("Button pressedl");
+        sendMessageToServer(textInput.getText());
+        textInput.setText("");
     }
 
     @Override

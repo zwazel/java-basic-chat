@@ -10,9 +10,12 @@ import java.awt.event.WindowListener;
 public class ThreadHandleMessagesServer extends JFrame implements Runnable, ActionListener, WindowListener {
     private Thread threadHandleMessagesServer;
     private final String threadName;
+    private Server server;
+    private JTextField textInput;
 
-    public ThreadHandleMessagesServer(String threadName) {
+    public ThreadHandleMessagesServer(String threadName, Server server) {
         this.threadName = threadName;
+        this.server = server;
 
         initInputWindow();
     }
@@ -25,7 +28,8 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
 
-        northPanel.add(new JTextField(15));
+        textInput = new JTextField(15);
+        northPanel.add(textInput);
         add(northPanel, BorderLayout.NORTH);
 
         JButton sendMessageButton = new JButton("Send Message");
@@ -58,7 +62,8 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO: Send message
-        System.out.println("Button pressedl");
+        server.sendMessageToClients(textInput.getText());
+        textInput.setText("");
     }
 
     @Override

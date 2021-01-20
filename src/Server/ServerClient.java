@@ -25,11 +25,7 @@ public class ServerClient {
         this.username = username;
     }
 
-    public Socket getS() {
+    public Socket getSocket() {
         return s;
-    }
-
-    public void setS(Socket s) {
-        this.s = s;
     }
 }
