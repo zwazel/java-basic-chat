@@ -5,7 +5,6 @@ import Client.Client;
 
 public class Main {
     Scanner scanner;
-    final public static String stringAfterCommand = " > ";
     final private static String errorWrongInput = "Invalid Input! Try again";
 
     public Main() {
@@ -18,7 +17,7 @@ public class Main {
     }
 
     private boolean init() {
-        System.out.print("Do you want to host (0) or to join (1)?" + stringAfterCommand);
+        System.out.print("Do you want to host (0) or to join (1)? > ");
 
         switch (Integer.parseInt(scanner.nextLine())) {
             case 0 -> {

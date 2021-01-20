@@ -1,20 +1,27 @@
 package Server;
 
+import java.net.ServerSocket;
 import java.util.Scanner;
 
 public class Server {
-    Scanner scanner;
+    private Scanner scanner;
     int port;
+    int idCounter = 0;
+    int myId = idCounter++;
+    ServerSocket ss;
 
     public Server() {
         scanner = new Scanner(System.in);
 
-        port = getInt("On")
+        port = getInt("The Port you are hosting on");
+
+        ThreadHandleMessages threadHandleMessages = new ThreadHandleMessages("threadServerHandlerOutput");
+        threadHandleMessages.start();
     }
 
     protected String getString(String command) {
         if (!command.equals("-1")) {
-            System.out.print(command + stringAfterCommand);
+            System.out.print(command + " > ");
         }
 
         return scanner.nextLine();
@@ -22,7 +29,7 @@ public class Server {
 
     protected int getInt(String command) {
         if (!command.equals("-1")) {
-            System.out.print(command + stringAfterCommand);
+            System.out.print(command + " > ");
         }
 
         return Integer.parseInt(scanner.nextLine());
