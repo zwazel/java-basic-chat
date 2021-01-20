@@ -1,8 +1,13 @@
 package Server;
 
-import javax.swing.*;
+import old.InputWindowClient;
 
-public class ThreadHandleMessages extends JFrame implements Runnable {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class ThreadHandleMessages extends JFrame implements Runnable, ActionListener {
     private Thread threadHandleMessages;
     private final String threadName;
 
@@ -13,10 +18,24 @@ public class ThreadHandleMessages extends JFrame implements Runnable {
     }
 
     private void initInputWindow() {
+        setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle(threadName);
 
-        setSize(500,500);
+        JPanel northPanel = new JPanel();
+        northPanel.setLayout(new FlowLayout());
+
+        northPanel.add(new JTextField(15));
+        add(northPanel, BorderLayout.NORTH);
+
+        JButton sendMessageButton = new JButton("Send Message");
+        sendMessageButton.addActionListener(this);
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(sendMessageButton);
+
+        add(centerPanel, BorderLayout.CENTER);
+
+        setSize(200,150);
         setVisible(true);
     }
 
@@ -32,5 +51,11 @@ public class ThreadHandleMessages extends JFrame implements Runnable {
             threadHandleMessages = new Thread(this, threadName);
             threadHandleMessages.start();
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO: Send message
+        System.out.println("Button pressedl");
     }
 }
