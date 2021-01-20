@@ -1,6 +1,7 @@
 package Server;
 
 import java.net.ServerSocket;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Server {
@@ -9,6 +10,7 @@ public class Server {
     int idCounter = 0;
     int myId = idCounter++;
     ServerSocket ss;
+    HashMap<Integer, ServerClient> clientMap = new HashMap<>();
 
     public Server() {
         scanner = new Scanner(System.in);
