@@ -1,3 +1,5 @@
+package old;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -6,12 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class InputWindowClient extends JPanel {
-    static ThreadClientHandlerInput threadClientHandlerInput;
+public class InputWindowServer extends JPanel {
+    static ThreadServerHandlerInput threadServerHandlerInput;
     private static JTextField textField;
-    static InputWindow inputWindow;
+    static InputWindowServer inputWindowServer;
 
-    public InputWindowClient() {
+    public InputWindowServer() {
         setLayout(new BorderLayout());
 
         JPanel northPanel = new JPanel();
@@ -31,12 +33,12 @@ public class InputWindowClient extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    public static InputWindow startWindow(ThreadClientHandlerInput _threadClientHandlerInput) {
-        threadClientHandlerInput = _threadClientHandlerInput;
+    public static InputWindowServer startWindow(ThreadServerHandlerInput _threadServerHandlerInput) {
+        threadServerHandlerInput = _threadServerHandlerInput;
 
-        JFrame frame = new JFrame(threadClientHandlerInput.username + " InputWindowClient");
-        inputWindow = new InputWindow();
-        frame.add(inputWindow);
+        JFrame frame = new JFrame(threadServerHandlerInput.username + " InputWindowServer");
+        inputWindowServer = new InputWindowServer();
+        frame.add(inputWindowServer);
         frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -49,7 +51,7 @@ public class InputWindowClient extends JPanel {
         frame.addWindowListener(listener);
 
         frame.setVisible(true);
-        return inputWindow;
+        return inputWindowServer;
     }
 
     private static class BtnListener implements ActionListener {
@@ -57,7 +59,7 @@ public class InputWindowClient extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String content = textField.getText();
             if (!content.equals("")) {
-                threadClientHandlerInput.getMesageFromInputField(content);
+                threadServerHandlerInput.getMessageFromInputField(content);
                 textField.setText("");
             }
         }

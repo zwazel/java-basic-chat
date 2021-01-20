@@ -1,3 +1,5 @@
+package old;
+
 public class ThreadHandleOutput implements Runnable {
     private Thread threadHandleOutput;
     private final String threadName;
