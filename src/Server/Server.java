@@ -60,14 +60,6 @@ public class Server {
         clientMap.put(id, new ServerClient(id, username, s));
     }
 
-    private String getString(String command) {
-        if (!command.equals("-1")) {
-            System.out.print(command + " > ");
-        }
-
-        return scanner.nextLine();
-    }
-
     private int getInt(String command) {
         if (!command.equals("-1")) {
             System.out.print(command + " > ");

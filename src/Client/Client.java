@@ -1,17 +1,46 @@
 package Client;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-    Scanner scanner;
-    String username;
-    int myId;
-    
+    private Scanner scanner;
+    private String username;
+    private int myId;
+    private Socket s;
+    private String serverIp;
+    private int serverPort;
 
     public Client() {
         scanner = new Scanner(System.in);
 
+        serverIp = getString("The IP of the server");
+        serverPort = getInt("The open Port of the server");
 
+        // TODO: Check if we can connect
+
+        username = getString("Your username");
+
+        try {
+            s = new Socket(serverIp, serverPort);
+            System.out.println("Connected to server " + serverIp + " on port " + serverPort + " with username " + username);
+
+            // Reading my ID
+            System.out.println("Getting ID from Server...");
+            DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
+            myId = dIn.readInt(); // Read text
+            System.out.println("My ID: " + myId);
+
+            // Sending my username
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
+            dOut.writeUTF(username); // increase id then write id
+            dOut.flush(); // Send off the data
+        } catch (IOException e) {
+            System.out.println("Can't create new socket! VERY BAD");
+        }
     }
 
     private String getString(String command) {
