@@ -22,6 +22,8 @@ public class Server {
         port = getInt("The Port you are hosting on");
         try {
             ss = new ServerSocket(port);
+
+            // TODO: print my own IP Adress out, for easy copy: http://ipv4bot.whatismyipaddress.com/
         } catch (IOException e) {
             System.out.println("Cant create server socket! VERY BAD");
         }
@@ -39,17 +41,24 @@ public class Server {
 
                 // Tell the client what ID he has
                 DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
-                dOut.writeInt(idCounter++); // increase id then write id
+                dOut.writeInt(idCounter); // increase id then write id
                 dOut.flush(); // Send off the data
 
                 // get the username from the client that just connected
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
                 String clientUsername = dIn.readUTF(); // Read text
 
+                //TODO: Send message to all clients
+                System.out.println("Client " + clientUsername + " connected with ID " + idCounter);
+
                 addClientToMap(idCounter, clientUsername, s);
 
                 ThreadHandleClients threadHandleClients = new ThreadHandleClients("threadServerHandleClients", s);
                 threadHandleClients.start();
+
+                //TODO: remove sout
+                System.out.println("Increasing ID by 1, Next ID: " + (idCounter+1));
+                idCounter++;
             } catch (IOException e) {
                 System.out.println("Can't accept socket connection! VERY BAD");
             }

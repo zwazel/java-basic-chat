@@ -13,7 +13,6 @@ public class ThreadHandleClients implements Runnable {
     @Override
     public void run() {
         System.out.println("Thread running " + threadName);
-
     }
 
     public void start() {
