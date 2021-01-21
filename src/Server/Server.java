@@ -28,7 +28,7 @@ public class Server {
 
             // Get IP (Not needed, but used for the user to easily copy and send to others)
             System.out.println("Getting IP adress...");
-            System.out.println("My IP adress: " + getIp());
+            System.out.println("My IP adress: " + getPublicIp());
 
             // Start thread
             ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this);
@@ -104,7 +104,7 @@ public class Server {
         }
     }
 
-    private String getIp() {
+    private String getPublicIp() {
         //Instantiating the URL class
         URL url = null;
         String result = null;
