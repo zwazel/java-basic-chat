@@ -9,6 +9,7 @@ public class ThreadHandleClient implements Runnable {
     private final String threadName;
     private Server server;
     private Socket socket;
+    private boolean running = true;
 
     public ThreadHandleClient(String threadName, Server server, Socket s) {
         this.threadName = threadName;
@@ -19,17 +20,21 @@ public class ThreadHandleClient implements Runnable {
     @Override
     public void run() {
         System.out.println("Thread running " + threadName);
+
         getMessageFromClient(socket);
+
+        System.out.println("Thread ended " + threadName);
     }
 
     private void getMessageFromClient(Socket s) {
-        while(true) {
+        while(running) {
             try {
                 DataInputStream dIn = new DataInputStream(s.getInputStream());
 
                 switch (dIn.readByte()) {
                     case 0: // Disconnect
                         server.disconnectClient(dIn.readInt());
+                        running = false;
                         break;
 
                     case 1: // Normal message

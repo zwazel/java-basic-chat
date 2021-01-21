@@ -23,7 +23,6 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         this.username = username;
         this.myId = myId;
         this.serverSocket = serverSocket;
-        initInputWindow();
     }
 
     private void initInputWindow() {
@@ -55,7 +54,9 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     public void run() {
         System.out.println("Thread running " + threadName);
 
+        initInputWindow();
 
+        System.out.println("Thread ended " + threadName);
     }
 
     private void sendMessageToServer(String message) {
@@ -105,6 +106,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     public void windowClosing(WindowEvent e) {
         // TODO: Handle Disconnects
         System.out.println("Closing " + getTitle());
+        disconnect();
     }
 
     @Override

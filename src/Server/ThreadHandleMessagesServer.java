@@ -16,8 +16,6 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     public ThreadHandleMessagesServer(String threadName, Server server) {
         this.threadName = threadName;
         this.server = server;
-
-        initInputWindow();
     }
 
     private void initInputWindow() {
@@ -49,6 +47,9 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     public void run() {
         System.out.println("Thread running " + threadName);
 
+        initInputWindow();
+
+        System.out.println("Thread ended " + threadName);
     }
 
     public void start() {

@@ -131,10 +131,10 @@ public class Server {
                 result = sb.toString();
                 result = result.replaceAll("<[^>]*>", "");
             } catch (IOException e) {
-                System.out.println("Can't create openStream Scanner!");
+                System.out.println("Can't create openStream Scanner! VERY BAD");
             }
         } catch (MalformedURLException e) {
-            System.out.println("Can't connect to URL");
+            System.out.println("Can't connect to URL! VERY BAD");
         }
 
         return result;
