@@ -42,7 +42,7 @@ public class Server {
     }
 
     public void disconnectClient(int clientId) {
-        sendMessageToClients("Disconnecting client " + clientMap.get(clientId).getUsername());
+        sendMessageToClients(clientMap.get(clientId).getUsername() + " disconnected");
         clientMap.remove(clientId);
     }
 
