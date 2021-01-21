@@ -20,8 +20,6 @@ public class Client {
         serverIp = getString("The IP of the server");
         serverPort = getInt("The open Port of the server");
 
-        // TODO: Check if we can connect / If it's actually valid
-
         username = getString("Your username");
 
         try {
