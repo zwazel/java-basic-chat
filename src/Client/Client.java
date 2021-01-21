@@ -41,6 +41,7 @@ public class Client {
             ThreadHandleMessagesClient threadHandleMessagesClient = new ThreadHandleMessagesClient("threadClientHandleMessages", username, myId, s);
             threadHandleMessagesClient.start();
 
+            // Get messages from server
             printMessagesFromServer();
         } catch (IOException e) {
             System.out.println("Can't create new socket! VERY BAD");
