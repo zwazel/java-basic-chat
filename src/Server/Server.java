@@ -3,8 +3,10 @@ package Server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -24,15 +26,19 @@ public class Server {
         try {
             ss = new ServerSocket(port);
 
-            // TODO: print my own IP Adress out, for easy copy: http://ipv4bot.whatismyipaddress.com/
+            // Get IP (Not needed, but used for the user to easily copy and send to others)
+            System.out.println("Getting IP adress...");
+            System.out.println("My IP adress: " + getIp());
+
+            // Start thread
+            ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this);
+            threadHandleMessagesServer.start();
+
+            // Accept incoming connections
+            acceptConnections();
         } catch (IOException e) {
             System.out.println("Cant create server socket! VERY BAD");
         }
-
-        ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this);
-        threadHandleMessagesServer.start();
-
-        acceptConnections();
     }
 
     private void acceptConnections() {
@@ -96,6 +102,37 @@ public class Server {
                 }
             }
         }
+    }
+
+    private String getIp() {
+        //Instantiating the URL class
+        URL url = null;
+        String result = null;
+        try {
+            url = new URL("http://ipv4bot.whatismyipaddress.com/");
+
+            //Retrieving the contents of the specified page
+            Scanner sc = null;
+            try {
+                sc = new Scanner(url.openStream());
+
+                //Instantiating the StringBuffer class to hold the result
+                StringBuffer sb = new StringBuffer();
+                while(sc.hasNext()) {
+                    sb.append(sc.next());
+                    //System.out.println(sc.next());
+                }
+                //Retrieving the String from the String Buffer object
+                result = sb.toString();
+                result = result.replaceAll("<[^>]*>", "");
+            } catch (IOException e) {
+                System.out.println("Can't create openStream Scanner!");
+            }
+        } catch (MalformedURLException e) {
+            System.out.println("Can't connect to URL");
+        }
+
+        return result;
     }
 
     private void addClientToMap(int id, String username, Socket s) {
