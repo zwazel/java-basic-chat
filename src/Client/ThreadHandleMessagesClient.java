@@ -19,7 +19,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private int myId;
 
     public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket) {
-        this.threadName = threadName;
+        this.threadName = threadName + " " + myId;
         this.username = username;
         this.myId = myId;
         this.serverSocket = serverSocket;
@@ -68,6 +68,17 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
             dOut.flush(); // Send off the data
         } catch (IOException e) {
             System.out.println("Can't send message in thread " + threadName + ", VERY BAD");
+        }
+    }
+
+    private void disconnect() {
+        try {
+            DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
+            dOut.writeByte(0); // Declare type of message
+            dOut.writeInt(myId); // Send id
+            dOut.flush(); // Send off the data
+        } catch (IOException e) {
+            System.out.println("Can't disconnect from Server in thread " + threadName + ", VERY BAD");
         }
     }
 
