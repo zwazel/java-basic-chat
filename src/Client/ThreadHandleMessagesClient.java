@@ -50,6 +50,10 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         setVisible(true);
     }
 
+    public void stopWindow() {
+        dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
+
     @Override
     public void run() {
         System.out.println("Thread running " + threadName);

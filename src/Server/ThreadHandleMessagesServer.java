@@ -73,6 +73,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     public void windowClosing(WindowEvent e) {
         // TODO: Handle Disconnects
         System.out.println("Closing " + getTitle());
+        server.disconnectAllClients();
     }
 
     @Override

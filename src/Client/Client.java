@@ -13,6 +13,8 @@ public class Client {
     private Socket s;
     private String serverIp;
     private int serverPort;
+    private boolean running = true;
+    private ThreadHandleMessagesClient threadHandleMessagesClient;
 
     public Client() {
         scanner = new Scanner(System.in);
@@ -22,6 +24,10 @@ public class Client {
 
         username = getString("Your username");
 
+        init();
+    }
+
+    private void init() {
         try {
             s = new Socket(serverIp, serverPort);
             System.out.println("Connected to server " + serverIp + " on port " + serverPort + " with username " + username);
@@ -38,7 +44,7 @@ public class Client {
             dOut.flush(); // Send off the data
 
             // Start thread
-            ThreadHandleMessagesClient threadHandleMessagesClient = new ThreadHandleMessagesClient("threadClientHandleMessages", username, myId, s);
+            threadHandleMessagesClient = new ThreadHandleMessagesClient("threadClientHandleMessages", username, myId, s);
             threadHandleMessagesClient.start();
 
             // Get messages from server
@@ -49,15 +55,24 @@ public class Client {
     }
 
     private void printMessagesFromServer() {
-        while (true) {
+        while (running) {
             DataInputStream dIn = null;
             try {
                 dIn = new DataInputStream(s.getInputStream());
-                System.out.println(dIn.readUTF());
+                switch (dIn.readByte()) {
+                    case 0 -> { // Call for disconnect
+                        System.out.println("Server disconnected! Disconnecting myself...");
+                        running = false;
+                    }
+                    case 1 -> System.out.println(dIn.readUTF()); // Normal message
+                }
             } catch (IOException e) {
                 System.out.println("Can't print message! VERY BAD");
             }
         }
+
+        System.out.println("Thread ended Client " + username);
+        threadHandleMessagesClient.stopWindow();
     }
 
     private String getString(String command) {

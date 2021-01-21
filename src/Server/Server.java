@@ -18,6 +18,7 @@ public class Server {
     int myId = idCounter++;
     ServerSocket ss;
     HashMap<Integer, ServerClient> clientMap = new HashMap<>();
+    private boolean running = true;
 
     public Server() {
         scanner = new Scanner(System.in);
@@ -46,8 +47,25 @@ public class Server {
         clientMap.remove(clientId);
     }
 
+    public void disconnectAllClients() {
+        System.out.println(username + " (Me): Disconnecting...");
+
+        for (int i : clientMap.keySet()) {
+            Socket s = clientMap.get(i).getSocket();
+
+            try {
+                DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
+                dOut.writeByte(0);
+                dOut.flush(); // Send off the data
+            } catch (IOException e) {
+                // TODO: Tell on what client we failed
+                System.out.println("Can't send call for disconnecting to client! VERY BAD");
+            }
+        }
+    }
+
     private void acceptConnections() {
-        while (true) {
+        while (running) {
             try {
                 Socket s = ss.accept();
 
@@ -75,17 +93,21 @@ public class Server {
     }
 
     public void sendMessageToClients(String message) {
-        System.out.println(username + " (Me): " + message);
+        if(running) {
+            System.out.println(username + " (Me): " + message);
 
-        for (int i : clientMap.keySet()) {
-            Socket s = clientMap.get(i).getSocket();
+            for (int i : clientMap.keySet()) {
+                Socket s = clientMap.get(i).getSocket();
 
-            try {
-                DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
-                dOut.writeUTF(username + ": " + message);
-                dOut.flush(); // Send off the data
-            } catch (IOException e) {
-                System.out.println("Can't send message from Server to clients! VERY BAD");
+                try {
+                    DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
+                    dOut.writeByte(1);
+                    dOut.writeUTF(username + ": " + message);
+                    dOut.flush(); // Send off the data
+                } catch (IOException e) {
+                    // TODO: Tell on what client we failed
+                    System.out.println("Can't send message from Server to clients! VERY BAD");
+                }
             }
         }
     }
@@ -93,17 +115,21 @@ public class Server {
     public void sendMessageFromClientToClients(int id, String message) {
         //String username = clientsHashMap.get(id).getUsername(); // We already have the username inside of the message, so this is not needed
 
-        System.out.println(message);
-        for (int i : clientMap.keySet()) {
-            if (i != id) { // Don't send message to myself
-                Socket s = clientMap.get(i).getSocket();
+        if(running) {
+            System.out.println(message);
+            for (int i : clientMap.keySet()) {
+                if (i != id) { // Don't send message to myself
+                    Socket s = clientMap.get(i).getSocket();
 
-                try {
-                    DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
-                    dOut.writeUTF(message);
-                    dOut.flush(); // Send off the data
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    try {
+                        DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
+                        dOut.writeByte(1);
+                        dOut.writeUTF(message);
+                        dOut.flush(); // Send off the data
+                    } catch (IOException e) {
+                        // TODO: Tell on what client we failed
+                        System.out.println("Can't send message from Client to other Clients! VERY BAD");
+                    }
                 }
             }
         }
