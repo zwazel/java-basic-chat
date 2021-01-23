@@ -33,7 +33,7 @@ public class ThreadHandleClient implements Runnable {
 
                 switch (dIn.readByte()) {
                     case 0: // Disconnect
-                        server.disconnectClient(dIn.readInt());
+                        server.clientIsDisconnecting(dIn.readInt());
                         running = false;
                         break;
 

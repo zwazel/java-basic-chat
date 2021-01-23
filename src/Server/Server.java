@@ -21,43 +21,43 @@ public class Server {
     private boolean running = true;
 
     public Server() {
-        scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in); // instanciate a scanner
 
-        port = getInt("The Port you are hosting on");
+        port = getInt("The Port you are hosting on"); // Get the open port
         try {
-            ss = new ServerSocket(port);
+            ss = new ServerSocket(port); // Create a new server socket
 
             // Get IP (Not needed, but used for the user to easily copy and send to others)
             System.out.println("Getting IP adress...");
             System.out.println("My IP adress: " + getPublicIp());
 
-            // Start thread
-            ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this);
-            threadHandleMessagesServer.start();
+            // Start new thread that will handle all the messages the server will send
+            ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this); // instanciate new thread
+            threadHandleMessagesServer.start(); // Start new thread
 
             // Accept incoming connections
             acceptConnections();
-        } catch (IOException e) {
+        } catch (IOException e) { // Catch error if we can't create a server socket
             System.out.println("Cant create server socket! VERY BAD");
         }
     }
 
-    public void disconnectClient(int clientId) {
-        sendMessageToClients(clientMap.get(clientId).getUsername() + " disconnected");
-        clientMap.remove(clientId);
+    public void clientIsDisconnecting(int clientId) { // a single client is disconnecting
+        clientMap.remove(clientId); // remove the client from the hasmap
+        sendMessageToClients(clientMap.get(clientId).getUsername() + " disconnected"); // Tell all the currently connected clients who just disconnected
     }
 
-    public void disconnectAllClients() {
-        System.out.println(username + " (Me): Disconnecting...");
+    public void disconnectAllClients() { // Disconnect all currently connected clients
+        System.out.println(username + " (Me): Disconnecting..."); // Print for myself
 
-        for (int i : clientMap.keySet()) {
-            Socket s = clientMap.get(i).getSocket();
+        for (int i : clientMap.keySet()) { // Go through all the clients
+            Socket s = clientMap.get(i).getSocket(); // Get the socket of the current client
 
             try {
-                DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
-                dOut.writeByte(0);
+                DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
+                dOut.writeByte(0); // tell the client what type of message he's receiving (0 = disconnect) by writing a byte in the stream
                 dOut.flush(); // Send off the data
-            } catch (IOException e) {
+            } catch (IOException e) { // Catch error
                 // TODO: Tell on what client we failed
                 System.out.println("Can't send call for disconnecting to client! VERY BAD");
             }
@@ -76,14 +76,14 @@ public class Server {
 
                 // get the username from the client that just connected
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
-                String clientUsername = dIn.readUTF(); // Read text
+                String clientUsername = dIn.readUTF(); // Read text and save it
 
-                sendMessageToClients("Client " + clientUsername + " connected with ID " + idCounter);
+                sendMessageToClients("Client " + clientUsername + " connected with ID " + idCounter); // Tell the other clients that someone new just connected
 
-                addClientToMap(idCounter, clientUsername, s);
+                addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 
-                ThreadHandleClient threadHandleClient = new ThreadHandleClient("threadServerHandleClients", this, s);
-                threadHandleClient.start();
+                ThreadHandleClient threadHandleClient = new ThreadHandleClient("threadServerHandleClients", this, s); // instanciate a new Thread which will handle this specific client
+                threadHandleClient.start(); // start the new thread
 
                 idCounter++; // Increase the ID counter, to make sure that nobody gets the same ID
             } catch (IOException e) { // catch error
