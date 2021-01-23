@@ -44,7 +44,7 @@ public class Client {
             dOut.flush(); // Send off the data
 
             // Start thread
-            threadHandleMessagesClient = new ThreadHandleMessagesClient("threadClientHandleMessages", username, myId, s);
+            threadHandleMessagesClient = new ThreadHandleMessagesClient(username + "threadClientHandleMessages", username, myId, s);
             threadHandleMessagesClient.start();
 
             // Get messages from server

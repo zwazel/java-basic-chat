@@ -21,7 +21,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     private void initInputWindow() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Window " + threadName);
+        setTitle("Server " + threadName);
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
@@ -39,7 +39,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
 
         this.addWindowListener(this);
 
-        setSize(200,150);
+        setSize(300,200);
         setVisible(true);
     }
 

@@ -28,7 +28,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private void initInputWindow() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Window " + threadName);
+        setTitle(threadName);
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
@@ -46,7 +46,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
         this.addWindowListener(this);
 
-        setSize(200,150);
+        setSize(300,200);
         setVisible(true);
     }
 
