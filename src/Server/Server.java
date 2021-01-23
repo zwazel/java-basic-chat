@@ -45,7 +45,7 @@ public class Server {
     // a single client is disconnecting
     public void clientIsDisconnecting(int clientId) {
         String disconnectedClientUsername = clientMap.get(clientId).getUsername();
-        clientMap.remove(clientId); // remove the client from the hasmap
+        clientMap.remove(clientId); // remove the client from the hashmap
         sendMessageToClients(disconnectedClientUsername + " disconnected"); // Tell all the currently connected clients who just disconnected
     }
 
@@ -85,7 +85,7 @@ public class Server {
 
                 addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 
-                ThreadHandleClient threadHandleClient = new ThreadHandleClient("threadServerHandleClients", this, s); // instanciate a new Thread which will handle this specific client
+                ThreadHandleClient threadHandleClient = new ThreadHandleClient("HandleClient " + clientUsername + " " + idCounter, this, s); // instanciate a new Thread which will handle this specific client
                 threadHandleClient.start(); // start the new thread
 
                 idCounter++; // Increase the ID counter, to make sure that nobody gets the same ID
