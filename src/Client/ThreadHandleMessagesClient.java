@@ -19,7 +19,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private int myId;
 
     public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket) {
-        this.threadName = threadName + " " + myId;
+        this.threadName = threadName;
         this.username = username;
         this.myId = myId;
         this.serverSocket = serverSocket;
@@ -27,7 +27,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
     private void initInputWindow() {
         setLayout(new BorderLayout());
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle(threadName);
 
         JPanel northPanel = new JPanel();
@@ -37,17 +37,17 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         northPanel.add(textInput);
         add(northPanel, BorderLayout.NORTH);
 
-        JButton sendMessageButton = new JButton("Send Message");
-        sendMessageButton.addActionListener(this);
+        JButton sendMessageButton = new JButton("Send Message"); // instanciate new button
+        sendMessageButton.addActionListener(this); // Add actionlistener to the button
         JPanel centerPanel = new JPanel();
-        centerPanel.add(sendMessageButton);
+        centerPanel.add(sendMessageButton); // add the button to the panel
 
         add(centerPanel, BorderLayout.CENTER);
 
-        this.addWindowListener(this);
+        this.addWindowListener(this); // Add a window listener to the window with which we check if the window is closing or not
 
-        setSize(300,200);
-        setVisible(true);
+        setSize(300,200); // Set the size
+        setVisible(true); // Make the window visible
     }
 
     public void stopWindow() {
@@ -58,14 +58,14 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     public void run() {
         System.out.println("Thread running " + threadName);
 
-        initInputWindow();
+        initInputWindow(); // Start the new input window
     }
 
     private void sendMessageToServer(String message) {
         System.out.println(username + " (Me): " + message);
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
-            dOut.writeByte(1); // Declare type of message
+            dOut.writeByte(1); // Declare type of message (1 = normal message)
             dOut.writeInt(myId); // Send id
             dOut.writeUTF(username + ": " + message);
             dOut.flush(); // Send off the data
@@ -76,8 +76,8 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
     private void disconnect() {
         try {
-            DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
-            dOut.writeByte(0); // Declare type of message
+            DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream()); // instanciate new data output stream
+            dOut.writeByte(0); // Declare type of message (0 = disconnect)
             dOut.writeInt(myId); // Send id
             dOut.flush(); // Send off the data
         } catch (IOException e) {
@@ -106,9 +106,8 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
     @Override
     public void windowClosing(WindowEvent e) {
-        // TODO: Handle Disconnects
-        System.out.println("Closing " + getTitle());
-        disconnect();
+        System.out.println("Closing " + getTitle()); // Tell the user that the window is closing
+        disconnect(); // disconnect from the server
     }
 
     @Override

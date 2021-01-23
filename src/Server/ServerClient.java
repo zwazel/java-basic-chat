@@ -2,6 +2,7 @@ package Server;
 
 import java.net.Socket;
 
+// This is a reference of a client for the server, for every connected client we add one instance of this class to the hashmap
 public class ServerClient {
     private int myId = -1;
     private String username = "Not Defined";
@@ -14,15 +15,17 @@ public class ServerClient {
     }
 
     public int getMyId() {
-        return myId;
+        return myId; // Get the ID of this instance
+        //(Right now unused)
     }
 
     public String getUsername() {
-        return username;
+        return username; // Get the username of this instance
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username; // Set the username of this client
+        //(Right now unused, would be used if a method for changing names in runtime would be introduced)
     }
 
     public Socket getSocket() {

@@ -7,9 +7,9 @@ import java.net.Socket;
 public class ThreadHandleClient implements Runnable {
     private Thread threadHandleClients;
     private final String threadName;
-    private Server server;
-    private Socket socket;
-    private boolean running = true;
+    private Server server; // The server socket
+    private Socket socket; // the client socket
+    private boolean running = true; // are we running or should we end?
 
     public ThreadHandleClient(String threadName, Server server, Socket s) {
         this.threadName = threadName;
@@ -27,18 +27,18 @@ public class ThreadHandleClient implements Runnable {
     }
 
     private void getMessageFromClient(Socket s) {
-        while(running) {
+        while(running) { // While we're running
             try {
-                DataInputStream dIn = new DataInputStream(s.getInputStream());
+                DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create a new dataInputStream
 
-                switch (dIn.readByte()) {
-                    case 0: // Disconnect
-                        server.clientIsDisconnecting(dIn.readInt());
-                        running = false;
+                switch (dIn.readByte()) { // Check what type of message the client sends us
+                    case 0: // the client is disconnecting
+                        server.clientIsDisconnecting(dIn.readInt()); // get the ID of the client and disconnect him
+                        running = false; // Stop this thread
                         break;
 
                     case 1: // Normal message
-                        server.sendMessageFromClientToClients(dIn.readInt(), dIn.readUTF());
+                        server.sendMessageFromClientToClients(dIn.readInt(), dIn.readUTF()); // first read the id, then the text from the client and send it to the server and to the other clients
                         break;
                 }
             } catch (IOException e) {

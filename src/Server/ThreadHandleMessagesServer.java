@@ -20,13 +20,13 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
 
     private void initInputWindow() {
         setLayout(new BorderLayout());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Server " + threadName);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // if the window closes, we end the whole program
+        setTitle("Server " + threadName); // Set the title of the window
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
 
-        textInput = new JTextField(15);
+        textInput = new JTextField(15); // Create new text field
         northPanel.add(textInput);
         add(northPanel, BorderLayout.NORTH);
 
@@ -37,10 +37,10 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
 
         add(centerPanel, BorderLayout.CENTER);
 
-        this.addWindowListener(this);
+        this.addWindowListener(this); // Add a window listener with which we check if the window got closed or not
 
-        setSize(300,200);
-        setVisible(true);
+        setSize(300,200); // Set the size of the window
+        setVisible(true); // make it visible
     }
 
     @Override
@@ -58,10 +58,11 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
         }
     }
 
+    // If we press the button
     @Override
     public void actionPerformed(ActionEvent e) {
-        server.sendMessageToClients(textInput.getText());
-        textInput.setText("");
+        server.sendMessageToClients(textInput.getText()); // Get the text inside of the input field and send it to all the connected clients
+        textInput.setText(""); // Reset the input field
     }
 
     @Override
@@ -69,11 +70,11 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
 
     }
 
+    // Check if the window is closing
     @Override
     public void windowClosing(WindowEvent e) {
-        // TODO: Handle Disconnects
-        System.out.println("Closing " + getTitle());
-        server.disconnectAllClients();
+        System.out.println("Closing " + getTitle()); // Tell the user that the window is closing
+        server.disconnectAllClients(); // the server is disconnecting, so we tell all the connected clients that they need to disconnect
     }
 
     @Override

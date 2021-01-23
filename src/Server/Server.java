@@ -11,14 +11,14 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Server {
-    String username = "Server";
+    String username = "Server"; // Our username
     private Scanner scanner;
-    int port;
-    int idCounter = 0;
-    int myId = idCounter++;
-    ServerSocket ss;
-    HashMap<Integer, ServerClient> clientMap = new HashMap<>();
-    private boolean running = true;
+    int port; // our free port
+    int idCounter = 0; // id counter
+    int myId = idCounter++; // our id, and increase the idocunter by one
+    ServerSocket ss; // our socket
+    HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
+    private boolean running = true; // are we running right now?
 
     public Server() {
         scanner = new Scanner(System.in); // instanciate a scanner
@@ -42,7 +42,7 @@ public class Server {
         }
     }
 
-    // a single client is disconnecting
+    // a single client is disconnecting on its own
     public void clientIsDisconnecting(int clientId) {
         String disconnectedClientUsername = clientMap.get(clientId).getUsername();
         clientMap.remove(clientId); // remove the client from the hashmap
