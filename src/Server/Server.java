@@ -151,18 +151,19 @@ public class Server {
                 StringBuffer sb = new StringBuffer();
                 while(sc.hasNext()) {
                     sb.append(sc.next());
-                    //System.out.println(sc.next());
                 }
                 //Retrieving the String from the String Buffer object
                 result = sb.toString();
-                result = result.replaceAll("<[^>]*>", "");
+                result = result.replaceAll("<[^>]*>", ""); // Remove the html tags with some fancy black magic
             } catch (IOException e) {
                 System.out.println("Can't create openStream Scanner! VERY BAD");
             }
+        // Catch error if we can't connect to the website
         } catch (MalformedURLException e) {
             System.out.println("Can't connect to URL! VERY BAD");
         }
 
+        // Send 
         return result;
     }
 
