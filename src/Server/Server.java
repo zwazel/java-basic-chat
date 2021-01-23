@@ -42,12 +42,15 @@ public class Server {
         }
     }
 
-    public void clientIsDisconnecting(int clientId) { // a single client is disconnecting
+    // a single client is disconnecting
+    public void clientIsDisconnecting(int clientId) {
+        String disconnectedClientUsername = clientMap.get(clientId).getUsername();
         clientMap.remove(clientId); // remove the client from the hasmap
-        sendMessageToClients(clientMap.get(clientId).getUsername() + " disconnected"); // Tell all the currently connected clients who just disconnected
+        sendMessageToClients(disconnectedClientUsername + " disconnected"); // Tell all the currently connected clients who just disconnected
     }
 
-    public void disconnectAllClients() { // Disconnect all currently connected clients
+    // Disconnect all currently connected clients
+    public void disconnectAllClients() {
         System.out.println(username + " (Me): Disconnecting..."); // Print for myself
 
         for (int i : clientMap.keySet()) { // Go through all the clients
@@ -133,6 +136,7 @@ public class Server {
         }
     }
 
+    // Get the public ip of the server, for easily sharing with others
     private String getPublicIp() {
         String result = null;
         try {
@@ -175,6 +179,7 @@ public class Server {
             System.out.print(command + " > ");
         }
 
+        // Get the number as a String, and convert it to an Integer. by doing so, we won't have a problem with the scanner "skipping a line"!
         return Integer.parseInt(scanner.nextLine());
     }
 
