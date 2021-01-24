@@ -37,7 +37,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
 
         add(centerPanel, BorderLayout.CENTER);
 
-        this.addWindowListener(this); // Add a window listener with which we check if the window got closed or not
+        addWindowListener(this); // Add a window listener with which we check if the window got closed or not
 
         setSize(300,200); // Set the size of the window
         setVisible(true); // make it visible
