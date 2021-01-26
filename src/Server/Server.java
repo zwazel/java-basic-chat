@@ -117,9 +117,7 @@ public class Server {
             message = username + ": " + message; // set the message so it's displaying correctly for the clients
 
             for (int i : clientMap.keySet()) { // go through all the currently connected clients
-                Socket s = clientMap.get(i).getSocket(); // Get the socket of the current Client
-                int clientId = clientMap.get(i).getMyId();
-                sendMessage(message, clientId); // Send the message to the specified socket
+                sendMessage(message, i); // Send the message to the specified socket
             }
         }
     }
@@ -132,7 +130,7 @@ public class Server {
             System.out.println(message); // print the message for myself
             for (int i : clientMap.keySet()) { // go through all the currently connected clients
                 if (i != id) { // Don't send message to the client who sent the message
-                    Socket s = clientMap.get(i).getSocket(); // Get the socket from the current client from the hashmap, so we know where to send the message to
+                    System.out.println("i = " + i + " id = " + id); // TODO remove after debugging
                     sendMessage(message, id); // Send the message to the socket
                 }
             }
@@ -142,6 +140,8 @@ public class Server {
     // Here we send a normal message to a specified socket
     public void sendMessage(String message, int clientId) { // Get the message and the socket
         try {
+            System.out.println("Sending message " + message + " to client id " + clientId); // TODO remove after debugging
+
             Socket clientSocket = clientMap.get(clientId).getSocket();
             DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream()); // create new dataOutputStream where we'll put our message in
             dOut.writeByte(1); // tell the client what type of message he's receiving (1 = default message) by writing a byte in the stream
