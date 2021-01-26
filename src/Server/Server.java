@@ -131,7 +131,7 @@ public class Server {
             for (int i : clientMap.keySet()) { // go through all the currently connected clients
                 if (i != id) { // Don't send message to the client who sent the message
                     System.out.println("i = " + i + " id = " + id); // TODO remove after debugging
-                    sendMessage(message, id); // Send the message to the socket
+                    sendMessage(message, i); // Send the message to the socket
                 }
             }
         }
