@@ -61,13 +61,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     // If we press the button
     @Override
     public void actionPerformed(ActionEvent e) {
-        String text = textInput.getText();
-        if(text.charAt(0) == '/') {
-            text = text.substring(1);
-            server.handleCommands(text);
-        } else {
-            server.sendMessageToClients(text); // Get the text inside of the input field and send it to all the connected clients
-        }
+        server.sendMessageToClients(textInput.getText()); // Get the text inside of the input field and send it to all the connected clients
         textInput.setText(""); // Reset the input field
     }
 
