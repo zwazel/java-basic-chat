@@ -8,7 +8,7 @@ public class Main {
 
     public Main() {
         scanner = new Scanner(System.in);
-        while (!init()); // While our input isnt valid
+        while (!init()); // While our input isn't valid
     }
 
     public static void main(String[] args) {
