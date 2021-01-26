@@ -73,11 +73,16 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         }
     }
 
-    private void sendCommandToServer(String command) {
+    private void sendCommandToServer(boolean isOp, String command, String[] args) {
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
             dOut.writeByte(2); // Declare type of message (2 = command)
+            dOut.writeBoolean(isOp);
             dOut.writeUTF(command);
+            dOut.writeInt(args.length); // Tell the receiver how many arguments there are
+            for(int i = 0; i<args.length; i++) {
+                dOut.writeUTF(args[i]);
+            }
             dOut.flush(); // Send off the data
         } catch (IOException e) {
             System.out.println("Can't send command in thread " + threadName + ", VERY BAD");
@@ -107,7 +112,9 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         String text = textInput.getText();
         if(text.startsWith("/")) {
             text = text.substring(1);
-            sendCommandToServer(text);
+            String[] commandArguments = text.split(" ");
+            String command = commandArguments[0];
+            sendCommandToServer(true, command, commandArguments);
         } else {
             sendMessageToServer(text); // Get the text inside of the input field and send it to all the connected clients
         }

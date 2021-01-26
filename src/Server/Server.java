@@ -1,5 +1,7 @@
 package Server;
 
+import ChatCommands.*;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,21 +13,26 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Server {
+    private static Server server;
     private String username = "Server"; // Our username
     private Scanner scanner;
     private int port; // our free port
     private int idCounter = 0; // id counter
     private int myId = idCounter++; // our id, and increase the idocunter by one
     private ServerSocket ss; // our socket
-    private HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
+    public HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
+    private HashMap<String, AbstractCommand> commandList = new HashMap<>();
     private boolean running = true; // are we running right now?
 
     public Server() {
         scanner = new Scanner(System.in); // instanciate a scanner
+        server = this;
 
         port = getInt("The Port you are hosting on"); // Get the open port
         try {
             ss = new ServerSocket(port); // Create a new server socket
+
+            initCommands();
 
             // Get IP (Not needed, but used for the user to easily copy and send to others)
             System.out.println("Getting IP adress...");
@@ -42,8 +49,12 @@ public class Server {
         }
     }
 
-    public Server get() {
-        return this;
+    private void initCommands() {
+        commandList.put("lc", new ListAllConnectedClientsCommandHandler());
+    }
+
+    public static Server get() {
+        return server;
     }
 
     // a single client is disconnecting on its own
@@ -140,30 +151,12 @@ public class Server {
         }
     }
 
-    public void listAllConnectedClients() {
-        System.out.println("Listing all connected Clients...");
-        if(clientMap.size() > 0) {
-            for (int i : clientMap.keySet()) {
-                clientMap.get(i).print();
-            }
+    public boolean handleCommands(boolean isOp, String command, String[] args) {
+        if(commandList.containsKey(command)) {
+            commandList.get(command).execute(isOp, args);
+            return true;
         } else {
-            System.out.println("No clients connected!");
-        }
-    }
-
-    public void handleCommands(String command) {
-        command = command.toLowerCase();
-        switch(command) {
-            case "lc":
-            case "listclients":
-            case "list clients":
-                listAllConnectedClients();
-                break;
-
-            default:
-                // TODO: Make a help command which lists all the available commands
-                System.out.println("Unknown Command!");
-                break;
+            return false;
         }
     }
 

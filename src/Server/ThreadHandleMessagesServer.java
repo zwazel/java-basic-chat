@@ -64,7 +64,11 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
         String text = textInput.getText();
         if(text.startsWith("/")) {
             text = text.substring(1);
-            server.handleCommands(text);
+            String[] commandArguments = text.split(" ");
+            String command = commandArguments[0];
+            if(!server.handleCommands(true, command, commandArguments)) {
+                System.out.println("Unknown command!");
+            }
         } else {
             server.sendMessageToClients(text); // Get the text inside of the input field and send it to all the connected clients
         }

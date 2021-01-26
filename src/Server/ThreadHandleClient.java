@@ -44,7 +44,17 @@ public class ThreadHandleClient implements Runnable {
                         break;
 
                     case 2:
+                        boolean isOp = dIn.readBoolean();
+                        String command = dIn.readUTF();
+                        int argAmount = dIn.readInt();
+                        String[] args = new String[argAmount];
+                        for (int i = 0; i < argAmount; i++) {
+                            args[i] = dIn.readUTF();
+                        }
 
+                        if(!server.handleCommands(isOp, command, args)) {
+                            server.sendMessage("Unknown command!", s, myClientId);
+                        }
                         break;
 
                     default:
