@@ -52,8 +52,8 @@ public class ThreadHandleClient implements Runnable {
                             args[i] = dIn.readUTF();
                         }
 
-                        if(!server.handleCommands(isOp, command, args)) {
-                            server.sendMessage("Unknown command!", s, myClientId);
+                        if(!server.handleCommandsClient(isOp, command, args, myClientId)) {
+                            server.sendMessage("Unknown command!", myClientId);
                         }
                         break;
 
@@ -63,7 +63,7 @@ public class ThreadHandleClient implements Runnable {
                             message = "null";
                         }
                         System.out.println("Got undefined Message from client in thread " + threadName + "! Message: " + message);
-                        server.sendMessage("Undefined Message Type!",socket,myClientId);
+                        server.sendMessage("Undefined Message Type!", myClientId);
                         break;
                 }
             } catch (IOException e) {

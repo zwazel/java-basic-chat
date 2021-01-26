@@ -66,7 +66,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
             text = text.substring(1);
             String[] commandArguments = text.split(" ");
             String command = commandArguments[0];
-            if(!server.handleCommands(true, command, commandArguments)) {
+            if(!server.handleCommandsServer(command, commandArguments)) {
                 System.out.println("Unknown command!");
             }
         } else {

@@ -96,7 +96,7 @@ public class Server {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
                 String clientUsername = dIn.readUTF(); // Read text and save it
 
-                sendMessageToClients("Client " + clientUsername + " connected with ID " + idCounter); // Tell the other clients that someone new just connected
+                sendMessageToClients("Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
 
                 addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 
@@ -119,7 +119,7 @@ public class Server {
             for (int i : clientMap.keySet()) { // go through all the currently connected clients
                 Socket s = clientMap.get(i).getSocket(); // Get the socket of the current Client
                 int clientId = clientMap.get(i).getMyId();
-                sendMessage(message,s, clientId); // Send the message to the specified socket
+                sendMessage(message, clientId); // Send the message to the specified socket
             }
         }
     }
@@ -133,16 +133,17 @@ public class Server {
             for (int i : clientMap.keySet()) { // go through all the currently connected clients
                 if (i != id) { // Don't send message to the client who sent the message
                     Socket s = clientMap.get(i).getSocket(); // Get the socket from the current client from the hashmap, so we know where to send the message to
-                    sendMessage(message, s, id); // Send the message to the socket
+                    sendMessage(message, id); // Send the message to the socket
                 }
             }
         }
     }
 
     // Here we send a normal message to a specified socket
-    public void sendMessage(String message, Socket s, int clientId) { // Get the message and the socket
+    public void sendMessage(String message, int clientId) { // Get the message and the socket
         try {
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // create new dataOutputStream where we'll put our message in
+            Socket clientSocket = clientMap.get(clientId).getSocket();
+            DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream()); // create new dataOutputStream where we'll put our message in
             dOut.writeByte(1); // tell the client what type of message he's receiving (1 = default message) by writing a byte in the stream
             dOut.writeUTF(message); // Put the message in the stream
             dOut.flush(); // Send off the data
@@ -151,9 +152,18 @@ public class Server {
         }
     }
 
-    public boolean handleCommands(boolean isOp, String command, String[] args) {
+    public boolean handleCommandsClient(boolean isOp, String command, String[] args, int senderId) {
         if(commandList.containsKey(command)) {
-            commandList.get(command).execute(isOp, args);
+            commandList.get(command).clientExecute(isOp, args, senderId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean handleCommandsServer(String command, String[] args) {
+        if(commandList.containsKey(command)) {
+            commandList.get(command).serverExecute(args);
             return true;
         } else {
             return false;

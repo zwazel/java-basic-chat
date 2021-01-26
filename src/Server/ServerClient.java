@@ -28,8 +28,8 @@ public class ServerClient {
         //(Right now unused, would be used if a method for changing names in runtime would be introduced)
     }
 
-    public void print() {
-        System.out.println(myId + ": " + username);
+    public String getUsernameWithID() {
+        return myId + ": " + username;
     }
 
     public Socket getSocket() {
