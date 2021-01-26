@@ -15,6 +15,7 @@ public class Client {
     private int serverPort; // the open port of the server
     private boolean running = true; // are we running?
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
+    private boolean operator = false;
 
     public Client() {
         scanner = new Scanner(System.in);
@@ -73,6 +74,14 @@ public class Client {
         // If we shouldn't run anymore, end it
         System.out.println("Thread ended Client " + username); // Tell the user that this thread has stopped
         threadHandleMessagesClient.stopWindow(); // Close the window
+    }
+
+    public boolean isOperator() {
+        return operator;
+    }
+
+    public void toggleOperator() {
+        this.operator = !this.operator;
     }
 
     private String getString(String command) {

@@ -42,6 +42,10 @@ public class Server {
         }
     }
 
+    public Server get() {
+        return this;
+    }
+
     // a single client is disconnecting on its own
     public void clientIsDisconnecting(int clientId) {
         String disconnectedClientUsername = clientMap.get(clientId).getUsername();

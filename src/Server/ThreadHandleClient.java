@@ -43,6 +43,10 @@ public class ThreadHandleClient implements Runnable {
                         server.sendMessageFromClientToClients(myClientId, dIn.readUTF()); // read text from the client and send it to the server and to all the other clients
                         break;
 
+                    case 2:
+
+                        break;
+
                     default:
                         String message = dIn.readUTF();
                         if(message.equals("")) {

@@ -74,7 +74,6 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     }
 
     private void sendCommandToServer(String command) {
-        System.out.println(username + " (Me): " + command);
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
             dOut.writeByte(2); // Declare type of message (2 = command)
