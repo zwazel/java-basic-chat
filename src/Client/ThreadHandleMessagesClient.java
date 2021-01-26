@@ -17,12 +17,14 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private Socket serverSocket;
     private JTextField textInput;
     private int myId;
+    Client client;
 
-    public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket) {
+    public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket, Client client) {
         this.threadName = threadName;
         this.username = username;
         this.myId = myId;
         this.serverSocket = serverSocket;
+        this.client = client;
     }
 
     private void initInputWindow() {
@@ -114,7 +116,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
             text = text.substring(1);
             String[] commandArguments = text.split(" ");
             String command = commandArguments[0];
-            sendCommandToServer(true, command, commandArguments);
+            sendCommandToServer(client.operator, command, commandArguments);
         } else {
             sendMessageToServer(text); // Get the text inside of the input field and send it to all the connected clients
         }

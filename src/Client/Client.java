@@ -15,7 +15,7 @@ public class Client {
     private int serverPort; // the open port of the server
     private boolean running = true; // are we running?
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
-    private boolean operator = false;
+    protected boolean operator = false;
 
     public Client() {
         scanner = new Scanner(System.in);
@@ -45,7 +45,7 @@ public class Client {
             dOut.flush(); // Send off the data
 
             // Start thread which handles our messages
-            threadHandleMessagesClient = new ThreadHandleMessagesClient("HandleMessages " + username + " " + myId, username, myId, s); // instanciate new thread
+            threadHandleMessagesClient = new ThreadHandleMessagesClient("HandleMessages " + username + " " + myId, username, myId, s, this); // instanciate new thread
             threadHandleMessagesClient.start(); // Start new thread
 
             // Get messages from server
