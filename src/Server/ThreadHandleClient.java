@@ -40,7 +40,7 @@ public class ThreadHandleClient implements Runnable {
                         break;
 
                     case 1: // Normal message
-                        server.sendMessageFromClientToClients(myClientId, dIn.readUTF()); // first read the id, then the text from the client and send it to the server and to the other clients
+                        server.sendMessageFromClientToClients(myClientId, dIn.readUTF()); // read text from the client and send it to the server and to all the other clients
                         break;
 
                     default:
