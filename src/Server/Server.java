@@ -85,7 +85,7 @@ public class Server {
 
                 addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 
-                ThreadHandleClient threadHandleClient = new ThreadHandleClient("HandleClient " + clientUsername + " " + idCounter, this, s); // instanciate a new Thread which will handle this specific client
+                ThreadHandleClient threadHandleClient = new ThreadHandleClient("HandleClient " + clientUsername + " " + idCounter, this, s, idCounter); // instanciate a new Thread which will handle this specific client
                 threadHandleClient.start(); // start the new thread
 
                 idCounter++; // Increase the ID counter, to make sure that nobody gets the same ID
@@ -125,7 +125,7 @@ public class Server {
     }
 
     // Here we send a normal message to a specified socket
-    private void sendMessage(String message, Socket s, int clientId) { // Get the message and the socket
+    public void sendMessage(String message, Socket s, int clientId) { // Get the message and the socket
         try {
             DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // create new dataOutputStream where we'll put our message in
             dOut.writeByte(1); // tell the client what type of message he's receiving (1 = default message) by writing a byte in the stream

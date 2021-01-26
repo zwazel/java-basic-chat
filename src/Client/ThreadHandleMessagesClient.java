@@ -66,7 +66,6 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
             dOut.writeByte(1); // Declare type of message (1 = normal message)
-            dOut.writeInt(myId); // Send id
             dOut.writeUTF(username + ": " + message);
             dOut.flush(); // Send off the data
         } catch (IOException e) {
@@ -78,7 +77,6 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream()); // instanciate new data output stream
             dOut.writeByte(0); // Declare type of message (0 = disconnect)
-            dOut.writeInt(myId); // Send id
             dOut.flush(); // Send off the data
         } catch (IOException e) {
             System.out.println("Can't disconnect from Server in thread " + threadName + ", VERY BAD");

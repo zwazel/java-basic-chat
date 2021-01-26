@@ -10,11 +10,13 @@ public class ThreadHandleClient implements Runnable {
     private Server server; // The server socket
     private Socket socket; // the client socket
     private boolean running = true; // are we running or should we end?
+    private int myClientId;
 
-    public ThreadHandleClient(String threadName, Server server, Socket s) {
+    public ThreadHandleClient(String threadName, Server server, Socket s, int myClientId) {
         this.threadName = threadName;
         this.server = server;
         this.socket = s;
+        this.myClientId = myClientId;
     }
 
     @Override
@@ -33,12 +35,17 @@ public class ThreadHandleClient implements Runnable {
 
                 switch (dIn.readByte()) { // Check what type of message the client sends us
                     case 0: // the client is disconnecting
-                        server.clientIsDisconnecting(dIn.readInt()); // get the ID of the client and disconnect him
+                        server.clientIsDisconnecting(myClientId); // get the ID of the client and disconnect him
                         running = false; // Stop this thread
                         break;
 
                     case 1: // Normal message
-                        server.sendMessageFromClientToClients(dIn.readInt(), dIn.readUTF()); // first read the id, then the text from the client and send it to the server and to the other clients
+                        server.sendMessageFromClientToClients(myClientId, dIn.readUTF()); // first read the id, then the text from the client and send it to the server and to the other clients
+                        break;
+
+                    default:
+                        server.sendMessage("Undefined Message Type!",socket,myClientId);
+                        System.out.println("Got undefined Message from client in thread " + threadName);
                         break;
                 }
             } catch (IOException e) {

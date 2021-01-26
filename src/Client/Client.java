@@ -40,7 +40,7 @@ public class Client {
 
             // Sending my username to the server, so he can add us to the hashmap
             DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
-            dOut.writeUTF(username); // put the id in the stream
+            dOut.writeUTF(username); // put the username in the stream
             dOut.flush(); // Send off the data
 
             // Start thread which handles our messages
