@@ -5,13 +5,19 @@ import Server.ServerClient;
 public class SetOperatorCommandHandler extends AbstractCommand {
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
-        if(!args[0].equals("")) {
-            int target = Integer.parseInt(args[0]);
+        if(args.length > 0) {
+            try {
+                int target = Integer.parseInt(args[0]);
 
-            if(isOp) { // Only if the client is OP he can execute this command
                 toggleOperator(target);
-            } else {
-                server.sendMessage("You need to be OP for this command!", senderId);
+
+                if(isOp) { // Only if the client is OP he can execute this command
+                    toggleOperator(target);
+                } else {
+                    server.sendMessage("You need to be OP for this command!", senderId);
+                }
+            } catch (final NumberFormatException e) {
+                server.sendMessage("Pls enter the a number (the ID of the user)!", senderId);
             }
         } else {
             server.sendMessage("Pls tell me who should get OP rights!", senderId);
