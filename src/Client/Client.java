@@ -65,6 +65,13 @@ public class Client {
                         running = false; // Stop everything
                     }
                     case 1 -> System.out.println(dIn.readUTF()); // we got a Normal message
+
+                    case 2 -> { // Special case
+                        switch(dIn.readByte()) {
+                            case 0:
+                                toggleOperator();
+                        }
+                    }
                 }
             } catch (IOException e) {
                 System.out.println("Can't print message! VERY BAD");
@@ -82,6 +89,12 @@ public class Client {
 
     public void toggleOperator() {
         this.operator = !this.operator;
+
+        if(operator) {
+            System.out.println("You are now operator!");
+        } else {
+            System.out.println("You're no longer operator!");
+        }
     }
 
     private String getString(String command) {

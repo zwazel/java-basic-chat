@@ -7,6 +7,7 @@ public class ServerClient {
     private int myId;
     private String username = "Not Defined";
     private Socket s;
+    private boolean operator = false;
 
     public ServerClient(int myId, String username, Socket s) {
         this.myId = myId;
@@ -34,5 +35,13 @@ public class ServerClient {
 
     public Socket getSocket() {
         return s;
+    }
+
+    public boolean isOperator() {
+        return operator;
+    }
+
+    public void toggleOperator() {
+        this.operator = !this.operator;
     }
 }

@@ -64,9 +64,16 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
         String text = textInput.getText();
         if(text.startsWith("/")) {
             text = text.substring(1);
-            String[] commandArguments = text.split(" ");
-            String command = commandArguments[0];
-            if(!server.handleCommandsServer(command, commandArguments)) {
+            String[] commandParts = text.split(" ");
+            String command = commandParts[0];
+
+            String[] args = new String[commandParts.length - 1];
+            // Copy the elements of the commandParts array from index 1 into args from index 0
+            if(args.length > 0) {
+                System.arraycopy(commandParts, 1, args, 0, commandParts.length - 1);
+            }
+
+            if(!server.handleCommandsServer(command, args)) {
                 System.out.println("Unknown command!");
             }
         } else {

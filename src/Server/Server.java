@@ -51,6 +51,7 @@ public class Server {
 
     private void initCommands() {
         commandList.put("lc", new ListAllConnectedClientsCommandHandler());
+        commandList.put("op", new SetOperatorCommandHandler());
     }
 
     public static Server get() {
@@ -143,6 +144,18 @@ public class Server {
             DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream()); // create new dataOutputStream where we'll put our message in
             dOut.writeByte(1); // tell the client what type of message he's receiving (1 = default message) by writing a byte in the stream
             dOut.writeUTF(message); // Put the message in the stream
+            dOut.flush(); // Send off the data
+        } catch (IOException e) { // catch error
+            System.out.println("Can't send message from Server to client \"" + clientMap.get(clientId).getUsername() + "\" with ID: " + clientId + "! VERY BAD");
+        }
+    }
+
+    public void sendSpecialCase(int clientId, int specialCaseId) {
+        try {
+            Socket clientSocket = clientMap.get(clientId).getSocket();
+            DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream()); // create new dataOutputStream where we'll put our message in
+            dOut.writeByte(2); // tell the client what type of message he's receiving (2 = special case) by writing a byte in the stream
+            dOut.writeByte(specialCaseId);
             dOut.flush(); // Send off the data
         } catch (IOException e) { // catch error
             System.out.println("Can't send message from Server to client \"" + clientMap.get(clientId).getUsername() + "\" with ID: " + clientId + "! VERY BAD");
