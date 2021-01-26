@@ -43,12 +43,12 @@ public class ThreadHandleClient implements Runnable {
                         server.sendMessageFromClientToClients(myClientId, dIn.readUTF()); // read text from the client and send it to the server and to all the other clients
                         break;
 
-                    case 2:
-                        System.out.println("Got command from client: " + dIn.readUTF());
-                        break;
-
                     default:
-                        System.out.println("Got undefined Message from client in thread " + threadName);
+                        String message = dIn.readUTF();
+                        if(message.equals("")) {
+                            message = "null";
+                        }
+                        System.out.println("Got undefined Message from client in thread " + threadName + "! Message: " + message);
                         server.sendMessage("Undefined Message Type!",socket,myClientId);
                         break;
                 }
