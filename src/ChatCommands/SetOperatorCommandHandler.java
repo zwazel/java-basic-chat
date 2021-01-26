@@ -60,6 +60,6 @@ public class SetOperatorCommandHandler extends AbstractCommand {
 
     @Override
     public void printDescription() {
-
+        // If using the command "help" with this command, call this method
     }
 }
