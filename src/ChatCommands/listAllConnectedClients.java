@@ -5,4 +5,9 @@ public class listAllConnectedClients extends AbstractCommand {
     public void execute(String[] args) {
 
     }
+
+    @Override
+    public void printDescription() {
+
+    }
 }

@@ -44,8 +44,8 @@ public class ThreadHandleClient implements Runnable {
                         break;
 
                     default:
-                        server.sendMessage("Undefined Message Type!",socket,myClientId);
                         System.out.println("Got undefined Message from client in thread " + threadName);
+                        server.sendMessage("Undefined Message Type!",socket,myClientId);
                         break;
                 }
             } catch (IOException e) {

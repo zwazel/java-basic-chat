@@ -73,6 +73,18 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         }
     }
 
+    private void sendCommandToServer(String command) {
+        System.out.println(username + " (Me): " + command);
+        try {
+            DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
+            dOut.writeByte(2); // Declare type of message (2 = command)
+            dOut.writeUTF(command);
+            dOut.flush(); // Send off the data
+        } catch (IOException e) {
+            System.out.println("Can't send command in thread " + threadName + ", VERY BAD");
+        }
+    }
+
     private void disconnect() {
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream()); // instanciate new data output stream
@@ -93,8 +105,14 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        sendMessageToServer(textInput.getText());
-        textInput.setText("");
+        String text = textInput.getText();
+        if(text.startsWith("/")) {
+            text = text.substring(1);
+            sendCommandToServer(text);
+        } else {
+            sendMessageToServer(text); // Get the text inside of the input field and send it to all the connected clients
+        }
+        textInput.setText(""); // Reset the input field
     }
 
     @Override

@@ -46,7 +46,7 @@ public class Server {
     public void clientIsDisconnecting(int clientId) {
         String disconnectedClientUsername = clientMap.get(clientId).getUsername();
         clientMap.remove(clientId); // remove the client from the hashmap
-        sendMessageToClients(disconnectedClientUsername + " with id: " + clientId + " disconnected"); // Tell all the currently connected clients who just disconnected
+        sendMessageToClients("Client \"" + disconnectedClientUsername + "\" with id: " + clientId + " disconnected"); // Tell all the currently connected clients who just disconnected
     }
 
     // Disconnect all currently connected clients
