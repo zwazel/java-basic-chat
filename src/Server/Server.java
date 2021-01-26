@@ -46,7 +46,7 @@ public class Server {
     public void clientIsDisconnecting(int clientId) {
         String disconnectedClientUsername = clientMap.get(clientId).getUsername();
         clientMap.remove(clientId); // remove the client from the hashmap
-        sendMessageToClients(disconnectedClientUsername + " disconnected"); // Tell all the currently connected clients who just disconnected
+        sendMessageToClients(disconnectedClientUsername + " with id: " + clientId + " disconnected"); // Tell all the currently connected clients who just disconnected
     }
 
     // Disconnect all currently connected clients
@@ -55,14 +55,14 @@ public class Server {
 
         for (int i : clientMap.keySet()) { // Go through all the clients
             Socket s = clientMap.get(i).getSocket(); // Get the socket of the current client
+            int clientId = clientMap.get(i).getMyId();
 
             try {
                 DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
                 dOut.writeByte(0); // tell the client what type of message he's receiving (0 = disconnect) by writing a byte in the stream
                 dOut.flush(); // Send off the data
             } catch (IOException e) { // Catch error
-                // TODO: Tell on what client we failed
-                System.out.println("Can't send call for disconnecting to client! VERY BAD");
+                System.out.println("Can't send command for disconnecting from server to client \"" + clientMap.get(clientId).getUsername() + "\" with ID: " + clientId + "! VERY BAD");
             }
         }
     }
@@ -102,8 +102,9 @@ public class Server {
 
             for (int i : clientMap.keySet()) { // go through all the currently connected clients
                 Socket s = clientMap.get(i).getSocket(); // Get the socket of the current Client
+                int clientId = clientMap.get(i).getMyId();
                 message = username + ": " + message; // set the message so it's displaying correctly for the clients
-                sendMessage(message,s); // Send the message to the specified socket
+                sendMessage(message,s, clientId); // Send the message to the specified socket
             }
         }
     }
@@ -117,22 +118,21 @@ public class Server {
             for (int i : clientMap.keySet()) { // go through all the currently connected clients
                 if (i != id) { // Don't send message to the client who sent the message
                     Socket s = clientMap.get(i).getSocket(); // Get the socket from the current client from the hashmap, so we know where to send the message to
-                    sendMessage(message, s); // Send the message to the socket
+                    sendMessage(message, s, id); // Send the message to the socket
                 }
             }
         }
     }
 
     // Here we send a normal message to a specified socket
-    private void sendMessage(String message, Socket s) { // Get the message and the socket
+    private void sendMessage(String message, Socket s, int clientId) { // Get the message and the socket
         try {
             DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // create new dataOutputStream where we'll put our message in
             dOut.writeByte(1); // tell the client what type of message he's receiving (1 = default message) by writing a byte in the stream
             dOut.writeUTF(message); // Put the message in the stream
             dOut.flush(); // Send off the data
         } catch (IOException e) { // catch error
-            // TODO: Tell on what client we failed
-            System.out.println("Can't send message from Server to clients! VERY BAD");
+            System.out.println("Can't send message from Server to client \"" + clientMap.get(clientId).getUsername() + "\" with ID: " + clientId + "! VERY BAD");
         }
     }
 
