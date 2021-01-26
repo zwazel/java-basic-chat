@@ -11,13 +11,13 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Server {
-    String username = "Server"; // Our username
+    private String username = "Server"; // Our username
     private Scanner scanner;
-    int port; // our free port
-    int idCounter = 0; // id counter
-    int myId = idCounter++; // our id, and increase the idocunter by one
-    ServerSocket ss; // our socket
-    HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
+    private int port; // our free port
+    private int idCounter = 0; // id counter
+    private int myId = idCounter++; // our id, and increase the idocunter by one
+    private ServerSocket ss; // our socket
+    private HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
     private boolean running = true; // are we running right now?
 
     public Server() {
