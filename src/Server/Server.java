@@ -99,17 +99,12 @@ public class Server {
     public void sendMessageToClients(String message) { // We need the message we want to send
         if(running) { // Only while the server is running (this is to avoid errors as I haven't found another workaround)
             System.out.println(username + " (Me): " + message); // Print the message for myself
+            message = username + ": " + message; // set the message so it's displaying correctly for the clients
 
-            if(message.startsWith("/")) {
-                message = message.substring(1);
-                handleCommands(message);
-            } else {
-                for (int i : clientMap.keySet()) { // go through all the currently connected clients
-                    Socket s = clientMap.get(i).getSocket(); // Get the socket of the current Client
-                    int clientId = clientMap.get(i).getMyId();
-                    message = username + ": " + message; // set the message so it's displaying correctly for the clients
-                    sendMessage(message, s, clientId); // Send the message to the specified socket
-                }
+            for (int i : clientMap.keySet()) { // go through all the currently connected clients
+                Socket s = clientMap.get(i).getSocket(); // Get the socket of the current Client
+                int clientId = clientMap.get(i).getMyId();
+                sendMessage(message,s, clientId); // Send the message to the specified socket
             }
         }
     }
@@ -119,16 +114,11 @@ public class Server {
         //String username = clientsHashMap.get(id).getUsername(); // We already have the username inside of the message, so this is not needed
 
         if(running) { // Only while the server is running (this is to avoid errors as I haven't found another workaround)
-            if(message.startsWith("/")) {
-                message = message.substring(1);
-                handleCommands(message);
-            } else {
-                System.out.println(message); // print the message for myself
-                for (int i : clientMap.keySet()) { // go through all the currently connected clients
-                    if (i != id) { // Don't send message to the client who sent the message
-                        Socket s = clientMap.get(i).getSocket(); // Get the socket from the current client from the hashmap, so we know where to send the message to
-                        sendMessage(message, s, id); // Send the message to the socket
-                    }
+            System.out.println(message); // print the message for myself
+            for (int i : clientMap.keySet()) { // go through all the currently connected clients
+                if (i != id) { // Don't send message to the client who sent the message
+                    Socket s = clientMap.get(i).getSocket(); // Get the socket from the current client from the hashmap, so we know where to send the message to
+                    sendMessage(message, s, id); // Send the message to the socket
                 }
             }
         }
