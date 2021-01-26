@@ -136,6 +136,33 @@ public class Server {
         }
     }
 
+    public void listAllConnectedClients() {
+        System.out.println("Listing all connected Clients...");
+        if(clientMap.size() > 0) {
+            for (int i : clientMap.keySet()) {
+                clientMap.get(i).print();
+            }
+        } else {
+            System.out.println("No clients connected!");
+        }
+    }
+
+    public void handleCommands(String command) {
+        command = command.toLowerCase();
+        switch(command) {
+            case "lc":
+            case "listclients":
+            case "list clients":
+                listAllConnectedClients();
+                break;
+
+            default:
+                // TODO: Make a help command which lists all the available commands
+                System.out.println("Unknown Command!");
+                break;
+        }
+    }
+
     // Get the public ip of the server, for easily sharing with others
     private String getPublicIp() {
         String result = null;

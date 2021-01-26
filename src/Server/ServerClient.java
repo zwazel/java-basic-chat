@@ -4,7 +4,7 @@ import java.net.Socket;
 
 // This is a reference of a client for the server, for every connected client we add one instance of this class to the hashmap
 public class ServerClient {
-    private int myId = -1;
+    private int myId;
     private String username = "Not Defined";
     private Socket s;
 
@@ -26,6 +26,10 @@ public class ServerClient {
     public void setUsername(String username) {
         this.username = username; // Set the username of this client
         //(Right now unused, would be used if a method for changing names in runtime would be introduced)
+    }
+
+    public void print() {
+        System.out.println(myId + ": " + username);
     }
 
     public Socket getSocket() {
