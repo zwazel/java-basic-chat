@@ -9,8 +9,6 @@ public class SetOperatorCommandHandler extends AbstractCommand {
             try {
                 int target = Integer.parseInt(args[0]);
 
-                toggleOperator(target);
-
                 if(isOp) { // Only if the client is OP he can execute this command
                     toggleOperator(target);
                 } else {
