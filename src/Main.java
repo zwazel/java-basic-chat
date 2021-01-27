@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 import Server.Server;
 import Client.Client;
@@ -20,11 +19,11 @@ public class Main {
 
         switch (Integer.parseInt(scanner.nextLine())) { // get the input as string, and convert it to an Integer
             case 0 -> { // case 0, behave as a server
-                new Server(); // instanciate new server
+                new Server(); // instantiate new server
                 return true; // our input is valid
             }
             case 1 -> { // case 1, behave as a client
-                new Client(); // instanciate new client
+                new Client(); // instantiate new client
                 return true; // our input is valid
             }
             default -> { // default, input is not valid
