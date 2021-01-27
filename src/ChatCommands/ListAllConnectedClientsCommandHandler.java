@@ -10,6 +10,11 @@ public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
                 if(senderId == server.clientMap.get(i).getMyId()) {
                     usernameAndId += " (me)";
                 }
+
+                if(server.clientMap.get(i).isOperator()) {
+                    usernameAndId += " (OP)";
+                }
+
                 server.sendMessage(usernameAndId, senderId);
             }
         } else {
@@ -23,6 +28,11 @@ public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
         if(server.clientMap.size() > 0) {
             for (int i : server.clientMap.keySet()) {
                 String usernameAndId = server.clientMap.get(i).getUsernameWithID();
+
+                if(server.clientMap.get(i).isOperator()) {
+                    usernameAndId += " (OP)";
+                }
+
                 System.out.println(usernameAndId);
             }
         } else {
