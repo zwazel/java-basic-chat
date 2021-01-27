@@ -15,7 +15,7 @@ public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
                     usernameAndId += " (OP)";
                 }
 
-                server.sendMessage(usernameAndId, senderId);
+                server.sendMessage("- " + usernameAndId, senderId);
             }
         } else {
             server.sendMessage("No clients connected!", senderId);
@@ -33,7 +33,7 @@ public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
                     usernameAndId += " (OP)";
                 }
 
-                System.out.println(usernameAndId);
+                System.out.println("- " + usernameAndId);
             }
         } else {
             System.out.println("No clients connected!");
