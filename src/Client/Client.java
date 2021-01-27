@@ -60,19 +60,18 @@ public class Client {
             try {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // instanciate new dataInputStream which is linked to the client
                 switch (dIn.readByte()) { // Check what type of message we got
-                    case 0: // message tells us the server disconnected
+                    case 0 -> { // message tells us the server disconnected
                         System.out.println("Server disconnected! Disconnecting myself..."); // print what happened
                         running = false; // Stop everything
-						break;
-                    case 1:
-						System.out.println(dIn.readUTF()); // we got a Normal message
-						break;
-                    case 2: // Special case
+                    }
+                    case 1 -> System.out.println(dIn.readUTF()); // we got a Normal message
+
+                    case 2 -> { // Special case
                         switch(dIn.readByte()) {
                             case 0:
                                 toggleOperator();
-								break;
                         }
+                    }
                 }
             } catch (IOException e) {
                 System.out.println("Can't print message! VERY BAD");
