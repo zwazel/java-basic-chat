@@ -9,6 +9,5 @@ public abstract class AbstractCommand {
 
     public abstract void serverExecute(String[] args);
 
-
     public abstract void printDescription(); // If using this command with "help" as an argument, call this method
 }
