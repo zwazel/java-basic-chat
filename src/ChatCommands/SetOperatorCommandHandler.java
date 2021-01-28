@@ -10,7 +10,7 @@ public class SetOperatorCommandHandler extends AbstractCommand {
                 int target = Integer.parseInt(args[0]);
 
                 if(isOp) { // Only if the client is OP he can execute this command
-                    toggleOperator(target);
+                    toggleOperator(target, senderId);
                 } else {
                     server.sendMessage("You need to be OP for this command!", senderId);
                 }
@@ -28,7 +28,7 @@ public class SetOperatorCommandHandler extends AbstractCommand {
             try {
                 int target = Integer.parseInt(args[0]);
 
-                toggleOperator(target);
+                toggleOperator(target, 0);
             } catch (final NumberFormatException e) {
                 System.out.println("Pls enter the a number (the ID of the user)!");
             }
@@ -37,7 +37,7 @@ public class SetOperatorCommandHandler extends AbstractCommand {
         }
     }
 
-    private void toggleOperator(int target) {
+    private void toggleOperator(int target, int senderId) {
         if(server.clientMap.containsKey(target)) {
             ServerClient clientTarget = server.clientMap.get(target);
             clientTarget.toggleOperator();
@@ -52,12 +52,16 @@ public class SetOperatorCommandHandler extends AbstractCommand {
 
             server.sendSpecialCase(target, 0);
         } else {
-            System.out.println("This user does not exist! use the command \"/lc\" to see the connected users!");
+            if(senderId > 0) {
+                server.sendMessage("This user does not exist! use the command \"/lc\" to see the connected users!", senderId);
+            } else {
+                System.out.println("This user does not exist! use the command \"/lc\" to see the connected users!");
+            }
         }
     }
 
     @Override
     public void printDescription() {
-        // If using the command "help" with this command, call this method
+        
     }
 }
