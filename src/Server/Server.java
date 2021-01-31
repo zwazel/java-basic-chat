@@ -88,8 +88,6 @@ public class Server {
 
     // Disconnect all currently connected clients
     public void disconnectAllClients() {
-        System.out.println(username + " (Me): Disconnecting..."); // Print for myself
-
         for (int i : clientMap.keySet()) { // Go through all the clients
             disconnectSingleClient(i);
         }

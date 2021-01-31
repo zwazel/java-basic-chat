@@ -4,6 +4,7 @@ import Server.Server;
 
 public abstract class AbstractCommand {
     protected Server server = Server.get();
+    protected int[] targetList;
 
     protected String youNeedOp = "You need to have OP rights to use this command!";
     protected String needTargetId = "Pls tell me who is the target of this command (ID of the client)";
@@ -13,6 +14,19 @@ public abstract class AbstractCommand {
     public abstract void clientExecute(boolean isOp, String[] args, int senderId);
 
     public abstract void serverExecute(String[] args);
+
+    public boolean getTargetId(String[] idList) {
+        targetList = new int[idList.length];
+
+        for (int i = 0; i < targetList.length; i++) {
+            try {
+                targetList[i] = Integer.parseInt(idList[i]);
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public abstract void printDescription(); // If using this command with "help" as an argument, call this method
 }

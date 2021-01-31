@@ -3,23 +3,27 @@ package ChatCommands;
 public class KickClientCommandHandler extends AbstractCommand {
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
-        if(isOp) {
-            if(args.length > 0) {
-                try {
-                    // TODO: Make it possible for the user to kick multiple clients at once. by seperating the numbers with a ',' and putting them in an array
-                    int target = Integer.parseInt(args[0]);
+        if (isOp) {
+            if (args.length > 0) {
+                if(args[0].equalsIgnoreCase("all")) {
+                    server.disconnectAllClients();
+                } else {
+                    String[] multipleTargetsString = args[0].split(",");
+                    if (getTargetId(multipleTargetsString)) {
+                        for (int i : targetList) {
+                            if (server.checkIfClientExists(i)) {
+                                // TODO: Make it possible for the user to specify a reason which will be send to the kicked user
+                                // TODO: If the user doesnt specify a reason, auto generate one on your own
 
-                    if(server.checkIfClientExists(target)) {
-                        // TODO: Make it possible for the user to specify a reason which will be send to the kicked user
-                        // TODO: If the user doesnt specify a reason, auto generate one on your own
-
-                        // TODO: Send reason to all the clients
-                        server.disconnectSingleClient(target);
+                                // TODO: Send reason to every client
+                                server.disconnectSingleClient(i);
+                            } else {
+                                server.sendMessage("User with ID " + i + " does not exist!", senderId);
+                            }
+                        }
                     } else {
-                        server.sendMessage(thisUserDoesNotExist, senderId);
+                        server.sendMessage(iNeedANumber, senderId);
                     }
-                } catch (final NumberFormatException e) {
-                    server.sendMessage(iNeedANumber, senderId);
                 }
             } else {
                 server.sendMessage(needTargetId, senderId);
@@ -31,22 +35,27 @@ public class KickClientCommandHandler extends AbstractCommand {
 
     @Override
     public void serverExecute(String[] args) {
-        if(args.length > 0) {
-            try {
-                // TODO: Make it possible for the user to kick multiple clients at once. by seperating the numbers with a ',' and putting them in an array
-                int target = Integer.parseInt(args[0]);
+        if (args.length > 0) {
+            if(args[0].equalsIgnoreCase("all")) {
+                server.disconnectAllClients();
+            } else {
+                String[] multipleTargetsString = args[0].split(",");
 
-                if(server.checkIfClientExists(target)) {
-                    // TODO: Make it possible for the user to specify a reason which will be send to the kicked user
-                    // TODO: If the user doesnt specify a reason, auto generate one on your own
+                if (getTargetId(multipleTargetsString)) {
+                    for (int i : targetList) {
+                        if (server.checkIfClientExists(i)) {
+                            // TODO: Make it possible for the user to specify a reason which will be send to the kicked user
+                            // TODO: If the user doesnt specify a reason, auto generate one on your own
 
-                    // TODO: Send reason to all the clients
-                    server.disconnectSingleClient(target);
+                            // TODO: Send reason to all the clients
+                            server.disconnectSingleClient(i);
+                        } else {
+                            System.out.println("User with ID " + i + " does not exist!");
+                        }
+                    }
                 } else {
-                    System.out.println(thisUserDoesNotExist);
+                    System.out.println(iNeedANumber);
                 }
-            } catch (final NumberFormatException e) {
-                System.out.println(iNeedANumber);
             }
         } else {
             System.out.println(needTargetId);
