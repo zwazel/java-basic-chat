@@ -49,9 +49,18 @@ public class Server {
         }
     }
 
+    public boolean checkIfClientExists(int clientId) {
+        if(clientMap.containsKey(clientId)) {
+            return true;
+        }
+
+        return false;
+    }
+
     private void initCommands() {
         commandList.put("lc", new ListAllConnectedClientsCommandHandler());
         commandList.put("op", new SetOperatorCommandHandler());
+        commandList.put("kick", new KickClientCommandHandler());
     }
 
     public static Server get() {

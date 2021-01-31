@@ -38,7 +38,7 @@ public class SetOperatorCommandHandler extends AbstractCommand {
     }
 
     private void toggleOperator(int target, int senderId) {
-        if(server.clientMap.containsKey(target)) {
+        if(server.checkIfClientExists(target)) {
             ServerClient clientTarget = server.clientMap.get(target);
             clientTarget.toggleOperator();
             boolean isClientOp = clientTarget.isOperator();
