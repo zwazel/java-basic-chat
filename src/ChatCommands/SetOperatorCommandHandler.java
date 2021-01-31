@@ -5,20 +5,20 @@ import Server.ServerClient;
 public class SetOperatorCommandHandler extends AbstractCommand {
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
-        if(args.length > 0) {
-            try {
-                int target = Integer.parseInt(args[0]);
+        if(isOp) { // Only if the client is OP he can execute this command
+            if(args.length > 0) {
+                try {
+                    int target = Integer.parseInt(args[0]);
 
-                if(isOp) { // Only if the client is OP he can execute this command
                     toggleOperator(target, senderId);
-                } else {
-                    server.sendMessage("You need to be OP for this command!", senderId);
+                } catch (final NumberFormatException e) {
+                    server.sendMessage(iNeedANumber, senderId);
                 }
-            } catch (final NumberFormatException e) {
-                server.sendMessage("Pls enter the a number (the ID of the user)!", senderId);
+            } else {
+                server.sendMessage(needTargetId, senderId);
             }
         } else {
-            server.sendMessage("Pls tell me who should get OP rights!", senderId);
+            server.sendMessage(youNeedOp, senderId);
         }
     }
 
@@ -30,10 +30,10 @@ public class SetOperatorCommandHandler extends AbstractCommand {
 
                 toggleOperator(target, 0);
             } catch (final NumberFormatException e) {
-                System.out.println("Pls enter the a number (the ID of the user)!");
+                System.out.println(iNeedANumber);
             }
         } else {
-            System.out.println("Pls tell me who should get OP rights!");
+            System.out.println(needTargetId);
         }
     }
 
@@ -53,9 +53,9 @@ public class SetOperatorCommandHandler extends AbstractCommand {
             server.sendSpecialCase(target, 0);
         } else {
             if(senderId > 0) {
-                server.sendMessage("This user does not exist! use the command \"/lc\" to see the connected users!", senderId);
+                server.sendMessage(thisUserDoesNotExist, senderId);
             } else {
-                System.out.println("This user does not exist! use the command \"/lc\" to see the connected users!");
+                System.out.println(thisUserDoesNotExist);
             }
         }
     }
