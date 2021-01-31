@@ -50,7 +50,7 @@ public class SetOperatorCommandHandler extends AbstractCommand {
                 server.sendMessageToClients(clientTargetUsername + " is no longer operator!");
             }
 
-            server.sendSpecialCase(target, 0);
+            server.toggleOpForClient(target);
         } else {
             if(senderId > 0) {
                 server.sendMessage(thisUserDoesNotExist, senderId);

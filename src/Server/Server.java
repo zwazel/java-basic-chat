@@ -16,16 +16,16 @@ public class Server {
     private static Server server;
     private String username = "Server"; // Our username
     private Scanner scanner;
-    private int port; // our free port
+    private final int port; // our free port
     private int idCounter = 0; // id counter
-    private int myId = idCounter++; // our id, and increase the idocunter by one
+    private final int myId = idCounter++; // our id, and increase the idocunter by one
     private ServerSocket ss; // our socket
     public HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
     private HashMap<String, AbstractCommand> commandList = new HashMap<>();
     private boolean running = true; // are we running right now?
 
     public Server() {
-        scanner = new Scanner(System.in); // instanciate a scanner
+        scanner = new Scanner(System.in); // instantiate a scanner
         server = this;
 
         port = getInt("The Port you are hosting on"); // Get the open port
@@ -93,6 +93,64 @@ public class Server {
         }
     }
 
+    public void sendMessageTypeToClient(int clientId, int messageType) {
+        Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
+
+        try {
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
+            dOut.writeByte(messageType);
+            dOut.flush(); // Send off the data
+        } catch (IOException e) { // Catch error
+            System.out.println("Can't send messagetype " + messageType + "from server to client \"" + clientId + "\"! VERY BAD");
+        }
+    }
+
+    public void sendMessageTypeToClient(int clientId, int messageType, String message) {
+        Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
+
+        try {
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
+            dOut.writeByte(messageType);
+            dOut.writeUTF(message);
+            dOut.flush(); // Send off the data
+        } catch (IOException e) { // Catch error
+            System.out.println("Can't send messagetype " + messageType + "from server to client \"" + clientId + "\"! VERY BAD");
+        }
+    }
+
+    public void sendMessageTypeToAllClients(int messageType) {
+        for (int i : clientMap.keySet()) { // Go through all the clients
+            sendMessageTypeToClient(i, messageType);
+        }
+    }
+
+    public void sendMessageTypeToAllClients(int messageType, String message) {
+        for (int i : clientMap.keySet()) { // Go through all the clients
+            sendMessageTypeToClient(i, messageType, message);
+        }
+    }
+
+    public void kickSingleClient(int clientId, String reason, boolean customReason) {
+        Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
+        String clientUsername = clientMap.get(clientId).getUsername();
+        String kickMessage = "Server kicked " + clientUsername + ": " + reason;
+
+        try {
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
+            dOut.writeByte(4); // tell the client what type of message he's receiving (4 = kick) by writing a byte in the stream
+            dOut.writeUTF(reason);
+            dOut.flush(); // Send off the data
+        } catch (IOException e) { // Catch error
+            System.out.println("Can't send command for disconnecting from server to client \"" + clientId + "\" with ID: " + clientId + "! VERY BAD");
+        }
+    }
+
+    public void kickAllClients(String reason, boolean customReason) {
+        for (int i : clientMap.keySet()) { // Go through all the clients
+            kickSingleClient(i, reason);
+        }
+    }
+
     private void acceptConnections() {
         while (running) { // Only while the server is running (this is to avoid errors as I haven't found another workaround)
             try {
@@ -140,7 +198,7 @@ public class Server {
         if(running) { // Only while the server is running (this is to avoid errors as I haven't found another workaround)
             System.out.println(message); // print the message for myself
             for (int i : clientMap.keySet()) { // go through all the currently connected clients
-                if (i != id) { // Don't send message to the client who sent the message
+                if (i != id) { // Don't send message back to the client who sent us the message
                     sendMessage(message, i); // Send the message to the socket
                 }
             }
@@ -160,12 +218,11 @@ public class Server {
         }
     }
 
-    public void sendSpecialCase(int clientId, int specialCaseId) {
+    public void toggleOpForClient(int clientId) {
         try {
             Socket clientSocket = clientMap.get(clientId).getSocket();
             DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream()); // create new dataOutputStream where we'll put our message in
-            dOut.writeByte(2); // tell the client what type of message he's receiving (2 = special case) by writing a byte in the stream
-            dOut.writeByte(specialCaseId);
+            dOut.writeByte(3); // tell the client what type of message he's receiving (3 = toggle op) by writing a byte in the stream
             dOut.flush(); // Send off the data
         } catch (IOException e) { // catch error
             System.out.println("Can't send message from Server to client \"" + clientMap.get(clientId).getUsername() + "\" with ID: " + clientId + "! VERY BAD");
@@ -176,18 +233,16 @@ public class Server {
         if(commandList.containsKey(command)) {
             commandList.get(command).clientExecute(isOp, args, senderId);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public boolean handleCommandsServer(String command, String[] args) {
         if(commandList.containsKey(command)) {
             commandList.get(command).serverExecute(args);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     // Get the public ip of the server, for easily sharing with others
@@ -202,7 +257,7 @@ public class Server {
                 Scanner sc = new Scanner(url.openStream());
 
                 //Instantiating the StringBuffer class to hold the result
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 while(sc.hasNext()) {
                     sb.append(sc.next());
                 }
@@ -233,6 +288,7 @@ public class Server {
             System.out.print(command + " > ");
         }
 
+        // TODO: Catch error if not number
         // Get the number as a String, and convert it to an Integer. by doing so, we won't have a problem with the scanner "skipping a line"!
         return Integer.parseInt(scanner.nextLine());
     }

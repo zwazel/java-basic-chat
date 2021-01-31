@@ -11,8 +11,8 @@ public class Client {
     private String username; // my username
     private int myId; // My id
     private Socket s; // my socket
-    private String serverIp; // The ip of the server
-    private int serverPort; // the open port of the server
+    private final String serverIp; // The ip of the server
+    private final int serverPort; // the open port of the server
     private boolean running = true; // are we running?
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
     protected boolean operator = false;
@@ -30,7 +30,7 @@ public class Client {
 
     private void init() {
         try {
-            s = new Socket(serverIp, serverPort); // instanciate new socket with IP and PORT
+            s = new Socket(serverIp, serverPort); // instantiate new socket with IP and PORT
             System.out.println("Connected to server " + serverIp + " on port " + serverPort + " with username " + username); // Tell the user that we have successfully established a connection to the server
 
             // Reading my ID
@@ -45,7 +45,7 @@ public class Client {
             dOut.flush(); // Send off the data
 
             // Start thread which handles our messages
-            threadHandleMessagesClient = new ThreadHandleMessagesClient("HandleMessages " + username + " " + myId, username, myId, s, this); // instanciate new thread
+            threadHandleMessagesClient = new ThreadHandleMessagesClient("HandleMessages " + username + " " + myId, username, myId, s, this); // instantiate new thread
             threadHandleMessagesClient.start(); // Start new thread
 
             // Get messages from server
@@ -58,21 +58,22 @@ public class Client {
     private void printMessageFromServer() {
         while (running) { // While we are running
             try {
-                DataInputStream dIn = new DataInputStream(s.getInputStream()); // instanciate new dataInputStream which is linked to the client
+                DataInputStream dIn = new DataInputStream(s.getInputStream()); // instantiate new dataInputStream which is linked to the client
                 switch (dIn.readByte()) { // Check what type of message we got
                     case 0: // message tells us the server disconnected
                         System.out.println("Server disconnected! Disconnecting myself..."); // print what happened
                         running = false; // Stop everything
                         break;
-                    case 1:
+                    case 1: // Normal message
                         System.out.println(dIn.readUTF()); // we got a Normal message
                         break;
-
-                    case 2: // Special case
-                        switch(dIn.readByte()) {
-                            case 0:
-                                toggleOperator();
-                        }
+                    case 3:
+                        toggleOperator();
+                        break;
+                    case 4: // Special case
+                        System.out.println(dIn.readUTF());
+                        running = false;
+                        break;
                 }
             } catch (IOException e) {
                 System.out.println("Can't print message! VERY BAD");
@@ -111,6 +112,7 @@ public class Client {
             System.out.print(command + " > ");
         }
 
+        // TODO: catch error if not number
         return Integer.parseInt(scanner.nextLine());
     }
 
