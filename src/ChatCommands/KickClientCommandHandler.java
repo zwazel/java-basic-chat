@@ -35,11 +35,14 @@ public class KickClientCommandHandler extends AbstractCommand {
         int argsLength = args.length;
 
         if (argsLength >= 1) {
+            // TODO: If the user doesnt specify a reason, auto generate one on your own
             if(argsLength >= 2) {
                 for(int i = 1; i < args.length; i++) {
                     String reasonPart = args[i];
                     reasonForKickMain += reasonPart + " ";
                 }
+            } else {
+                // Get message from text file
             }
         } else {
             if(senderId > 0) {
@@ -56,7 +59,6 @@ public class KickClientCommandHandler extends AbstractCommand {
             if (getTargetId(multipleTargetsString)) {
                 for (int i : targetList) {
                     if (server.checkIfClientExists(i)) {
-                        // TODO: If the user doesnt specify a reason, auto generate one on your own
                         String kickedClientUsername = server.getClientUsername(i);
                         server.sendMessageTypeToClient(i, MessageTypes.KICK.getValue(), reasonForKickStart + reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
                         server.sendMessageTypeToAllClients(MessageTypes.NORMAL_MESSAGE.getValue(), reasonForKickStart + kickedClientUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
