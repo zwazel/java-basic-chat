@@ -28,9 +28,8 @@ public class KickClientCommandHandler extends AbstractCommand {
                         for (int i : targetList) {
                             if (server.checkIfClientExists(i)) {
                                 // TODO: If the user doesnt specify a reason, auto generate one on your own
-
-                                // TODO: Send reason to every client
-                                server.sendMessageTypeToClient(i, MessageTypes.KICK.getValue(), reasonForKick);
+                                String kickedClientUsername = server.getClientUsername(i);
+                                server.sendMessageTypeToAllClients(MessageTypes.KICK.getValue(), "Server: " + kickedClientUsername + " " + reasonForKick);
                             } else {
                                 server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(),"User with ID " + i + " does not exist!");
                             }
