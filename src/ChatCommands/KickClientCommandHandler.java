@@ -42,6 +42,7 @@ public class KickClientCommandHandler extends AbstractCommand {
                 }
             } else {
                 // TODO: If the user doesnt specify a reason, auto generate one on your own
+                getReasonForKickMain();
             }
         } else {
             if(senderId > 0) {
@@ -58,7 +59,7 @@ public class KickClientCommandHandler extends AbstractCommand {
             if (getTargetId(multipleTargetsString)) {
                 for (int i : targetList) {
                     if (server.checkIfClientExists(i)) {
-                        String kickedClientUsername = server.getClientUsername(i);
+                        String kickedClientUsername = server.getClientUsername(i) + " (" + i + ")";
                         server.sendMessageTypeToClient(i, MessageTypes.KICK.getValue(), reasonForKickStart + reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
                         server.sendMessageTypeToAllClients(MessageTypes.NORMAL_MESSAGE.getValue(), reasonForKickStart + kickedClientUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
                     } else {
@@ -77,10 +78,11 @@ public class KickClientCommandHandler extends AbstractCommand {
 
     private String getReasonForKickMain() {
         BufferedReader reader = null;
+        int amountOfLines = 0;
+        String filename = "kickReasons.txt";
         try {
-            reader = new BufferedReader(new FileReader("file.txt"));
+            reader = new BufferedReader(new FileReader(filename));
 
-            int lines = 0;
             while (true) {
                 try {
                     if (reader.readLine() == null) {
@@ -89,7 +91,7 @@ public class KickClientCommandHandler extends AbstractCommand {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                lines++;
+                amountOfLines++;
             }
             try {
                 reader.close();
@@ -101,10 +103,10 @@ public class KickClientCommandHandler extends AbstractCommand {
         }
 
         Random rand = new Random();
-        int n = rand.nextInt(1) + 1;
+        int n = rand.nextInt(amountOfLines);
 
-        try (Stream<String> all_lines = Files.lines(Paths.get("kickReasons.txt"))) {
-            reasonForKickMain = all_lines.skip(n-1).findFirst().get();
+        try (Stream<String> all_lines = Files.lines(Paths.get(filename))) {
+            reasonForKickMain = all_lines.skip(n).findFirst().get();
         } catch (IOException e) {
             e.printStackTrace();
         }
