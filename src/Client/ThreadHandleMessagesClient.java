@@ -96,7 +96,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private void disconnect() {
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream()); // instanciate new data output stream
-            dOut.writeByte(MessageTypes.NORMAL_MESSAGE.getValue()); // Declare type of message (0 = disconnect)
+            dOut.writeByte(MessageTypes.DISCONNECT.getValue()); // Declare type of message (0 = disconnect)
             dOut.flush(); // Send off the data
         } catch (IOException e) {
             System.out.println("Can't disconnect from Server in thread " + threadName + ", VERY BAD");
