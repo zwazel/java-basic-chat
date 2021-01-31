@@ -11,6 +11,9 @@ public class KickClientCommandHandler extends AbstractCommand {
 
                     if(server.checkIfClientExists(target)) {
                         // TODO: Make it possible for the user to specify a reason which will be send to the kicked user
+                        // TODO: If the user doesnt specify a reason, auto generate one on your own
+
+                        // TODO: Send reason to all the clients
                         server.disconnectSingleClient(target);
                     } else {
                         server.sendMessage(thisUserDoesNotExist, senderId);
@@ -35,6 +38,9 @@ public class KickClientCommandHandler extends AbstractCommand {
 
                 if(server.checkIfClientExists(target)) {
                     // TODO: Make it possible for the user to specify a reason which will be send to the kicked user
+                    // TODO: If the user doesnt specify a reason, auto generate one on your own
+
+                    // TODO: Send reason to all the clients
                     server.disconnectSingleClient(target);
                 } else {
                     System.out.println(thisUserDoesNotExist);
