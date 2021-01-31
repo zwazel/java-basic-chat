@@ -74,26 +74,7 @@ public class Server {
         sendMessageToClients("Client \"" + disconnectedClientUsername + "\" with id: " + clientId + " disconnected"); // Tell all the currently connected clients who just disconnected
     }
 
-    public void disconnectSingleClient(int clientId) {
-        Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
-
-        try {
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
-            dOut.writeByte(0); // tell the client what type of message he's receiving (0 = disconnect) by writing a byte in the stream
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // Catch error
-            System.out.println("Can't send command for disconnecting from server to client \"" + clientId + "\" with ID: " + clientId + "! VERY BAD");
-        }
-    }
-
-    // Disconnect all currently connected clients
-    public void disconnectAllClients() {
-        for (int i : clientMap.keySet()) { // Go through all the clients
-            disconnectSingleClient(i);
-        }
-    }
-
-    public void sendMessageTypeToClient(int clientId, int messageType) {
+    public void sendMessageTypeToClient(int clientId, byte messageType) {
         Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
 
         try {
@@ -105,7 +86,7 @@ public class Server {
         }
     }
 
-    public void sendMessageTypeToClient(int clientId, int messageType, String message) {
+    public void sendMessageTypeToClient(int clientId, byte messageType, String message) {
         Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
 
         try {
@@ -118,36 +99,15 @@ public class Server {
         }
     }
 
-    public void sendMessageTypeToAllClients(int messageType) {
+    public void sendMessageTypeToAllClients(byte messageType) {
         for (int i : clientMap.keySet()) { // Go through all the clients
             sendMessageTypeToClient(i, messageType);
         }
     }
 
-    public void sendMessageTypeToAllClients(int messageType, String message) {
+    public void sendMessageTypeToAllClients(byte messageType, String message) {
         for (int i : clientMap.keySet()) { // Go through all the clients
             sendMessageTypeToClient(i, messageType, message);
-        }
-    }
-
-    public void kickSingleClient(int clientId, String reason, boolean customReason) {
-        Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
-        String clientUsername = clientMap.get(clientId).getUsername();
-        String kickMessage = "Server kicked " + clientUsername + ": " + reason;
-
-        try {
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
-            dOut.writeByte(4); // tell the client what type of message he's receiving (4 = kick) by writing a byte in the stream
-            dOut.writeUTF(reason);
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // Catch error
-            System.out.println("Can't send command for disconnecting from server to client \"" + clientId + "\" with ID: " + clientId + "! VERY BAD");
-        }
-    }
-
-    public void kickAllClients(String reason, boolean customReason) {
-        for (int i : clientMap.keySet()) { // Go through all the clients
-            kickSingleClient(i, reason);
         }
     }
 
@@ -212,17 +172,6 @@ public class Server {
             DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream()); // create new dataOutputStream where we'll put our message in
             dOut.writeByte(1); // tell the client what type of message he's receiving (1 = default message) by writing a byte in the stream
             dOut.writeUTF(message); // Put the message in the stream
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // catch error
-            System.out.println("Can't send message from Server to client \"" + clientMap.get(clientId).getUsername() + "\" with ID: " + clientId + "! VERY BAD");
-        }
-    }
-
-    public void toggleOpForClient(int clientId) {
-        try {
-            Socket clientSocket = clientMap.get(clientId).getSocket();
-            DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream()); // create new dataOutputStream where we'll put our message in
-            dOut.writeByte(3); // tell the client what type of message he's receiving (3 = toggle op) by writing a byte in the stream
             dOut.flush(); // Send off the data
         } catch (IOException e) { // catch error
             System.out.println("Can't send message from Server to client \"" + clientMap.get(clientId).getUsername() + "\" with ID: " + clientId + "! VERY BAD");

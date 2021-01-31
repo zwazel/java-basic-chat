@@ -1,5 +1,7 @@
 package Server;
 
+import ChatCommands.MessageTypes;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -91,7 +93,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     @Override
     public void windowClosing(WindowEvent e) {
         System.out.println("Closing " + getTitle()); // Tell the user that the window is closing
-        server.disconnectAllClients(); // the server is disconnecting, so we tell all the connected clients that they need to disconnect
+        server.sendMessageTypeToAllClients(MessageTypes.DISCONNECT.getValue()); // the server is disconnecting, so we tell all the connected clients that they need to disconnect
     }
 
     @Override

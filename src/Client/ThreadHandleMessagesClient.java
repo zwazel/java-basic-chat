@@ -1,5 +1,7 @@
 package Client;
 
+import ChatCommands.MessageTypes;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -78,7 +80,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private void sendCommandToServer(boolean isOp, String command, String[] args) {
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
-            dOut.writeByte(2); // Declare type of message (2 = command)
+            dOut.writeByte(MessageTypes.COMMAND.getValue()); // Declare type of message (2 = command)
             dOut.writeBoolean(isOp);
             dOut.writeUTF(command);
             dOut.writeInt(args.length); // Tell the receiver how many arguments there are
@@ -94,7 +96,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private void disconnect() {
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream()); // instanciate new data output stream
-            dOut.writeByte(0); // Declare type of message (0 = disconnect)
+            dOut.writeByte(MessageTypes.NORMAL_MESSAGE.getValue()); // Declare type of message (0 = disconnect)
             dOut.flush(); // Send off the data
         } catch (IOException e) {
             System.out.println("Can't disconnect from Server in thread " + threadName + ", VERY BAD");

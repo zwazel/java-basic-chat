@@ -1,5 +1,7 @@
 package Server;
 
+import ChatCommands.MessageTypes;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -32,18 +34,19 @@ public class ThreadHandleClient implements Runnable {
         while(running) { // While we're running
             try {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create a new dataInputStream
+                MessageTypes messageType = MessageTypes.values()[dIn.readByte()];
 
-                switch (dIn.readByte()) { // Check what type of message the client sends us
-                    case 0: // the client is disconnecting
+                switch (messageType) { // Check what type of message the client sends us
+                    case DISCONNECT: // the client is disconnecting
                         server.clientIsDisconnecting(myClientId); // get the ID of the client and disconnect him
                         running = false; // Stop this thread
                         break;
 
-                    case 1: // Normal message
+                    case NORMAL_MESSAGE: // Normal message
                         server.sendMessageFromClientToClients(myClientId, dIn.readUTF()); // read text from the client and send it to the server and to all the other clients
                         break;
 
-                    case 2:
+                    case COMMAND:
                         boolean isOp = dIn.readBoolean();
                         String command = dIn.readUTF();
                         int argAmount = dIn.readInt();

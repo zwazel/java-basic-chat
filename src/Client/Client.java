@@ -1,5 +1,7 @@
 package Client;
 
+import ChatCommands.MessageTypes;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -59,18 +61,20 @@ public class Client {
         while (running) { // While we are running
             try {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // instantiate new dataInputStream which is linked to the client
-                switch (dIn.readByte()) { // Check what type of message we got
-                    case 0: // message tells us the server disconnected
+                MessageTypes messageType = MessageTypes.values()[dIn.readByte()];
+
+                switch (messageType) { // Check what type of message we got
+                    case DISCONNECT: // message tells us the server disconnected
                         System.out.println("Server disconnected! Disconnecting myself..."); // print what happened
                         running = false; // Stop everything
                         break;
-                    case 1: // Normal message
+                    case NORMAL_MESSAGE: // Normal message
                         System.out.println(dIn.readUTF()); // we got a Normal message
                         break;
-                    case 3:
+                    case TOGGLE_OP:
                         toggleOperator();
                         break;
-                    case 4: // Special case
+                    case KICK: // Kick
                         System.out.println(dIn.readUTF());
                         running = false;
                         break;
