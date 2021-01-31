@@ -13,12 +13,15 @@ public class ThreadHandleClient implements Runnable {
     private Socket socket; // the client socket
     private boolean running = true; // are we running or should we end?
     private int myClientId;
+    private String myClientUsername;
 
     public ThreadHandleClient(String threadName, Server server, Socket s, int myClientId) {
         this.threadName = threadName;
         this.server = server;
         this.socket = s;
         this.myClientId = myClientId;
+
+        this.myClientUsername = server.getClientUsername(myClientId);
     }
 
     @Override
@@ -39,11 +42,14 @@ public class ThreadHandleClient implements Runnable {
                 switch (messageType) { // Check what type of message the client sends us
                     case DISCONNECT: // the client is disconnecting
                         server.removeClientFromMap(myClientId); // get the ID of the client and disconnect him
+                        String disconnectMessage = myClientUsername + " disconnected";
+                        System.out.println("Server (Me): " + disconnectMessage);
+                        server.sendMessageTypeToAllClients(MessageTypes.NORMAL_MESSAGE.getValue(),"Server: " + disconnectMessage);
                         running = false; // Stop this thread
                         break;
 
                     case NORMAL_MESSAGE: // Normal message
-                        server.sendMessageToAllClientsFromClient(messageType.getValue(), dIn.readUTF(), myClientId); // read text from the client and send it to the server and to all the other clients
+                        server.sendMessageToAllClientsFromClient(messageType.getValue(), dIn.readUTF(), myClientId); // read text from the client and send it to the server and to all the other clients. and don't send it to me back
                         break;
 
                     case CLIENT_COMMAND:

@@ -67,6 +67,10 @@ public class Server {
         return server;
     }
 
+    public String getClientUsername(int clientId) {
+        return clientMap.get(clientId).getUsername();
+    }
+
     // Add a new client to the HashMap
     private void addClientToMap(int id, String username, Socket s) { // Get the id, username and the socket
         clientMap.put(id, new ServerClient(id, username, s)); // Create a new ServerClient Instance and safe it in the HashMap
