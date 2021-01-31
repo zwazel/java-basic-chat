@@ -35,14 +35,13 @@ public class KickClientCommandHandler extends AbstractCommand {
         int argsLength = args.length;
 
         if (argsLength >= 1) {
-            // TODO: If the user doesnt specify a reason, auto generate one on your own
             if(argsLength >= 2) {
                 for(int i = 1; i < args.length; i++) {
                     String reasonPart = args[i];
                     reasonForKickMain += reasonPart + " ";
                 }
             } else {
-                // Get message from text file
+                // TODO: If the user doesnt specify a reason, auto generate one on your own
             }
         } else {
             if(senderId > 0) {
