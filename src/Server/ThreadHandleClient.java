@@ -38,15 +38,15 @@ public class ThreadHandleClient implements Runnable {
 
                 switch (messageType) { // Check what type of message the client sends us
                     case DISCONNECT: // the client is disconnecting
-                        server.clientIsDisconnecting(myClientId); // get the ID of the client and disconnect him
+                        server.removeClientFromMap(myClientId); // get the ID of the client and disconnect him
                         running = false; // Stop this thread
                         break;
 
                     case NORMAL_MESSAGE: // Normal message
-                        server.sendMessageFromClientToClients(myClientId, dIn.readUTF()); // read text from the client and send it to the server and to all the other clients
+                        server.sendMessageToAllClientsFromClient(messageType.getValue(), dIn.readUTF(), myClientId); // read text from the client and send it to the server and to all the other clients
                         break;
 
-                    case COMMAND:
+                    case CLIENT_COMMAND:
                         boolean isOp = dIn.readBoolean();
                         String command = dIn.readUTF();
                         int argAmount = dIn.readInt();
@@ -56,7 +56,7 @@ public class ThreadHandleClient implements Runnable {
                         }
 
                         if(!server.handleCommandsClient(isOp, command, args, myClientId)) {
-                            server.sendMessage("Unknown command!", myClientId);
+                            server.sendMessageTypeToClient(myClientId, messageType.getValue(), "Unknown command!");
                         }
                         break;
 
@@ -66,7 +66,7 @@ public class ThreadHandleClient implements Runnable {
                             message = "null";
                         }
                         System.out.println("Got undefined Message from client in thread " + threadName + "! Message: " + message);
-                        server.sendMessage("Undefined Message Type!", myClientId);
+                        server.sendMessageTypeToClient(myClientId, messageType.getValue(),"Undefined Message Type!");
                         break;
                 }
             } catch (IOException e) {

@@ -80,7 +80,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private void sendCommandToServer(boolean isOp, String command, String[] args) {
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
-            dOut.writeByte(MessageTypes.COMMAND.getValue()); // Declare type of message (2 = command)
+            dOut.writeByte(MessageTypes.CLIENT_COMMAND.getValue()); // Declare type of message (2 = command)
             dOut.writeBoolean(isOp);
             dOut.writeUTF(command);
             dOut.writeInt(args.length); // Tell the receiver how many arguments there are

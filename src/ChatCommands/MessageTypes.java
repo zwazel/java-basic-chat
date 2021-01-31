@@ -5,7 +5,7 @@ public enum MessageTypes {
     NORMAL_MESSAGE,
     KICK,
     TOGGLE_OP,
-    COMMAND,
+    CLIENT_COMMAND,
     ;
 
     private final byte value;

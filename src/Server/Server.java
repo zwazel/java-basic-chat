@@ -67,11 +67,18 @@ public class Server {
         return server;
     }
 
+    // Add a new client to the HashMap
+    private void addClientToMap(int id, String username, Socket s) { // Get the id, username and the socket
+        clientMap.put(id, new ServerClient(id, username, s)); // Create a new ServerClient Instance and safe it in the HashMap
+    }
+
     // a single client is disconnecting on its own
-    public void clientIsDisconnecting(int clientId) {
-        String disconnectedClientUsername = clientMap.get(clientId).getUsername();
+    public void removeClientFromMap(int clientId) {
         clientMap.remove(clientId); // remove the client from the hashmap
-        sendMessageToClients("Client \"" + disconnectedClientUsername + "\" with id: " + clientId + " disconnected"); // Tell all the currently connected clients who just disconnected
+    }
+
+    private void printMessageForMyself(String message) {
+        System.out.println(message);
     }
 
     public void sendMessageTypeToClient(int clientId, byte messageType) {
@@ -111,6 +118,16 @@ public class Server {
         }
     }
 
+    public void sendMessageToAllClientsFromClient(byte messageType, String message, int ignoredId) { // ignoredId: We don't want to send the message back to the client that sent us the message
+        printMessageForMyself(message);
+
+        for (int i : clientMap.keySet()) { // Go through all the clients
+            if(ignoredId != i) {
+                sendMessageTypeToClient(i, messageType, message);
+            }
+        }
+    }
+
     private void acceptConnections() {
         while (running) { // Only while the server is running (this is to avoid errors as I haven't found another workaround)
             try {
@@ -125,7 +142,7 @@ public class Server {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
                 String clientUsername = dIn.readUTF(); // Read text and save it
 
-                sendMessageToClients("Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
+                sendMessageTypeToAllClients(MessageTypes.NORMAL_MESSAGE.getValue(), "Server: Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
 
                 addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 
@@ -136,45 +153,6 @@ public class Server {
             } catch (IOException e) { // catch error
                 System.out.println("Can't accept socket connection! VERY BAD");
             }
-        }
-    }
-
-    // Send a message from me, the server, to all the other clients.
-    public void sendMessageToClients(String message) { // We need the message we want to send
-        if(running) { // Only while the server is running (this is to avoid errors as I haven't found another workaround)
-            System.out.println(username + " (Me): " + message); // Print the message for myself
-            message = username + ": " + message; // set the message so it's displaying correctly for the clients
-
-            for (int i : clientMap.keySet()) { // go through all the currently connected clients
-                sendMessage(message, i); // Send the message to the specified socket
-            }
-        }
-    }
-
-    // Send a message from a client to all the other clients. Don't send the message to the client himself
-    public void sendMessageFromClientToClients(int id, String message) { // We need the ID because we need to know who sent the message
-        //String username = clientsHashMap.get(id).getUsername(); // We already have the username inside of the message, so this is not needed
-
-        if(running) { // Only while the server is running (this is to avoid errors as I haven't found another workaround)
-            System.out.println(message); // print the message for myself
-            for (int i : clientMap.keySet()) { // go through all the currently connected clients
-                if (i != id) { // Don't send message back to the client who sent us the message
-                    sendMessage(message, i); // Send the message to the socket
-                }
-            }
-        }
-    }
-
-    // Here we send a normal message to a specified socket
-    public void sendMessage(String message, int clientId) { // Get the message and the socket
-        try {
-            Socket clientSocket = clientMap.get(clientId).getSocket();
-            DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream()); // create new dataOutputStream where we'll put our message in
-            dOut.writeByte(1); // tell the client what type of message he's receiving (1 = default message) by writing a byte in the stream
-            dOut.writeUTF(message); // Put the message in the stream
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // catch error
-            System.out.println("Can't send message from Server to client \"" + clientMap.get(clientId).getUsername() + "\" with ID: " + clientId + "! VERY BAD");
         }
     }
 
@@ -224,11 +202,6 @@ public class Server {
 
         // return the ip, or null if we can't find an IP
         return result;
-    }
-
-    // Add a new client to the HashMap
-    private void addClientToMap(int id, String username, Socket s) { // Get the id, username and the socket
-        clientMap.put(id, new ServerClient(id, username, s)); // Create a new ServerClient Instance and safe it in the HashMap
     }
 
     // Method for getting an Integer

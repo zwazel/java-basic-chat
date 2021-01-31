@@ -3,7 +3,7 @@ package ChatCommands;
 public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
-        server.sendMessage("Listing all connected Clients...", senderId);
+        server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "Listing all connected Clients...");
         if(server.clientMap.size() > 0) {
             for (int i : server.clientMap.keySet()) {
                 String usernameAndId = server.clientMap.get(i).getUsernameWithID();
@@ -15,10 +15,10 @@ public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
                     usernameAndId += " (OP)";
                 }
 
-                server.sendMessage("- " + usernameAndId, senderId);
+                server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "- " + usernameAndId);
             }
         } else {
-            server.sendMessage("No clients connected!", senderId);
+            server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "No clients connected!");
         }
     }
 

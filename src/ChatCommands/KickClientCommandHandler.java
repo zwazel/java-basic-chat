@@ -32,18 +32,18 @@ public class KickClientCommandHandler extends AbstractCommand {
                                 // TODO: Send reason to every client
                                 server.sendMessageTypeToClient(i, MessageTypes.KICK.getValue(), reasonForKick);
                             } else {
-                                server.sendMessage("User with ID " + i + " does not exist!", senderId);
+                                server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(),"User with ID " + i + " does not exist!");
                             }
                         }
                     } else {
-                        server.sendMessage(iNeedANumber, senderId);
+                        server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
                     }
                 }
             } else {
-                server.sendMessage(needTargetId, senderId);
+                server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
             }
         } else {
-            server.sendMessage(youNeedOp, senderId);
+            server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
         }
     }
 

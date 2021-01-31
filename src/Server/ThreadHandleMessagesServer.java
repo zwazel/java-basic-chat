@@ -79,7 +79,8 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
                 System.out.println("Unknown command!");
             }
         } else {
-            server.sendMessageToClients(text); // Get the text inside of the input field and send it to all the connected clients
+            System.out.println("Server (Me): " + text);
+            server.sendMessageTypeToAllClients(MessageTypes.NORMAL_MESSAGE.getValue(), "Server: " + text); // Get the text inside of the input field and send it to all the connected clients
         }
         textInput.setText(""); // Reset the input field
     }
