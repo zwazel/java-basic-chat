@@ -10,37 +10,17 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 public class KickClientCommandHandler extends AbstractCommand {
-    private String reasonForKick = "";
+    private String reasonForKickMain = "";
+    private String reasonForKickStart = "Server: ";
+    private String reasonForKickStartToKickedClient = "You've been kicked\n" +
+            "Reason: ";
+    private String getReasonForKickStartToAllOtherClients = " has been kicked\n" +
+            "Reason: " ;
 
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
         if (isOp) {
-            if (args.length >= 1) {
-                if(args.length >= 2) {
-                    reasonForKick = args[1];
-                }
-
-                if(args[0].equalsIgnoreCase("all")) {
-                    server.sendMessageTypeToAllClients(MessageTypes.KICK.getValue(), reasonForKick);
-                } else {
-                    String[] multipleTargetsString = args[0].split(",");
-                    if (getTargetId(multipleTargetsString)) {
-                        for (int i : targetList) {
-                            if (server.checkIfClientExists(i)) {
-                                // TODO: If the user doesnt specify a reason, auto generate one on your own
-                                String kickedClientUsername = server.getClientUsername(i);
-                                server.sendMessageTypeToAllClients(MessageTypes.KICK.getValue(), "Server: " + kickedClientUsername + " " + reasonForKick);
-                            } else {
-                                server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(),"User with ID " + i + " does not exist!");
-                            }
-                        }
-                    } else {
-                        server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
-                    }
-                }
-            } else {
-                server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
-            }
+            kick(args, senderId);
         } else {
             server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
         }
@@ -48,38 +28,53 @@ public class KickClientCommandHandler extends AbstractCommand {
 
     @Override
     public void serverExecute(String[] args) {
-        if (args.length >= 1) {
-            if(args.length >= 2) {
-                reasonForKick = args[1];
+        kick(args, 0);
+    }
+
+    private void kick(String[] args, int senderId) {
+        int argsLength = args.length;
+
+        if (argsLength >= 1) {
+            if(argsLength >= 2) {
+                for(int i = 1; i < args.length; i++) {
+                    String reasonPart = args[i];
+                    reasonForKickMain += reasonPart + " ";
+                }
             }
-
-            if(args[0].equalsIgnoreCase("all")) {
-                server.sendMessageTypeToAllClients(MessageTypes.KICK.getValue(), reasonForKick);
+        } else {
+            if(senderId > 0) {
+                server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
             } else {
-                String[] multipleTargetsString = args[0].split(",");
+                System.out.println(needTargetId);
+            }
+        }
 
-                if (getTargetId(multipleTargetsString)) {
-                    for (int i : targetList) {
-                        if (server.checkIfClientExists(i)) {
-                            // TODO: Make it possible for the user to specify a reason which will be send to the kicked user
-                            // TODO: If the user doesnt specify a reason, auto generate one on your own
-
-                            // TODO: Send reason to all the clients
-                            server.sendMessageTypeToClient(i, MessageTypes.KICK.getValue(), reasonForKick);
+        if(args[0].equalsIgnoreCase("all")) {
+            server.sendMessageTypeToAllClients(MessageTypes.KICK.getValue(), reasonForKickStart + reasonForKickStartToKickedClient + reasonForKickMain);
+        } else {
+            String[] multipleTargetsString = args[0].split(",");
+            if (getTargetId(multipleTargetsString)) {
+                for (int i : targetList) {
+                    if (server.checkIfClientExists(i)) {
+                        // TODO: If the user doesnt specify a reason, auto generate one on your own
+                        String kickedClientUsername = server.getClientUsername(i);
+                        server.sendMessageTypeToClient(i, MessageTypes.KICK.getValue(), reasonForKickStart + reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
+                        server.sendMessageTypeToAllClients(MessageTypes.NORMAL_MESSAGE.getValue(), reasonForKickStart + kickedClientUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
+                    } else {
+                        if(senderId > 0) {
+                            server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "User with ID " + i + " does not exist!");
                         } else {
                             System.out.println("User with ID " + i + " does not exist!");
                         }
                     }
-                } else {
-                    System.out.println(iNeedANumber);
                 }
+            } else {
+                server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
             }
-        } else {
-            System.out.println(needTargetId);
         }
     }
 
-    private String getReasonForKick() {
+    private String getReasonForKickMain() {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader("file.txt"));
@@ -108,7 +103,7 @@ public class KickClientCommandHandler extends AbstractCommand {
         int n = rand.nextInt(1) + 1;
 
         try (Stream<String> all_lines = Files.lines(Paths.get("kickReasons.txt"))) {
-            reasonForKick = all_lines.skip(n-1).findFirst().get();
+            reasonForKickMain = all_lines.skip(n-1).findFirst().get();
         } catch (IOException e) {
             e.printStackTrace();
         }
