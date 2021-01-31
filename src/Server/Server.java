@@ -65,21 +65,24 @@ public class Server {
         sendMessageToClients("Client \"" + disconnectedClientUsername + "\" with id: " + clientId + " disconnected"); // Tell all the currently connected clients who just disconnected
     }
 
+    public void disconnectSingleClient(int clientId) {
+        Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
+
+        try {
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
+            dOut.writeByte(0); // tell the client what type of message he's receiving (0 = disconnect) by writing a byte in the stream
+            dOut.flush(); // Send off the data
+        } catch (IOException e) { // Catch error
+            System.out.println("Can't send command for disconnecting from server to client \"" + clientId + "\" with ID: " + clientId + "! VERY BAD");
+        }
+    }
+
     // Disconnect all currently connected clients
     public void disconnectAllClients() {
         System.out.println(username + " (Me): Disconnecting..."); // Print for myself
 
         for (int i : clientMap.keySet()) { // Go through all the clients
-            Socket s = clientMap.get(i).getSocket(); // Get the socket of the current client
-            int clientId = clientMap.get(i).getMyId();
-
-            try {
-                DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
-                dOut.writeByte(0); // tell the client what type of message he's receiving (0 = disconnect) by writing a byte in the stream
-                dOut.flush(); // Send off the data
-            } catch (IOException e) { // Catch error
-                System.out.println("Can't send command for disconnecting from server to client \"" + clientMap.get(clientId).getUsername() + "\" with ID: " + clientId + "! VERY BAD");
-            }
+            disconnectSingleClient(i);
         }
     }
 
