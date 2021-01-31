@@ -10,13 +10,13 @@ Main.java
  Main
 Server/ThreadHandleClient.java
  Server.ThreadHandleClient
-ChatCommands/KickClientCommandHandler.java
- ChatCommands.KickClientCommandHandler
+ChatCommands/SetOperatorCommandHandler.java
+ ChatCommands.SetOperatorCommandHandler
 ChatCommands/ListAllConnectedClientsCommandHandler.java
  ChatCommands.ListAllConnectedClientsCommandHandler
 Server/ThreadHandleMessagesServer.java
  Server.ThreadHandleMessagesServer
+ChatCommands/KickClientCommandHandler.java
+ ChatCommands.KickClientCommandHandler
 Server/Server.java
  Server.Server
-ChatCommands/SetOperatorCommandHandler.java
- ChatCommands.SetOperatorCommandHandler
