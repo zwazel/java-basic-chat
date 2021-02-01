@@ -104,7 +104,7 @@ public class Server {
 
     public void sendMessageTypeToClient(int senderId, int receiverId, byte messageType, String message) {
         Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
-        String senderName = getSenderNameAndPrintMessage(senderId, message);
+        String senderName = getSenderName(senderId);
 
         try {
             DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
@@ -123,23 +123,25 @@ public class Server {
     }
 
     public void sendMessageTypeToAllClients(int senderId, byte messageType, String message) {
+        getSenderNameAndPrintMessage(senderId, message);
+
         for (int i : clientMap.keySet()) { // Go through all the clients
             sendMessageTypeToClient(senderId, i, messageType, message);
         }
     }
 
     public void sendMessageToAllClientsFromClient(int senderId, byte messageType, String message) { // ignoredId: We don't want to send the message back to the client that sent us the message
-        String senderName = getSenderNameAndPrintMessage(senderId, message);
+        getSenderNameAndPrintMessage(senderId, message);
 
         for (int i : clientMap.keySet()) { // Go through all the clients
             if(senderId != i) {
-                sendMessageTypeToClient(senderId, i, messageType, senderName + message);
+                sendMessageTypeToClient(senderId, i, messageType, message);
             }
         }
     }
 
     private String getSenderNameAndPrintMessage(int senderId, String message) {
-        String senderName = "";
+        String senderName = "Undefined User: ";
 
         if(senderId == 0) {
             senderName = "Server: ";
@@ -149,6 +151,18 @@ public class Server {
             senderName = clientMap.get(senderId).getUsername() + ": ";
 
             printMessageForMyself(senderName + message);
+        }
+
+        return senderName;
+    }
+
+    private String getSenderName(int senderId) {
+        String senderName = "Undefined User: ";
+
+        if(senderId == 0) {
+            senderName = "Server: ";
+        } else if (senderId > 0) {
+            senderName = clientMap.get(senderId).getUsername() + ": ";
         }
 
         return senderName;
