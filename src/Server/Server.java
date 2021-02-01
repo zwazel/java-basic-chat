@@ -58,6 +58,10 @@ public class Server {
         return false;
     }
 
+    public int getId() {
+        return myId;
+    }
+
     private void initCommands() {
         commandList.put("lc", new ListAllConnectedClientsCommandHandler());
         commandList.put("op", new SetOperatorCommandHandler());
@@ -86,28 +90,29 @@ public class Server {
         System.out.println(message);
     }
 
-    public void sendMessageTypeToClient(int clientId, byte messageType) {
-        Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
+    public void sendMessageTypeToClient(int receiverId, byte messageType) {
+        Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
 
         try {
             DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
             dOut.writeByte(messageType);
             dOut.flush(); // Send off the data
         } catch (IOException e) { // Catch error
-            System.out.println("Can't send messagetype " + messageType + "from server to client \"" + clientId + "\"! VERY BAD");
+            System.out.println("Can't send messagetype " + messageType + "from server to client \"" + receiverId + "\"! VERY BAD");
         }
     }
 
-    public void sendMessageTypeToClient(int clientId, byte messageType, String message) {
-        Socket s = clientMap.get(clientId).getSocket(); // Get the socket of the current client
+    public void sendMessageTypeToClient(int senderId, int receiverId, byte messageType, String message) {
+        Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
+        String senderName = getSenderNameAndPrintMessage(senderId, message);
 
         try {
             DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
             dOut.writeByte(messageType);
-            dOut.writeUTF(message);
+            dOut.writeUTF(senderName + message);
             dOut.flush(); // Send off the data
         } catch (IOException e) { // Catch error
-            System.out.println("Can't send messagetype " + messageType + "from server to client \"" + clientId + "\"! VERY BAD");
+            System.out.println("Can't send messagetype " + messageType + " from server to client \"" + receiverId + "\"! VERY BAD");
         }
     }
 
@@ -117,20 +122,36 @@ public class Server {
         }
     }
 
-    public void sendMessageTypeToAllClients(byte messageType, String message) {
+    public void sendMessageTypeToAllClients(int senderId, byte messageType, String message) {
         for (int i : clientMap.keySet()) { // Go through all the clients
-            sendMessageTypeToClient(i, messageType, message);
+            sendMessageTypeToClient(senderId, i, messageType, message);
         }
     }
 
-    public void sendMessageToAllClientsFromClient(byte messageType, String message, int ignoredId) { // ignoredId: We don't want to send the message back to the client that sent us the message
-        printMessageForMyself(message);
+    public void sendMessageToAllClientsFromClient(int senderId, byte messageType, String message) { // ignoredId: We don't want to send the message back to the client that sent us the message
+        String senderName = getSenderNameAndPrintMessage(senderId, message);
 
         for (int i : clientMap.keySet()) { // Go through all the clients
-            if(ignoredId != i) {
-                sendMessageTypeToClient(i, messageType, message);
+            if(senderId != i) {
+                sendMessageTypeToClient(senderId, i, messageType, senderName + message);
             }
         }
+    }
+
+    private String getSenderNameAndPrintMessage(int senderId, String message) {
+        String senderName = "";
+
+        if(senderId == 0) {
+            senderName = "Server: ";
+
+            printMessageForMyself("Server (Me): " + message);
+        } else if (senderId > 0) {
+            senderName = clientMap.get(senderId).getUsername() + ": ";
+
+            printMessageForMyself(senderName + message);
+        }
+
+        return senderName;
     }
 
     private void acceptConnections() {
@@ -147,7 +168,7 @@ public class Server {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
                 String clientUsername = dIn.readUTF(); // Read text and save it
 
-                sendMessageTypeToAllClients(MessageTypes.NORMAL_MESSAGE.getValue(), "Server: Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
+                sendMessageTypeToAllClients(myId, MessageTypes.NORMAL_MESSAGE.getValue(), "Server: Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
 
                 addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 

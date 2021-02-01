@@ -70,7 +70,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
             dOut.writeByte(1); // Declare type of message (1 = normal message)
-            dOut.writeUTF(username + ": " + message);
+            dOut.writeUTF(message);
             dOut.flush(); // Send off the data
         } catch (IOException e) {
             System.out.println("Can't send message in thread " + threadName + ", VERY BAD");

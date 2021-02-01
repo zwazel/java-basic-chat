@@ -13,10 +13,9 @@ import java.util.stream.Stream;
 
 public class KickClientCommandHandler extends AbstractCommand {
     private String reasonForKickMain = "";
-    private String reasonForKickStart = "Server: ";
-    private String reasonForKickStartToKickedClient = "You've been kicked\n" +
+    private final String reasonForKickStartToKickedClient = "You've been kicked\n" +
             "Reason: ";
-    private String getReasonForKickStartToAllOtherClients = " has been kicked\n" +
+    private final String getReasonForKickStartToAllOtherClients = " has been kicked\n" +
             "Reason: " ;
 
     @Override
@@ -24,13 +23,13 @@ public class KickClientCommandHandler extends AbstractCommand {
         if (isOp) {
             kick(args, senderId);
         } else {
-            server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
+            server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
         }
     }
 
     @Override
     public void serverExecute(String[] args) {
-        kick(args, 0);
+        kick(args, server.getId());
     }
 
     private void kick(String[] args, int senderId) {
@@ -48,32 +47,32 @@ public class KickClientCommandHandler extends AbstractCommand {
             }
         } else {
             if(senderId > 0) {
-                server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
+                server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
             } else {
                 System.out.println(needTargetId);
             }
         }
 
         if(args[0].equalsIgnoreCase("all")) {
-            server.sendMessageTypeToAllClients(MessageTypes.KICK.getValue(), reasonForKickStart + reasonForKickStartToKickedClient + reasonForKickMain);
+            server.sendMessageTypeToAllClients(server.getId(), MessageTypes.KICK.getValue(), reasonForKickStartToKickedClient + reasonForKickMain);
         } else {
             String[] multipleTargetsString = args[0].split(",");
             if (getTargetId(multipleTargetsString)) {
                 for (int i : targetList) {
                     if (server.checkIfClientExists(i)) {
                         String kickedClientUsername = server.getClientUsername(i) + " (" + i + ")";
-                        server.sendMessageTypeToClient(i, MessageTypes.KICK.getValue(), reasonForKickStart + reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
-                        server.sendMessageTypeToAllClients(MessageTypes.NORMAL_MESSAGE.getValue(), reasonForKickStart + kickedClientUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
+                        server.sendMessageTypeToClient(senderId, i, MessageTypes.KICK.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
+                        server.sendMessageTypeToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), kickedClientUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
                     } else {
                         if(senderId > 0) {
-                            server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "User with ID " + i + " does not exist!");
+                            server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "User with ID " + i + " does not exist!");
                         } else {
                             System.out.println("User with ID " + i + " does not exist!");
                         }
                     }
                 }
             } else {
-                server.sendMessageTypeToClient(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
+                server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
             }
         }
     }
