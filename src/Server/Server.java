@@ -144,7 +144,7 @@ public class Server {
         String senderName = "Undefined User: ";
 
         if(senderId == 0) {
-            senderName = "Server: ";
+            senderName = username + ": ";
         } else if (senderId > 0) {
             senderName = clientMap.get(senderId).getUsername() + ": ";
         }
