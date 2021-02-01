@@ -1,6 +1,6 @@
 package Server;
 
-import MessageTypes;
+import Main.MessageTypes;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,9 @@
-import java.util.Scanner;
-import Server.Server;
+package Main;
+
 import Client.Client;
+import Server.Server;
+
+import java.util.Scanner;
 
 public class Main {
     Scanner scanner;

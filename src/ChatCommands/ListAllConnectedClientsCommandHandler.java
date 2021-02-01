@@ -1,5 +1,7 @@
 package ChatCommands;
 
+import Main.MessageTypes;
+
 public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {

@@ -1,6 +1,7 @@
 package Server;
 
 import ChatCommands.*;
+import Main.MessageTypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

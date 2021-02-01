@@ -1,3 +1,5 @@
+package Main;
+
 public enum MessageTypes {
     DISCONNECT,
     NORMAL_MESSAGE,
