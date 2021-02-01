@@ -1,5 +1,3 @@
-package ChatCommands;
-
 public enum MessageTypes {
     DISCONNECT,
     NORMAL_MESSAGE,

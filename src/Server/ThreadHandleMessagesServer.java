@@ -1,6 +1,6 @@
 package Server;
 
-import ChatCommands.MessageTypes;
+import MessageTypes;
 
 import javax.swing.*;
 import java.awt.*;

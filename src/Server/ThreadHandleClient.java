@@ -1,6 +1,6 @@
 package Server;
 
-import ChatCommands.MessageTypes;
+import MessageTypes;
 
 import java.io.DataInputStream;
 import java.io.IOException;
