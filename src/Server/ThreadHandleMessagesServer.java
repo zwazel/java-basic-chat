@@ -65,6 +65,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     public void actionPerformed(ActionEvent e) {
         String text = textInput.getText();
         if(text.startsWith("/")) {
+            text = text.toLowerCase();
             text = text.substring(1);
             String[] commandParts = text.split(" ");
             String command = commandParts[0];
