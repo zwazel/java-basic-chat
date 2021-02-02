@@ -54,14 +54,14 @@ public class KickClientCommandHandler extends AbstractCommand {
         }
 
         if(args[0].equalsIgnoreCase("all")) {
-            server.sendMessageTypeToAllClients(server.getId(), MessageTypes.KICK.getValue(), reasonForKickStartToKickedClient + reasonForKickMain);
+            server.sendMessageTypeToAllClients(server.getId(), MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain);
         } else {
             String[] multipleTargetsString = args[0].split(",");
             if (getTargetId(multipleTargetsString)) {
                 for (int i : targetList) {
                     if (server.checkIfClientExists(i)) {
                         String kickedClientUsername = server.getClientUsername(i) + " (" + i + ")";
-                        server.sendMessageTypeToClient(senderId, i, MessageTypes.KICK.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
+                        server.sendMessageTypeToClient(senderId, i, MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
                         server.sendMessageTypeToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), kickedClientUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
                     } else {
                         if(senderId > 0) {

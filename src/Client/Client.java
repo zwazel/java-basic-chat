@@ -74,7 +74,7 @@ public class Client {
                     case TOGGLE_OP:
                         toggleOperator();
                         break;
-                    case KICK: // Kick
+                    case KICK_CLIENT: // Kick
                         System.out.println(dIn.readUTF());
                         running = false;
                         break;

@@ -3,9 +3,10 @@ package Main;
 public enum MessageTypes {
     DISCONNECT,
     NORMAL_MESSAGE,
-    KICK,
+    KICK_CLIENT,
     TOGGLE_OP,
     CLIENT_COMMAND,
+    MUTE_CLIENT,
     ;
 
     private final byte value;
