@@ -66,7 +66,6 @@ public class Server {
         commandList.put("lc", new ListAllConnectedClientsCommandHandler());
         commandList.put("op", new SetOperatorCommandHandler());
         commandList.put("kick", new KickClientCommandHandler());
-        commandList.put("mute", new MuteClientCommandHandler());
     }
 
     public static Server get() {
