@@ -20,6 +20,7 @@ public class Main {
     private boolean init() {
         System.out.print("Do you want to host (0) or to join (1)? > "); // Tell the user what to do
 
+        // TODO: catch error if not number
         switch (Integer.parseInt(scanner.nextLine())) { // get the input as string, and convert it to an Integer
             case 0: // case 0, behave as a server
                 new Server(); // instantiate new server
