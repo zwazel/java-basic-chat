@@ -123,7 +123,11 @@ public class Server {
     }
 
     public void sendMessageTypeToAllClients(int senderId, byte messageType, String message) {
-        printMessageForMyself(getSenderName(senderId) + message);
+        if(senderId == 0) {
+            printMessageForMyself("Server (Me): " + message);
+        } else {
+            printMessageForMyself(getSenderName(senderId) + message);
+        }
 
         for (int i : clientMap.keySet()) { // Go through all the clients
             sendMessageTypeToClient(senderId, i, messageType, message);
@@ -131,7 +135,11 @@ public class Server {
     }
 
     public void sendMessageToAllClientsFromClient(int senderId, byte messageType, String message) { // ignoredId: We don't want to send the message back to the client that sent us the message
-        printMessageForMyself(getSenderName(senderId) + message);
+        if(senderId == 0) {
+            printMessageForMyself("Server (Me): " + message);
+        } else {
+            printMessageForMyself(getSenderName(senderId) + message);
+        }
 
         for (int i : clientMap.keySet()) { // Go through all the clients
             if(senderId != i) {
@@ -149,6 +157,7 @@ public class Server {
             senderName = clientMap.get(senderId).getUsername() + ": ";
         }
 
+        //System.out.println("GetSenderName with senderId " + senderId + " name is " + senderName);
         return senderName;
     }
 

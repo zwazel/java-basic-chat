@@ -5,9 +5,8 @@ import Main.MessageTypes;
 public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
-        server.sendMessageTypeToClient(-1, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "\nListing all connected Clients...");
+        String message = "\nListing all connected Clients...\n";
         if(server.clientMap.size() > 0) {
-            String message = "";
             for (int i : server.clientMap.keySet()) {
                 String usernameAndId = server.clientMap.get(i).getUsernameWithID();
                 if(senderId == server.clientMap.get(i).getMyId()) {
@@ -20,18 +19,17 @@ public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
 
                 message+="- " + usernameAndId + "\n";
             }
-
-            server.sendMessageTypeToClient(-1, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), message);
         } else {
-            server.sendMessageTypeToClient(-1, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "No clients connected!");
+            message += "No clients connected!";
         }
+
+        server.sendMessageTypeToClient(-1, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), message);
     }
 
     @Override
     public void serverExecute(String[] args) {
-        System.out.println("\nListing all connected Clients...");
+        String message = "\nListing all connected Clients...\n";
         if(server.clientMap.size() > 0) {
-            String message = "";
             for (int i : server.clientMap.keySet()) {
                 String usernameAndId = server.clientMap.get(i).getUsernameWithID();
 
@@ -41,11 +39,11 @@ public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
 
                 message+="- " + usernameAndId + "\n";
             }
-
-            System.out.println(message);
         } else {
-            System.out.println("No clients connected!");
+            message += "No clients connected!";
         }
+
+        System.out.println(message);
     }
 
     @Override
