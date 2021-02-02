@@ -1,6 +1,6 @@
 package ChatCommands;
 
-import Main.MessageTypes;
+import GlobalStuff.MessageTypes;
 
 public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
     @Override

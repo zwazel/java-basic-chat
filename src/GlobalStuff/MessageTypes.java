@@ -1,4 +1,4 @@
-package Main;
+package GlobalStuff;
 
 public enum MessageTypes {
     DISCONNECT,

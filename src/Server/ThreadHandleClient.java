@@ -1,6 +1,6 @@
 package Server;
 
-import Main.MessageTypes;
+import GlobalStuff.MessageTypes;
 
 import java.io.DataInputStream;
 import java.io.IOException;

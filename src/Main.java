@@ -1,5 +1,3 @@
-package Main;
-
 import Client.Client;
 import Server.Server;
 

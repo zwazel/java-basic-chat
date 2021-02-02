@@ -1,6 +1,6 @@
 package ChatCommands;
 
-import Main.MessageTypes;
+import GlobalStuff.MessageTypes;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

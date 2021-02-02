@@ -1,7 +1,7 @@
 package ChatCommands;
 
 import Server.ServerClient;
-import Main.MessageTypes;
+import GlobalStuff.MessageTypes;
 
 public class SetOperatorCommandHandler extends AbstractCommand {
     @Override

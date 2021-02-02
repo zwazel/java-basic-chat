@@ -4,6 +4,10 @@ ChatCommands/AbstractCommand.java
  ChatCommands.AbstractCommand
 ChatCommands/MuteClientCommandHandler.java
  ChatCommands.MuteClientCommandHandler
+GlobalStuff/MessageTypes.java
+ GlobalStuff.MessageTypes
+Main.java
+ Main
 Server/ThreadHandleClient.java
  Server.ThreadHandleClient
  Server.ThreadHandleClient$1
@@ -13,8 +17,6 @@ ChatCommands/ListAllConnectedClientsCommandHandler.java
  ChatCommands.ListAllConnectedClientsCommandHandler
 Client/ThreadHandleMessagesClient.java
  Client.ThreadHandleMessagesClient
-Main/MessageTypes.java
- Main.MessageTypes
 Server/ThreadHandleMessagesServer.java
  Server.ThreadHandleMessagesServer
 Server/Server.java
@@ -22,7 +24,5 @@ Server/Server.java
 Client/Client.java
  Client.Client
  Client.Client$1
-Main/Main.java
- Main.Main
 ChatCommands/SetOperatorCommandHandler.java
  ChatCommands.SetOperatorCommandHandler
