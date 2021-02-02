@@ -11,11 +11,7 @@ public abstract class AbstractCommand {
     protected String thisUserDoesNotExist = "This user does not exist! use the command \"/lc\" to see the connected users!";
     protected String iNeedANumber = "Pls enter a number as an argument!";
 
-    public abstract void clientExecute(boolean isOp, String[] args, int senderId);
-
-    public abstract void serverExecute(String[] args);
-
-    public boolean getTargetId(String[] idList) {
+    protected boolean getTargetId(String[] idList) {
         targetList = new int[idList.length];
 
         for (int i = 0; i < targetList.length; i++) {
@@ -27,6 +23,10 @@ public abstract class AbstractCommand {
         }
         return true;
     }
+
+    public abstract void clientExecute(boolean isOp, String[] args, int senderId);
+
+    public abstract void serverExecute(String[] args);
 
     public abstract void printDescription(); // If using this command with "help" as an argument, call this method
 }
