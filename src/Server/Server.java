@@ -141,7 +141,7 @@ public class Server {
     }
 
     private String getSenderName(int senderId) {
-        String senderName = "Undefined User: ";
+        String senderName = "";
 
         if(senderId == 0) {
             senderName = username + ": ";
