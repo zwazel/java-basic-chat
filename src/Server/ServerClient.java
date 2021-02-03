@@ -30,7 +30,7 @@ public class ServerClient {
     }
 
     public String getUsernameWithID() {
-        return "(" + myId + ") " + username;
+        return username + " (" + myId + ")";
     }
 
     public Socket getSocket() {

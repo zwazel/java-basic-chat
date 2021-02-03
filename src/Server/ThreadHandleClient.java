@@ -48,7 +48,7 @@ public class ThreadHandleClient implements Runnable {
                         break;
 
                     case NORMAL_MESSAGE: // Normal message
-                        server.sendMessageToAllClientsFromClient(myClientId, messageType.getValue(), dIn.readUTF()); // read text from the client and send it to the server and to all the other clients. and don't send it to me back
+                        server.sendMessageTypeToAllClients(myClientId, messageType.getValue(), dIn.readUTF()); // read text from the client and send it to the server and to all the other clients. and don't send it to me back
                         break;
 
                     case CLIENT_COMMAND:

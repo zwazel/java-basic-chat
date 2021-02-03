@@ -66,7 +66,6 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     }
 
     private void sendMessageToServer(String message) {
-        System.out.println(username + " (Me): " + message);
         try {
             DataOutputStream dOut = new DataOutputStream(serverSocket.getOutputStream());
             dOut.writeByte(1); // Declare type of message (1 = normal message)

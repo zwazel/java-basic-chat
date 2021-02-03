@@ -1,6 +1,7 @@
 package ChatCommands;
 
 import GlobalStuff.MessageTypes;
+import Server.ServerClient;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -60,9 +61,10 @@ public class KickClientCommandHandler extends AbstractCommand {
             if (getTargetId(multipleTargetsString)) {
                 for (int i : targetList) {
                     if (server.checkIfClientExists(i)) {
-                        String kickedClientUsername = server.getClientUsername(i) + " (" + i + ")";
+                        ServerClient clientTarget = server.clientMap.get(i);
+                        String clientTargetUsername = clientTarget.getUsernameWithID();
                         server.sendMessageTypeToClient(senderId, i, MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
-                        server.sendMessageTypeToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), kickedClientUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
+                        server.sendMessageTypeToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
                     } else {
                         if(senderId > 0) {
                             server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "User with ID " + i + " does not exist!");

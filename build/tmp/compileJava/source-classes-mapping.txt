@@ -1,25 +1,25 @@
-Server/ServerClient.java
- Server.ServerClient
-Client/Client.java
- Client.Client
- Client.Client$1
 Client/ThreadHandleMessagesClient.java
  Client.ThreadHandleMessagesClient
-GlobalStuff/MessageTypes.java
- GlobalStuff.MessageTypes
 ChatCommands/AbstractCommand.java
  ChatCommands.AbstractCommand
+GlobalStuff/MessageTypes.java
+ GlobalStuff.MessageTypes
 Main.java
  Main
 Server/ThreadHandleClient.java
  Server.ThreadHandleClient
  Server.ThreadHandleClient$1
+Client/Client.java
+ Client.Client
+ Client.Client$1
+Server/ThreadHandleMessagesServer.java
+ Server.ThreadHandleMessagesServer
+Server/ServerClient.java
+ Server.ServerClient
 ChatCommands/KickClientCommandHandler.java
  ChatCommands.KickClientCommandHandler
 ChatCommands/ListAllConnectedClientsCommandHandler.java
  ChatCommands.ListAllConnectedClientsCommandHandler
-Server/ThreadHandleMessagesServer.java
- Server.ThreadHandleMessagesServer
 Server/Server.java
  Server.Server
 ChatCommands/SetOperatorCommandHandler.java
