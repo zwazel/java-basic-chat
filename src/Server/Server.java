@@ -178,7 +178,7 @@ public class Server {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
                 String clientUsername = dIn.readUTF(); // Read text and save it
 
-                sendMessageTypeToAllClients(myId, MessageTypes.NORMAL_MESSAGE.getValue(), "Server: Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
+                sendMessageTypeToAllClients(myId, MessageTypes.NORMAL_MESSAGE.getValue(), "Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
 
                 addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 
