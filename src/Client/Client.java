@@ -61,25 +61,7 @@ public class Client {
         while (running) { // While we are running
             try {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // instantiate new dataInputStream which is linked to the client
-                MessageTypes messageType = MessageTypes.UNDEFINED;
-                byte messageTypeByte = dIn.readByte();
-                messageType = MessageTypes.values()[messageTypeByte]; // read the byte (message type) and get the corresponding enum
-                int senderId = -1;
-                String senderName = "";
-                String message = "";
-                if(dIn.available() > 0) {
-                    senderId = dIn.readInt();
-                    senderName = dIn.readUTF();
-                    message = dIn.readUTF();
-
-                    if(senderId == myId) {
-                        senderName += " (Me)";
-                    }
-
-                    senderName += ": ";
-                } else {
-                    System.out.println("No more data to read in dataInputStream");
-                }
+                MessageTypes messageType = MessageTypes.values()[dIn.readByte()]; // read the byte (message type) and get the corresponding enum
 
                 switch (messageType) { // Check what type of message we got
                     case DISCONNECT: // message tells us the server disconnected
@@ -87,18 +69,14 @@ public class Client {
                         running = false; // Stop everything
                         break;
                     case NORMAL_MESSAGE: // Normal message
-                        System.out.println(senderName + message); // we got a Normal message
+                        System.out.println(dIn.readUTF()); // we got a Normal message
                         break;
                     case TOGGLE_OP: // OP should be toggled
                         toggleOperator();
                         break;
                     case KICK_CLIENT: // I'M GETTING KICKED?!?! :(
-                        System.out.println(senderName + message);
+                        System.out.println(dIn.readUTF());
                         running = false;
-                        break;
-
-                    default:
-                        System.out.println("Undefined message type: " + messageType);
                         break;
                 }
             } catch (IOException e) {
