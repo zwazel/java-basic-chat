@@ -3,6 +3,9 @@ package ChatCommands;
 import Server.Server;
 
 public abstract class AbstractCommand {
+    public boolean serverOnly = false;
+    public boolean opOnly = false;
+
     protected Server server = Server.get();
     protected int[] targetList;
 
@@ -22,6 +25,14 @@ public abstract class AbstractCommand {
             }
         }
         return true;
+    }
+
+    public boolean isServerOnly() {
+        return serverOnly;
+    }
+
+    public boolean isOpOnly() {
+        return opOnly;
     }
 
     public abstract void clientExecute(boolean isOp, String[] args, int senderId);

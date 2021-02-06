@@ -3,6 +3,9 @@ package ChatCommands;
 import GlobalStuff.MessageTypes;
 
 public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
+    public ListAllConnectedClientsCommandHandler() {
+    }
+
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
         String message = "\nListing all connected Clients...\n";
