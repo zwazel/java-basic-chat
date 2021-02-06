@@ -61,7 +61,7 @@ public class Client {
         while (running) { // While we are running
             try {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // instantiate new dataInputStream which is linked to the client
-                MessageTypes messageType = MessageTypes.values()[dIn.readByte()];
+                MessageTypes messageType = MessageTypes.values()[dIn.readByte()]; // read the byte (message type) and get the corresponding enum
 
                 switch (messageType) { // Check what type of message we got
                     case DISCONNECT: // message tells us the server disconnected
@@ -71,10 +71,10 @@ public class Client {
                     case NORMAL_MESSAGE: // Normal message
                         System.out.println(dIn.readUTF()); // we got a Normal message
                         break;
-                    case TOGGLE_OP:
+                    case TOGGLE_OP: // OP should be toggled
                         toggleOperator();
                         break;
-                    case KICK_CLIENT: // Kick
+                    case KICK_CLIENT: // I'M GETTING KICKED?!?! :(
                         System.out.println(dIn.readUTF());
                         running = false;
                         break;
