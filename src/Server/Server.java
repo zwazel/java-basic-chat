@@ -203,10 +203,10 @@ public class Server {
                 // TODO: this command is only for people that are operator and you are not operator! send a message to the client!
                 return false;
             }
-            command.clientExecute(isOp, args, senderId);
-            return true;
+            command.clientExecute(isOp, args, senderId); // execute the command
+            return true; // Everything is fine, command is being executed
         }
-        return false;
+        return false; // The command does not exist
     }
 
     public boolean handleCommandsServer(String command, String[] args) {
