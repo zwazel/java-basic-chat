@@ -44,6 +44,7 @@ public class ThreadHandleClient implements Runnable {
                         server.removeClientFromMap(myClientId); // get the ID of the client and disconnect him
                         String disconnectMessage = myClientUsername + " disconnected";
                         server.sendMessageTypeToAllClients(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(),disconnectMessage);
+                        System.out.println("WHY ARE YOU DISCONNECTING biiiatch");
                         running = false; // Stop this thread
                         break;
 
@@ -61,7 +62,7 @@ public class ThreadHandleClient implements Runnable {
                         }
 
                         if(!server.handleCommandsClient(isOp, command, args, myClientId)) {
-                            server.sendMessageTypeToClient(server.getId(), myClientId, messageType.getValue(), "Unknown command!");
+                            server.sendMessageTypeToClient(server.getId(), myClientId, MessageTypes.NORMAL_MESSAGE.getValue(), "Unknown command!");
                         }
                         break;
 
