@@ -192,18 +192,9 @@ public class Server {
         }
     }
 
-    public boolean handleCommandsClient(boolean isOp, String commandString, String[] args, int senderId) {
-        if(commandList.containsKey(commandString)) { // Check if the command exists
-            AbstractCommand command = commandList.get(commandString); // Store the command itself in a variable
-            if(command.isServerOnly()) { // The command is only for the server
-                // TODO: this command is only for the server! send a message to the client!
-                return false;
-            }
-            if(command.isOpOnly() && !isOp) { // The command is only for that are operator and the clien is not one
-                // TODO: this command is only for people that are operator and you are not operator! send a message to the client!
-                return false;
-            }
-            command.clientExecute(isOp, args, senderId);
+    public boolean handleCommandsClient(boolean isOp, String command, String[] args, int senderId) {
+        if(commandList.containsKey(command)) {
+            commandList.get(command).clientExecute(isOp, args, senderId);
             return true;
         }
         return false;

@@ -4,10 +4,6 @@ import Server.ServerClient;
 import GlobalStuff.MessageTypes;
 
 public class SetOperatorCommandHandler extends AbstractCommand {
-    public SetOperatorCommandHandler() {
-        opOnly = true;
-    }
-
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
         if(isOp) { // Only if the client is OP he can execute this command
