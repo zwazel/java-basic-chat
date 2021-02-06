@@ -47,7 +47,6 @@ public class KickClientCommandHandler extends AbstractCommand {
                     reasonForKickMain += reasonPart + " ";
                 }
             } else {
-                // TODO: If the user doesnt specify a reason, auto generate one on your own
                 getReasonForKickMain();
             }
         } else {
