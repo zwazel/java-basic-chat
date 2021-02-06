@@ -19,6 +19,10 @@ public class KickClientCommandHandler extends AbstractCommand {
     private final String getReasonForKickStartToAllOtherClients = " has been kicked\n" +
             "Reason: " ;
 
+    public KickClientCommandHandler() {
+        opOnly = true;
+    }
+
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
         if (isOp) {
