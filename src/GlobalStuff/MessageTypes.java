@@ -1,6 +1,7 @@
 package GlobalStuff;
 
 public enum MessageTypes {
+    UNDEFINED,
     DISCONNECT,
     NORMAL_MESSAGE,
     KICK_CLIENT,
@@ -8,7 +9,6 @@ public enum MessageTypes {
     CLIENT_COMMAND,
     MUTE_CLIENT,
     ;
-
     private final byte value;
 
     MessageTypes() {
