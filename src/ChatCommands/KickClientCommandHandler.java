@@ -34,7 +34,11 @@ public class KickClientCommandHandler extends AbstractCommand {
     }
 
     private void kick(String[] args, int senderId) {
-        server.sendToClientWithText(server.getId(),senderId,MessageTypes.NORMAL_MESSAGE.getValue(), "Kicking client...");
+        if(senderId == server.getId()) {
+            System.out.println("Kicking client...");
+        } else {
+            server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "Kicking client...");
+        }
 
         int argsLength = args.length;
 

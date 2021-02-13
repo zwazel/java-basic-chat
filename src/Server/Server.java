@@ -97,12 +97,22 @@ public class Server {
     public void sendToClientNoText(int receiverId, byte messageType) {
         Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
 
-        try {
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
-            dOut.writeByte(messageType);
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // Catch error
-            System.out.println("Can't send messagetype " + messageType + "from server to client \"" + receiverId + "\"! VERY BAD");
+        if(checkIfClientExists(receiverId)) {
+            try {
+                DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
+                dOut.writeByte(messageType);
+                dOut.flush(); // Send off the data
+            } catch (IOException e) { // Catch error
+                System.out.println("Can't send messagetype " + messageType + "from server to client \"" + receiverId + "\"! VERY BAD");
+            }
+        } else {
+            if(receiverId == myId) {
+                printMessageForMyself("Can't send message to client " + receiverId + "! user does not exist! \n" +
+                        "messagetype: " + MessageTypes.values()[messageType]);
+            } else {
+                sendToClientWithText(myId, receiverId, MessageTypes.NORMAL_MESSAGE.getValue(), "Can't send message to client " + receiverId + "! user does not exist! \n" +
+                        "messagetype: " + MessageTypes.values()[messageType]);
+            }
         }
     }
 
@@ -113,18 +123,30 @@ public class Server {
     }
 
     public void sendToClientWithText(int senderId, int receiverId, byte messageType, String message) {
-        Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
-        String senderName = getSenderName(senderId);
+        if(checkIfClientExists(receiverId)) {
+            Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
+            String senderName = getSenderName(senderId);
 
-        try {
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
-            dOut.writeByte(messageType);
-            dOut.writeInt(senderId);
-            dOut.writeUTF(senderName);
-            dOut.writeUTF(message);
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // Catch error
-            System.out.println("Can't send messagetype " + messageType + " from server to client \"" + receiverId + "\"! VERY BAD");
+            try {
+                DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
+                dOut.writeByte(messageType);
+                dOut.writeInt(senderId);
+                dOut.writeUTF(senderName);
+                dOut.writeUTF(message);
+                dOut.flush(); // Send off the data
+            } catch (IOException e) { // Catch error
+                System.out.println("Can't send messagetype " + messageType + " from server to client \"" + receiverId + "\"! VERY BAD");
+            }
+        } else {
+            if(senderId == myId) {
+                printMessageForMyself("Can't send message to client " + receiverId + "! user does not exist! \n" +
+                        "messagetype: " + MessageTypes.values()[messageType] + "\n" +
+                        "message: '" + message + "'");
+            } else {
+                sendToClientWithText(myId, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "Can't send message to client " + receiverId + "! user does not exist! \n" +
+                        "messagetype: " + MessageTypes.values()[messageType] + "\n" +
+                        "message: '" + message + "'");
+            }
         }
     }
 
