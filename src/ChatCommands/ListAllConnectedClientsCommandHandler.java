@@ -26,7 +26,7 @@ public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
             message += "No clients connected!";
         }
 
-        server.sendMessageTypeToClient(-1, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), message);
+        server.sendMessageToClient(-1, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), message);
     }
 
     @Override

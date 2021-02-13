@@ -80,7 +80,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
                 System.out.println("Unknown command!");
             }
         } else {
-            server.sendMessageTypeToAllClients(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(),text); // Get the text inside of the input field and send it to all the connected clients
+            server.sendMessageToAllClients(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(),text); // Get the text inside of the input field and send it to all the connected clients
         }
         textInput.setText(""); // Reset the input field
     }
@@ -94,7 +94,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     @Override
     public void windowClosing(WindowEvent e) {
         System.out.println("Closing " + getTitle()); // Tell the user that the window is closing
-        server.sendMessageTypeToAllClients(MessageTypes.DISCONNECT.getValue()); // the server is disconnecting, so we tell all the connected clients that they need to disconnect
+        server.sendCommandToAllClients(MessageTypes.DISCONNECT.getValue()); // the server is disconnecting, so we tell all the connected clients that they need to disconnect
     }
 
     @Override

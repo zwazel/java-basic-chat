@@ -28,7 +28,7 @@ public class KickClientCommandHandler extends AbstractCommand {
         if (isOp) {
             kick(args, senderId);
         } else {
-            server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
+            server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
         }
     }
 
@@ -51,14 +51,14 @@ public class KickClientCommandHandler extends AbstractCommand {
             }
         } else {
             if(senderId > 0) {
-                server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
+                server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
             } else {
                 System.out.println(needTargetId);
             }
         }
 
         if(args[0].equalsIgnoreCase("all")) {
-            server.sendMessageTypeToAllClients(server.getId(), MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain);
+            server.sendMessageToAllClients(server.getId(), MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain);
         } else {
             String[] multipleTargetsString = args[0].split(",");
             if (getTargetId(multipleTargetsString)) {
@@ -66,18 +66,18 @@ public class KickClientCommandHandler extends AbstractCommand {
                     if (server.checkIfClientExists(i)) {
                         ServerClient clientTarget = server.clientMap.get(i);
                         String clientTargetUsername = clientTarget.getUsernameWithID();
-                        server.sendMessageTypeToClient(senderId, i, MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
-                        server.sendMessageTypeToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
+                        server.sendMessageToClient(senderId, i, MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
+                        server.sendMessageToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
                     } else {
                         if(senderId > 0) {
-                            server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "User with ID " + i + " does not exist!");
+                            server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "User with ID " + i + " does not exist!");
                         } else {
                             System.out.println("User with ID " + i + " does not exist!");
                         }
                     }
                 }
             } else {
-                server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
+                server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
             }
         }
     }
