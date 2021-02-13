@@ -82,8 +82,12 @@ public class Server {
     }
 
     // a single client is disconnecting on its own
-    public void removeClientFromMap(int clientId) {
-        clientMap.remove(clientId); // remove the client from the hashmap
+    public boolean removeClientFromMap(int clientId) {
+        if(checkIfClientExists(clientId)) {
+            clientMap.remove(clientId); // remove the client from the hashmap
+            return true;
+        }
+        return false;
     }
 
     private void printMessageForMyself(String message) {

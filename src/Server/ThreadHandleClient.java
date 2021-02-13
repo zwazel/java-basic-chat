@@ -41,11 +41,16 @@ public class ThreadHandleClient implements Runnable {
 
                 switch (messageType) { // Check what type of message the client sends us
                     case DISCONNECT: // the client is disconnecting
-                        server.removeClientFromMap(myClientId); // get the ID of the client and disconnect him
-                        String disconnectMessage = myClientUsername + " disconnected";
-                        server.sendMessageTypeToAllClients(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(),disconnectMessage);
-                        System.out.println("WHY ARE YOU DISCONNECTING biiiatch");
-                        running = false; // Stop this thread
+                        boolean removedClient = false;
+                        while(!removedClient) {
+                            if (server.removeClientFromMap(myClientId)) { // get the ID of the client and disconnect him)
+                                String disconnectMessage = myClientUsername + " disconnected";
+                                server.sendMessageTypeToAllClients(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(), disconnectMessage);
+                                System.out.println("WHY ARE YOU DISCONNECTING biiiatch");
+                                running = false; // Stop this thread
+                                removedClient = true;
+                            }
+                        }
                         break;
 
                     case NORMAL_MESSAGE: // Normal message
