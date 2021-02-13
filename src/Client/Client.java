@@ -67,6 +67,7 @@ public class Client {
                 String senderName = "";
                 String messageBody = "";
 
+                // TODO: Find a way to intelligently check if we get an empty message or if we have stuff to read, can we read sender ID, senderName, etc, or not?
                 switch (messageType) { // Check what type of message we got
                     case DISCONNECT: // message tells us the server disconnected
                         System.out.println("Server disconnected! Disconnecting myself..."); // print what happened
