@@ -90,6 +90,7 @@ public class Server {
         System.out.println(message);
     }
 
+    // Send message but without a message
     public void sendMessageTypeToClient(int receiverId, byte messageType) {
         Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
 
@@ -102,22 +103,10 @@ public class Server {
         }
     }
 
+    // send message but with a message
     public void sendMessageTypeToClient(int senderId, int receiverId, byte messageType, String message) {
         Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
         String senderName = getSenderName(senderId);
-
-        try {
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
-            dOut.writeByte(messageType);
-            dOut.writeUTF(senderName + ": " + message);
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // Catch error
-            System.out.println("Can't send messagetype " + messageType + " from server to client \"" + receiverId + "\"! VERY BAD");
-        }
-    }
-
-    public void sendMessageTypeToClient(String senderName, int receiverId, byte messageType, String message) {
-        Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
 
         try {
             DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
@@ -140,7 +129,8 @@ public class Server {
             if(senderId != i) {
                 sendMessageTypeToClient(senderId, i, messageType, message);
             } else {
-                sendMessageTypeToClient(getSenderName(senderId) + " (Me)", senderId, messageType, message);
+                // TODO:
+                //sendMessageTypeToClient(getSenderName(senderId) + " (Me)", senderId, messageType, message);
             }
         }
     }
