@@ -185,7 +185,7 @@ public class Server {
         if(commandList.containsKey(commandString)) { // Check if the command exists
             AbstractCommand command = commandList.get(commandString); // Store the command itself in a variable
             if(command.isServerOnly()) { // The command is only for the server
-                // TODO: this command is only for the server! send a message to the client!
+                // TODO: this command is only for the server and you are not the server! send a message to the client!
                 return false;
             }
             if(command.isOpOnly() && !isOp) { // The command is only for that are operator and the clien is not one

@@ -25,6 +25,7 @@ public class KickClientCommandHandler extends AbstractCommand {
 
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
+        // TODO: as i'm checking on the serverside, this is no longer needed!
         if (isOp) {
             kick(args, senderId);
         } else {
