@@ -1,16 +1,15 @@
 Server/ServerClient.java
  Server.ServerClient
-Client/ThreadHandleMessagesClient.java
- Client.ThreadHandleMessagesClient
+Server/Server.java
+ Server.Server
 GlobalStuff/MessageTypes.java
  GlobalStuff.MessageTypes
-Client/Client.java
- Client.Client
- Client.Client$1
+Server/ThreadHandleMessagesServer.java
+ Server.ThreadHandleMessagesServer
 ChatCommands/AbstractCommand.java
  ChatCommands.AbstractCommand
-Main.java
- Main
+ChatCommands/SetOperatorCommandHandler.java
+ ChatCommands.SetOperatorCommandHandler
 Server/ThreadHandleClient.java
  Server.ThreadHandleClient
  Server.ThreadHandleClient$1
@@ -18,9 +17,10 @@ ChatCommands/KickClientCommandHandler.java
  ChatCommands.KickClientCommandHandler
 ChatCommands/ListAllConnectedClientsCommandHandler.java
  ChatCommands.ListAllConnectedClientsCommandHandler
-Server/ThreadHandleMessagesServer.java
- Server.ThreadHandleMessagesServer
-Server/Server.java
- Server.Server
-ChatCommands/SetOperatorCommandHandler.java
- ChatCommands.SetOperatorCommandHandler
+Main.java
+ Main
+Client/ThreadHandleMessagesClient.java
+ Client.ThreadHandleMessagesClient
+Client/Client.java
+ Client.Client
+ Client.Client$1
