@@ -17,13 +17,13 @@ public class SetOperatorCommandHandler extends AbstractCommand {
 
                     toggleOperator(target, senderId);
                 } catch (final NumberFormatException e) {
-                    server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
+                    server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
                 }
             } else {
-                server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
+                server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
             }
         } else {
-            server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
+            server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
         }
     }
 
@@ -50,15 +50,15 @@ public class SetOperatorCommandHandler extends AbstractCommand {
             String clientTargetUsername = clientTarget.getUsernameWithID();
 
             if(isClientOp) {
-                server.sendMessageToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + " is now operator!");
+                server.sendToAllClientsWithText(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + " is now operator!");
             } else {
-                server.sendMessageToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + " is no longer operator!");
+                server.sendToAllClientsWithText(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + " is no longer operator!");
             }
 
-            server.sendCommandToClient(target, MessageTypes.TOGGLE_OP.getValue());
+            server.sendToClientNoText(target, MessageTypes.TOGGLE_OP.getValue());
         } else {
             if(senderId > 0) {
-                server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), thisUserDoesNotExist);
+                server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), thisUserDoesNotExist);
             } else {
                 System.out.println(thisUserDoesNotExist);
             }

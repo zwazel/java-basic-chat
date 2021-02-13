@@ -94,7 +94,7 @@ public class Server {
         System.out.println(message);
     }
 
-    public void sendCommandToClient(int receiverId, byte messageType) {
+    public void sendToClientNoText(int receiverId, byte messageType) {
         Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
 
         try {
@@ -106,13 +106,13 @@ public class Server {
         }
     }
 
-    public void sendCommandToAllClients(byte messageType) {
+    public void sendToAllClientsNoText(byte messageType) {
         for (int i : clientMap.keySet()) { // Go through all the clients
-            sendCommandToClient(i, messageType);
+            sendToClientNoText(i, messageType);
         }
     }
 
-    public void sendMessageToClient(int senderId, int receiverId, byte messageType, String message) {
+    public void sendToClientWithText(int senderId, int receiverId, byte messageType, String message) {
         Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
         String senderName = getSenderName(senderId);
 
@@ -128,7 +128,7 @@ public class Server {
         }
     }
 
-    public void sendMessageToAllClients(int senderId, byte messageType, String message) {
+    public void sendToAllClientsWithText(int senderId, byte messageType, String message) {
         if(senderId == 0) {
             printMessageForMyself("Server (Me): " + message);
         } else {
@@ -136,7 +136,7 @@ public class Server {
         }
 
         for (int i : clientMap.keySet()) { // Go through all the clients
-            sendMessageToClient(senderId, i, messageType, message);
+            sendToClientWithText(senderId, i, messageType, message);
         }
     }
 
@@ -167,7 +167,7 @@ public class Server {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
                 String clientUsername = dIn.readUTF(); // Read text and save it
 
-                sendMessageToAllClients(myId, MessageTypes.NORMAL_MESSAGE.getValue(), "Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
+                sendToAllClientsWithText(myId, MessageTypes.NORMAL_MESSAGE.getValue(), "Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
 
                 addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 

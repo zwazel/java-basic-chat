@@ -45,7 +45,7 @@ public class ThreadHandleClient implements Runnable {
                         while(!removedClient) {
                             if (server.removeClientFromMap(myClientId)) { // get the ID of the client and disconnect him)
                                 String disconnectMessage = myClientUsername + " disconnected";
-                                server.sendMessageToAllClients(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(), disconnectMessage);
+                                server.sendToAllClientsWithText(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(), disconnectMessage);
                                 running = false; // Stop this thread
                                 removedClient = true;
                             }
@@ -53,7 +53,7 @@ public class ThreadHandleClient implements Runnable {
                         break;
 
                     case NORMAL_MESSAGE: // Normal message
-                        server.sendMessageToAllClients(myClientId, messageType.getValue(), dIn.readUTF()); // read text from the client and send it to the server and to all the other clients. and don't send it to me back
+                        server.sendToAllClientsWithText(myClientId, messageType.getValue(), dIn.readUTF()); // read text from the client and send it to the server and to all the other clients. and don't send it to me back
                         break;
 
                     case CLIENT_COMMAND:
@@ -66,7 +66,7 @@ public class ThreadHandleClient implements Runnable {
                         }
 
                         if(!server.handleCommandsClient(isOp, command, args, myClientId)) {
-                            server.sendMessageToClient(server.getId(), myClientId, MessageTypes.NORMAL_MESSAGE.getValue(), "Unknown command!");
+                            server.sendToClientWithText(server.getId(), myClientId, MessageTypes.NORMAL_MESSAGE.getValue(), "Unknown command!");
                         }
                         break;
 
@@ -76,7 +76,7 @@ public class ThreadHandleClient implements Runnable {
                             message = "null";
                         }
                         System.out.println("Got undefined Message Type from client in thread " + threadName + "! Message: " + message);
-                        server.sendMessageToClient(server.getId(), myClientId, messageType.getValue(),"Undefined Message Type!");
+                        server.sendToClientWithText(server.getId(), myClientId, messageType.getValue(),"Undefined Message Type!");
                         break;
                 }
             } catch (IOException e) {

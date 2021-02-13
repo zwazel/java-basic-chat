@@ -25,12 +25,7 @@ public class KickClientCommandHandler extends AbstractCommand {
 
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
-        // TODO: as i'm checking on the serverside, this is no longer needed!
-        if (isOp) {
-            kick(args, senderId);
-        } else {
-            server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
-        }
+        kick(args, senderId);
     }
 
     @Override
@@ -39,6 +34,8 @@ public class KickClientCommandHandler extends AbstractCommand {
     }
 
     private void kick(String[] args, int senderId) {
+        server.sendToClientWithText(server.getId(),senderId,MessageTypes.NORMAL_MESSAGE.getValue(), "Kicking client...");
+
         int argsLength = args.length;
 
         if (argsLength >= 1) {
@@ -48,18 +45,18 @@ public class KickClientCommandHandler extends AbstractCommand {
                     reasonForKickMain += reasonPart + " ";
                 }
             } else {
-                getReasonForKickMain();
+                reasonForKickMain = getReasonForKickMain();
             }
         } else {
             if(senderId > 0) {
-                server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
+                server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
             } else {
                 System.out.println(needTargetId);
             }
         }
 
         if(args[0].equalsIgnoreCase("all")) {
-            server.sendMessageToAllClients(server.getId(), MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain);
+            server.sendToAllClientsWithText(server.getId(), MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain);
         } else {
             String[] multipleTargetsString = args[0].split(",");
             if (getTargetId(multipleTargetsString)) {
@@ -67,18 +64,18 @@ public class KickClientCommandHandler extends AbstractCommand {
                     if (server.checkIfClientExists(i)) {
                         ServerClient clientTarget = server.clientMap.get(i);
                         String clientTargetUsername = clientTarget.getUsernameWithID();
-                        server.sendMessageToClient(senderId, i, MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
-                        server.sendMessageToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
+                        server.sendToClientWithText(senderId, i, MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
+                        server.sendToAllClientsWithText(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
                     } else {
                         if(senderId > 0) {
-                            server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "User with ID " + i + " does not exist!");
+                            server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "User with ID " + i + " does not exist!");
                         } else {
                             System.out.println("User with ID " + i + " does not exist!");
                         }
                     }
                 }
             } else {
-                server.sendMessageToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
+                server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
             }
         }
     }
@@ -113,7 +110,7 @@ public class KickClientCommandHandler extends AbstractCommand {
         int n = rand.nextInt(amountOfLines);
 
         try (Stream<String> all_lines = Files.lines(Paths.get(filename))) {
-            reasonForKickMain = all_lines.skip(n).findFirst().get();
+            return all_lines.skip(n).findFirst().get();
         } catch (IOException e) {
             e.printStackTrace();
         }
