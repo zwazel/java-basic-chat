@@ -63,15 +63,19 @@ public class Client {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // instantiate new dataInputStream which is linked to the client
                 MessageTypes messageType = MessageTypes.values()[dIn.readByte()]; // read the byte (message type) and get the corresponding enum
 
+                int senderId = -1;
+                String senderName = "";
+                String messageBody = "";
+
                 switch (messageType) { // Check what type of message we got
                     case DISCONNECT: // message tells us the server disconnected
                         System.out.println("Server disconnected! Disconnecting myself..."); // print what happened
                         running = false; // Stop everything
                         break;
                     case NORMAL_MESSAGE: // Normal message
-                        int senderId = dIn.readInt();
-                        String senderName = dIn.readUTF();
-                        String messageBody = dIn.readUTF();
+                        senderId = dIn.readInt();
+                        senderName = dIn.readUTF();
+                        messageBody = dIn.readUTF();
 
                         if(senderId == myId) {
                             senderName += " (Me)";
@@ -84,7 +88,16 @@ public class Client {
                         toggleOperator();
                         break;
                     case KICK_CLIENT: // I'M GETTING KICKED?!?! :(
-                        System.out.println(dIn.readUTF());
+                        senderId = dIn.readInt();
+                        senderName = dIn.readUTF();
+                        messageBody = dIn.readUTF();
+
+                        if(senderId == myId) {
+                            senderName += " (Me)";
+                        }
+                        senderName += ": ";
+
+                        System.out.println(senderName + messageBody);
                         running = false;
                         break;
                 }
