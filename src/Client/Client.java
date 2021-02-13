@@ -69,7 +69,16 @@ public class Client {
                         running = false; // Stop everything
                         break;
                     case NORMAL_MESSAGE: // Normal message
-                        System.out.println(dIn.readUTF()); // we got a Normal message
+                        int senderId = dIn.readInt();
+                        String senderName = dIn.readUTF();
+                        String messageBody = dIn.readUTF();
+
+                        if(senderId == myId) {
+                            senderName += " (Me)";
+                        }
+                        senderName += ": ";
+
+                        System.out.println(senderName + messageBody); // we got a Normal message
                         break;
                     case TOGGLE_OP: // OP should be toggled
                         toggleOperator();
