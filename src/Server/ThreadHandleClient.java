@@ -46,7 +46,6 @@ public class ThreadHandleClient implements Runnable {
                             if (server.removeClientFromMap(myClientId)) { // get the ID of the client and disconnect him)
                                 String disconnectMessage = myClientUsername + " disconnected";
                                 server.sendMessageToAllClients(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(), disconnectMessage);
-                                System.out.println("WHY ARE YOU DISCONNECTING biiiatch");
                                 running = false; // Stop this thread
                                 removedClient = true;
                             }
