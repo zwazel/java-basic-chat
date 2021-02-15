@@ -32,3 +32,4 @@ Chan en USB Stick bim erste Versuech richtig istecke!
 Hät es Konto bi de CS
 IT DO NOT THE WORK!!!!!!!!!
 Eifach öppis
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
