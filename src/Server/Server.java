@@ -82,54 +82,75 @@ public class Server {
     }
 
     // a single client is disconnecting on its own
-    public void removeClientFromMap(int clientId) {
-        clientMap.remove(clientId); // remove the client from the hashmap
+    public boolean removeClientFromMap(int clientId) {
+        if(checkIfClientExists(clientId)) {
+            clientMap.remove(clientId); // remove the client from the hashmap
+            return true;
+        }
+        return false;
     }
 
     private void printMessageForMyself(String message) {
         System.out.println(message);
     }
 
-    public void sendMessageTypeToClient(int receiverId, byte messageType) {
+    public void sendToClientNoText(int receiverId, byte messageType) {
         Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
 
-        try {
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
-            dOut.writeByte(messageType);
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // Catch error
-            System.out.println("Can't send messagetype " + messageType + "from server to client \"" + receiverId + "\"! VERY BAD");
+        if(checkIfClientExists(receiverId)) {
+            try {
+                DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
+                dOut.writeByte(messageType);
+                dOut.flush(); // Send off the data
+            } catch (IOException e) { // Catch error
+                System.out.println("Can't send messagetype " + messageType + "from server to client \"" + receiverId + "\"! VERY BAD");
+            }
+        } else {
+            if(receiverId == myId) {
+                printMessageForMyself("Can't send message to client " + receiverId + "! user does not exist! \n" +
+                        "messagetype: " + MessageTypes.values()[messageType]);
+            } else {
+                sendToClientWithText(myId, receiverId, MessageTypes.NORMAL_MESSAGE.getValue(), "Can't send message to client " + receiverId + "! user does not exist! \n" +
+                        "messagetype: " + MessageTypes.values()[messageType]);
+            }
         }
     }
 
-    public void sendMessageTypeToClient(int senderId, int receiverId, byte messageType, String message) {
-        Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
-        String senderName = getSenderName(senderId);
-
-        try {
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
-            dOut.writeByte(messageType);
-            dOut.writeUTF(senderName + ": " + message);
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // Catch error
-            System.out.println("Can't send messagetype " + messageType + " from server to client \"" + receiverId + "\"! VERY BAD");
+    public void sendToAllClientsNoText(byte messageType) {
+        for (int i : clientMap.keySet()) { // Go through all the clients
+            sendToClientNoText(i, messageType);
         }
     }
 
-    public void sendMessageTypeToClient(String senderName, int receiverId, byte messageType, String message) {
-        Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
+    public void sendToClientWithText(int senderId, int receiverId, byte messageType, String message) {
+        if(checkIfClientExists(receiverId)) {
+            Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
+            String senderName = getSenderName(senderId);
 
-        try {
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
-            dOut.writeByte(messageType);
-            dOut.writeUTF(senderName + ": " + message);
-            dOut.flush(); // Send off the data
-        } catch (IOException e) { // Catch error
-            System.out.println("Can't send messagetype " + messageType + " from server to client \"" + receiverId + "\"! VERY BAD");
+            try {
+                DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
+                dOut.writeByte(messageType);
+                dOut.writeInt(senderId);
+                dOut.writeUTF(senderName);
+                dOut.writeUTF(message);
+                dOut.flush(); // Send off the data
+            } catch (IOException e) { // Catch error
+                System.out.println("Can't send messagetype " + messageType + " from server to client \"" + receiverId + "\"! VERY BAD");
+            }
+        } else {
+            if(senderId == myId) {
+                printMessageForMyself("Can't send message to client " + receiverId + "! user does not exist! \n" +
+                        "messagetype: " + MessageTypes.values()[messageType] + "\n" +
+                        "message: '" + message + "'");
+            } else {
+                sendToClientWithText(myId, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "Can't send message to client " + receiverId + "! user does not exist! \n" +
+                        "messagetype: " + MessageTypes.values()[messageType] + "\n" +
+                        "message: '" + message + "'");
+            }
         }
     }
 
-    public void sendMessageTypeToAllClients(int senderId, byte messageType, String message) { // ignoredId: We don't want to send the message back to the client that sent us the message
+    public void sendToAllClientsWithText(int senderId, byte messageType, String message) {
         if(senderId == 0) {
             printMessageForMyself("Server (Me): " + message);
         } else {
@@ -137,17 +158,7 @@ public class Server {
         }
 
         for (int i : clientMap.keySet()) { // Go through all the clients
-            if(senderId != i) {
-                sendMessageTypeToClient(senderId, i, messageType, message);
-            } else {
-                sendMessageTypeToClient(getSenderName(senderId) + " (Me)", senderId, messageType, message);
-            }
-        }
-    }
-
-    public void sendMessageTypeToAllClients(byte messageType) {
-        for (int i : clientMap.keySet()) { // Go through all the clients
-            sendMessageTypeToClient(i, messageType);
+            sendToClientWithText(senderId, i, messageType, message);
         }
     }
 
@@ -178,7 +189,7 @@ public class Server {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
                 String clientUsername = dIn.readUTF(); // Read text and save it
 
-                sendMessageTypeToAllClients(myId, MessageTypes.NORMAL_MESSAGE.getValue(), "Server: Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
+                sendToAllClientsWithText(myId, MessageTypes.NORMAL_MESSAGE.getValue(), "Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
 
                 addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 
@@ -192,12 +203,21 @@ public class Server {
         }
     }
 
-    public boolean handleCommandsClient(boolean isOp, String command, String[] args, int senderId) {
-        if(commandList.containsKey(command)) {
-            commandList.get(command).clientExecute(isOp, args, senderId);
-            return true;
+    public boolean handleCommandsClient(boolean isOp, String commandString, String[] args, int senderId) {
+        if(commandList.containsKey(commandString)) { // Check if the command exists
+            AbstractCommand command = commandList.get(commandString); // Store the command itself in a variable
+            if(command.isServerOnly()) { // The command is only for the server
+                // TODO: this command is only for the server and you are not the server! send a message to the client!
+                return false;
+            }
+            if(command.isOpOnly() && !isOp) { // The command is only for that are operator and the clien is not one
+                // TODO: this command is only for people that are operator and you are not operator! send a message to the client!
+                return false;
+            }
+            command.clientExecute(isOp, args, senderId); // execute the command
+            return true; // Everything is fine, command is being executed
         }
-        return false;
+        return false; // The command does not exist
     }
 
     public boolean handleCommandsServer(String command, String[] args) {

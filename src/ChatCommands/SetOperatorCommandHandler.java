@@ -4,6 +4,10 @@ import Server.ServerClient;
 import GlobalStuff.MessageTypes;
 
 public class SetOperatorCommandHandler extends AbstractCommand {
+    public SetOperatorCommandHandler() {
+        opOnly = true;
+    }
+
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
         if(isOp) { // Only if the client is OP he can execute this command
@@ -13,13 +17,13 @@ public class SetOperatorCommandHandler extends AbstractCommand {
 
                     toggleOperator(target, senderId);
                 } catch (final NumberFormatException e) {
-                    server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
+                    server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), iNeedANumber);
                 }
             } else {
-                server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
+                server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
             }
         } else {
-            server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
+            server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), youNeedOp);
         }
     }
 
@@ -46,15 +50,15 @@ public class SetOperatorCommandHandler extends AbstractCommand {
             String clientTargetUsername = clientTarget.getUsernameWithID();
 
             if(isClientOp) {
-                server.sendMessageTypeToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + " is now operator!");
+                server.sendToAllClientsWithText(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + " is now operator!");
             } else {
-                server.sendMessageTypeToAllClients(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + " is no longer operator!");
+                server.sendToAllClientsWithText(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + " is no longer operator!");
             }
 
-            server.sendMessageTypeToClient(target, MessageTypes.TOGGLE_OP.getValue());
+            server.sendToClientNoText(target, MessageTypes.TOGGLE_OP.getValue());
         } else {
             if(senderId > 0) {
-                server.sendMessageTypeToClient(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), thisUserDoesNotExist);
+                server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), thisUserDoesNotExist);
             } else {
                 System.out.println(thisUserDoesNotExist);
             }
