@@ -3,6 +3,9 @@ package ChatCommands;
 import GlobalStuff.MessageTypes;
 
 public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
+    public ListAllConnectedClientsCommandHandler() {
+    }
+
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
         String message = "\nListing all connected Clients...\n";
@@ -23,7 +26,7 @@ public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
             message += "No clients connected!";
         }
 
-        server.sendMessageTypeToClient(-1, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), message);
+        server.sendToClientWithText(-1, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), message);
     }
 
     @Override

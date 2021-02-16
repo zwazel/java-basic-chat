@@ -61,21 +61,44 @@ public class Client {
         while (running) { // While we are running
             try {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // instantiate new dataInputStream which is linked to the client
-                MessageTypes messageType = MessageTypes.values()[dIn.readByte()];
+                MessageTypes messageType = MessageTypes.values()[dIn.readByte()]; // read the byte (message type) and get the corresponding enum
 
+                int senderId = -1;
+                String senderName = "";
+                String messageBody = "";
+
+                // TODO: Find a way to intelligently check if we get an empty message or if we have stuff to read, can we read sender ID, senderName, etc, or not?
                 switch (messageType) { // Check what type of message we got
                     case DISCONNECT: // message tells us the server disconnected
                         System.out.println("Server disconnected! Disconnecting myself..."); // print what happened
                         running = false; // Stop everything
                         break;
                     case NORMAL_MESSAGE: // Normal message
-                        System.out.println(dIn.readUTF()); // we got a Normal message
+                        senderId = dIn.readInt();
+                        senderName = dIn.readUTF();
+                        messageBody = dIn.readUTF();
+
+                        if(senderId == myId) {
+                            senderName += " (Me)";
+                        }
+                        senderName += ": ";
+
+                        System.out.println(senderName + messageBody); // we got a Normal message
                         break;
-                    case TOGGLE_OP:
+                    case TOGGLE_OP: // OP should be toggled
                         toggleOperator();
                         break;
-                    case KICK_CLIENT: // Kick
-                        System.out.println(dIn.readUTF());
+                    case KICK_CLIENT: // I'M GETTING KICKED?!?! :(
+                        senderId = dIn.readInt();
+                        senderName = dIn.readUTF();
+                        messageBody = dIn.readUTF();
+
+                        if(senderId == myId) {
+                            senderName += " (Me)";
+                        }
+                        senderName += ": ";
+
+                        System.out.println(senderName + messageBody);
                         running = false;
                         break;
                 }
