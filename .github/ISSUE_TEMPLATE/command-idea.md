@@ -13,6 +13,6 @@ assignees: ''
 ## Description
 
 ## Modifiers
-* - [ ] Server Only
-* - [ ] OP Only
+- [ ] Server Only
+- [ ] OP Only
 * Arguments list (In correct order)
