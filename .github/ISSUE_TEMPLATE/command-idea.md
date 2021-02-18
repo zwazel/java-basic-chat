@@ -8,12 +8,10 @@ assignees: ''
 ---
 
 ## Description
-## Modifiers
-### Restrictions
+## Restrictions
 - [ ] Server Only
 - [ ] OP Only
-### Arguments list (In correct order)
+## Arguments list (In correct order)
 argument | Required | Default value
 ------------ | ------------ | ------------ 
-shortcut | :heavy_check_mark: | -
-example | :x: | example
+example | :x: / :heavy_check_mark: | example

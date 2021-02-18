@@ -8,7 +8,5 @@ assignees: ''
 ---
 
 # [NAME]
-
 ## Description
-
 ## Rules
