@@ -7,15 +7,13 @@ assignees: ''
 
 ---
 
-# [NAME]
-* Shortcut: 
-
 ## Description
-
 ## Modifiers
+### Restrictions
 - [ ] Server Only
 - [ ] OP Only
 ### Arguments list (In correct order)
 argument | Required | Default value
 ------------ | ------------ | ------------ 
-example | :x: / :heavy_check_mark: | example
+shortcut | :heavy_check_mark: | -
+example | :x: | example
