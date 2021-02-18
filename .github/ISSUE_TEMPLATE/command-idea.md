@@ -1,7 +1,7 @@
 ---
 name: Command Idea
 about: Propose an Idea for a command
-title: "[Command Idea] - "
+title: ""
 labels: Command Idea
 assignees: ''
 
