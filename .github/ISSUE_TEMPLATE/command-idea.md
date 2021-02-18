@@ -15,5 +15,7 @@ assignees: ''
 ## Modifiers
 - [ ] Server Only
 - [ ] OP Only
-* Arguments list (In correct order)
-* Default values for arguments (In correct order)
+### Arguments list (In correct order)
+argument | Required | Default value
+------------ | ------------ | ------------ 
+example | :x: / :heavy_check_mark: | example
