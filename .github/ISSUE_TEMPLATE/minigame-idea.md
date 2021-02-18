@@ -7,6 +7,5 @@ assignees: ''
 
 ---
 
-# [NAME]
 ## Description
 ## Rules
