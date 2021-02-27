@@ -1,7 +1,9 @@
 package javaFxTest;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class MainView extends Application {
@@ -18,16 +20,15 @@ public class MainView extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-
-        /**
-         * Sets the title for the window, aka stage
-         */
-        primaryStage.setTitle("Test");
+        primaryStage.setTitle("Test"); // Sets the title for the window, aka stage
 
         button = new Button("Click me"); // Instanciate new button and set the text
 
-        /**
-         *
-         */
+        StackPane layout = new StackPane(); // Making a very simple layout
+        layout.getChildren().add(button); // Add the button to the layout
+
+        Scene scene = new Scene(layout, 300, 250);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
