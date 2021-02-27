@@ -1,4 +1,4 @@
-package View;
+package javaFxTest;
 
 import javafx.application.Application;
 import javafx.scene.control.Button;
@@ -16,7 +16,7 @@ public class MainView extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Test");
 
-        button = new Button("Click me");
+        button = new Button("Click me"); // Instanciate new button and set the text
         //button.setText("Click me");
     }
 }
