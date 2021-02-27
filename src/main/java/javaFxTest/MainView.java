@@ -22,7 +22,7 @@ public class MainView extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Test"); // Sets the title for the window, aka stage
 
-        button = new Button("Click me"); // Instanciate new button and set the text
+        button = new Button("Click me"); // Instantiate new button and set the text
 
         StackPane layout = new StackPane(); // Making a very simple layout
         layout.getChildren().add(button); // Add the button to the layout
