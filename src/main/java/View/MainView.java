@@ -16,7 +16,7 @@ public class MainView extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Test");
 
-        button = new button("Click me");
+        button = new Button("Click me");
         //button.setText("Click me");
     }
 }
