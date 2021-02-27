@@ -11,7 +11,7 @@ public class MainView extends Application {
     Button button;
 
     public static void main(String[] args) {
-        Application.launch(args);
+        launch(args);
     }
 
     /**
