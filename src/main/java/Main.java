@@ -23,9 +23,6 @@ public class Main {
             case 1: // case 1, behave as a client
                 new Client(); // instantiate new client
                 return true; // our input is valid
-            case 2:
-                MainView.main(args);
-                return true;
             default: // default, input is not valid
                 System.out.println("Invalid Input! Try again"); // tell the user whats wrong
                 return false; // input is not valid
