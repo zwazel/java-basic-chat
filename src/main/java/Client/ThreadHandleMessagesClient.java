@@ -1,6 +1,6 @@
 package Client;
 
-import GlobalStuff.MessageTypes;
+import util.MessageTypes;
 
 import javax.swing.*;
 import java.awt.*;

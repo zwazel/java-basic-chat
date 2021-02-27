@@ -1,6 +1,6 @@
 package ChatCommands;
 
-import GlobalStuff.MessageTypes;
+import util.MessageTypes;
 
 public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
     public ListAllConnectedClientsCommandHandler() {

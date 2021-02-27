@@ -1,6 +1,6 @@
 package Client;
 
-import GlobalStuff.MessageTypes;
+import util.MessageTypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -1,6 +1,6 @@
 package ChatCommands;
 
-import GlobalStuff.MessageTypes;
+import util.MessageTypes;
 import Server.ServerClient;
 
 import java.io.*;
