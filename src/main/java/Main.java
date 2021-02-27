@@ -1,6 +1,5 @@
 import Client.Client;
 import Server.Server;
-import javaFxTest.MainView;
 
 import java.util.Scanner;
 
