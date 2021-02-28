@@ -1,4 +1,4 @@
-package LambdaExpressions;
+package HandlingEvents.AnonymousInnerClasses;
 
 public class Main {
     public static void main(String[] args) {

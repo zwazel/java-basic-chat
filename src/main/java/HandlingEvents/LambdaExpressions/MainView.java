@@ -1,8 +1,6 @@
-package AnonymousInnerClasses;
+package HandlingEvents.LambdaExpressions;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -22,14 +20,12 @@ public class MainView extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Anonymous inner Classes"); // Sets the title for the window, aka stage
+        primaryStage.setTitle("Lambda Expressions"); // Sets the title for the window, aka stage
 
         button = new Button("Click me"); // Instantiate new button and set the text
-        button.setOnAction(new EventHandler<ActionEvent>() { // Anonymous Inner Class
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("I am an anonymous inner class");
-            }
+        // Anonymous Inner Class, but with lambda
+        button.setOnAction(event -> { // The arrow is called the arrow operator
+            System.out.println("I am an anonymous inner class, but with lambda!");
         });
 
         StackPane layout = new StackPane(); // Making a very simple layout
