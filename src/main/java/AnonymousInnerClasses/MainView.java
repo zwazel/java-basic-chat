@@ -1,4 +1,4 @@
-package AnonymousInnerClassesAndLambdaExpressions;
+package AnonymousInnerClasses;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class MainView extends Application implements EventHandler<ActionEvent> {
+public class MainView extends Application {
 
     Button button;
 
@@ -25,7 +25,12 @@ public class MainView extends Application implements EventHandler<ActionEvent> {
         primaryStage.setTitle("Test"); // Sets the title for the window, aka stage
 
         button = new Button("Click me"); // Instantiate new button and set the text
-        button.setOnAction(this); // Whenever this button gets clicked, handle method gets called
+        button.setOnAction(new EventHandler<ActionEvent>() { // Anonymous Inner Class
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("I am an anonymous inner class");
+            }
+        });
 
         StackPane layout = new StackPane(); // Making a very simple layout
         layout.getChildren().add(button); // Add the button to the layout
@@ -33,12 +38,5 @@ public class MainView extends Application implements EventHandler<ActionEvent> {
         Scene scene = new Scene(layout, 300, 250);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    @Override
-    public void handle(ActionEvent event) {
-        if(event.getSource() == button) { // Identify and differentiate between different buttons
-            System.out.println("OOooOOOooooo I love it when u touch me there....!");
-        }
     }
 }
