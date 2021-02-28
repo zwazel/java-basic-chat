@@ -22,7 +22,7 @@ public class MainView extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Test"); // Sets the title for the window, aka stage
+        primaryStage.setTitle("Anonymous inner Classes"); // Sets the title for the window, aka stage
 
         button = new Button("Click me"); // Instantiate new button and set the text
         button.setOnAction(new EventHandler<ActionEvent>() { // Anonymous Inner Class

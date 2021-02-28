@@ -22,7 +22,7 @@ public class MainView extends Application implements EventHandler<ActionEvent> {
      */
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Test"); // Sets the title for the window, aka stage
+        primaryStage.setTitle("Handle User Events"); // Sets the title for the window, aka stage
 
         button = new Button("Click me"); // Instantiate new button and set the text
         button.setOnAction(this); // Whenever this button gets clicked, handle method gets called

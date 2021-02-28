@@ -22,7 +22,7 @@ public class MainView extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Test"); // Sets the title for the window, aka stage
+        primaryStage.setTitle("Lambda Expressions"); // Sets the title for the window, aka stage
 
         button = new Button("Click me"); // Instantiate new button and set the text
         // Anonymous Inner Class, but with lambda
