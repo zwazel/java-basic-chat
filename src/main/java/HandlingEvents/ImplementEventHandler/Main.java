@@ -1,4 +1,4 @@
-package HandlingEvents.HandleUserEvents;
+package HandlingEvents.ImplementEventHandler;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package HandlingEvents.HandleUserEvents;
+package HandlingEvents.ImplementEventHandler;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
