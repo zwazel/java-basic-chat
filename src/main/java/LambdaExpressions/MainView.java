@@ -26,7 +26,7 @@ public class MainView extends Application {
 
         button = new Button("Click me"); // Instantiate new button and set the text
         // Anonymous Inner Class, but with lambda
-        button.setOnAction(event -> {
+        button.setOnAction(event -> { // The arrow is called the arrow operator
             System.out.println("I am an anonymous inner class, but with lambda!");
         });
 
