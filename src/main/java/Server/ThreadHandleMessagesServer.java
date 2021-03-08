@@ -1,22 +1,15 @@
-package Server;
+package server;
 
-import Main.*;
-
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import util.MessageTypes;
+import main.MessageTypes;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
 
-public class ThreadHandleMessagesServer extends Application implements Runnable, ActionListener, WindowListener {
+public class ThreadHandleMessagesServer extends JFrame implements Runnable, ActionListener, WindowListener {
     private Thread threadHandleMessagesServer;
     private final String threadName;
     private Server server;
@@ -27,30 +20,7 @@ public class ThreadHandleMessagesServer extends Application implements Runnable,
         this.server = server;
     }
 
-    private boolean initInputWindow(Stage primaryStage) {
-        Parent root;
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/RootLayout.fxml"));
-            root = loader.load();
-
-            /*
-            RootLayoutController controller = loader.getController();
-            controller.setMainApp(this);
-            */
-
-            Scene scene = new Scene(root, 300, 250);
-            primaryStage.setScene(scene);
-
-            primaryStage.setTitle("Test GUI");
-            primaryStage.show();
-            return true;
-        } catch (IOException e) {
-            System.out.println("Can't load FXML file!");
-            return false;
-        }
-
-        /*
+    private boolean initInputWindow() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // if the window closes, we end the whole program
         setTitle("Server " + threadName); // Set the title of the window
@@ -73,12 +43,15 @@ public class ThreadHandleMessagesServer extends Application implements Runnable,
 
         setSize(300,200); // Set the size of the window
         setVisible(true); // make it visible
-         */
+
+        return true;
     }
 
     @Override
     public void run() {
-        launch();
+        System.out.println("Thread running " + threadName);
+
+        initInputWindow();
     }
 
     public void start() {
@@ -149,10 +122,5 @@ public class ThreadHandleMessagesServer extends Application implements Runnable,
     @Override
     public void windowDeactivated(WindowEvent e) {
 
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        initInputWindow(primaryStage);
     }
 }
