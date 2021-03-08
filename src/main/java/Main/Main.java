@@ -19,7 +19,7 @@ public class Main {
         // TODO: catch error if not number
         switch (Integer.parseInt(scanner.nextLine())) { // get the input as string, and convert it to an Integer
             case 0: // case 0, behave as a server
-                new Server(); // instantiate new server
+                new Server(args); // instantiate new server
                 return true; // our input is valid
             case 1: // case 1, behave as a client
                 new Client(); // instantiate new client

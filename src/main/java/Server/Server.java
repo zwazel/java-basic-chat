@@ -1,6 +1,10 @@
 package server;
 
-import chatCommands.*;
+import chatCommands.AbstractCommand;
+import chatCommands.KickClientCommandHandler;
+import chatCommands.ListAllConnectedClientsCommandHandler;
+import chatCommands.SetOperatorCommandHandler;
+import main.JavaFXApplication;
 import main.MessageTypes;
 
 import java.io.DataInputStream;
@@ -15,7 +19,7 @@ import java.util.Scanner;
 
 public class Server {
     private static Server server;
-    private String username = "server"; // Our username
+    private String username = "Server"; // Our username
     private Scanner scanner;
     private final int port; // our free port
     private int idCounter = 0; // id counter
@@ -25,7 +29,7 @@ public class Server {
     private HashMap<String, AbstractCommand> commandList = new HashMap<>();
     private boolean running = true; // are we running right now?
 
-    public Server() {
+    public Server(String[] args) {
         scanner = new Scanner(System.in); // instantiate a scanner
         server = this;
 
@@ -40,8 +44,12 @@ public class Server {
             System.out.println("My IP adress: " + getPublicIp());
 
             // Start new thread that will handle all the messages the server will send
+            /*
             ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this); // instanciate new thread
             threadHandleMessagesServer.start(); // Start new thread
+            */
+
+            JavaFXApplication.main(args);
 
             // Accept incoming connections
             acceptConnections();
@@ -51,11 +59,7 @@ public class Server {
     }
 
     public boolean checkIfClientExists(int clientId) {
-        if(clientMap.containsKey(clientId)) {
-            return true;
-        }
-
-        return false;
+        return clientMap.containsKey(clientId);
     }
 
     public int getId() {
@@ -272,6 +276,6 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        new Server();
+        new Server(args);
     }
 }
