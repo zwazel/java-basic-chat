@@ -17,7 +17,6 @@ public class ServerClient {
 
     public int getMyId() {
         return myId; // Get the ID of this instance
-        //(Right now unused)
     }
 
     public String getUsername() {
