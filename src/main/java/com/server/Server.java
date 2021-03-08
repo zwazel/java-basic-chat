@@ -4,7 +4,7 @@ import com.chatCommands.AbstractCommand;
 import com.chatCommands.KickClientCommandHandler;
 import com.chatCommands.ListAllConnectedClientsCommandHandler;
 import com.chatCommands.SetOperatorCommandHandler;
-import com.main.JavaFXApplication;
+import com.view.JavaFXApplication;
 import com.main.MessageTypes;
 
 import java.io.DataInputStream;
