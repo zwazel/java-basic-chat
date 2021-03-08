@@ -1,4 +1,4 @@
-package main;
+package com.main;
 
 public enum MessageTypes {
     DISCONNECT,

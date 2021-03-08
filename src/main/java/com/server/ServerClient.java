@@ -1,8 +1,8 @@
-package server;
+package com.server;
 
 import java.net.Socket;
 
-// This is a reference of a client for the server, for every connected client we add one instance of this class to the hashmap
+// This is a reference of a com.client for the com.server, for every connected com.client we add one instance of this class to the hashmap
 public class ServerClient {
     private int myId;
     private String username = "Not Defined";
@@ -25,7 +25,7 @@ public class ServerClient {
     }
 
     public void setUsername(String username) {
-        this.username = username; // Set the username of this client
+        this.username = username; // Set the username of this com.client
         //(Right now unused, would be used if a method for changing names in runtime would be introduced)
     }
 

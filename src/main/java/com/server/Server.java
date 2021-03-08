@@ -1,11 +1,11 @@
-package server;
+package com.server;
 
-import chatCommands.AbstractCommand;
-import chatCommands.KickClientCommandHandler;
-import chatCommands.ListAllConnectedClientsCommandHandler;
-import chatCommands.SetOperatorCommandHandler;
-import main.JavaFXApplication;
-import main.MessageTypes;
+import com.chatCommands.AbstractCommand;
+import com.chatCommands.KickClientCommandHandler;
+import com.chatCommands.ListAllConnectedClientsCommandHandler;
+import com.chatCommands.SetOperatorCommandHandler;
+import com.main.JavaFXApplication;
+import com.main.MessageTypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -25,7 +25,7 @@ public class Server {
     private int idCounter = 0; // id counter
     private final int myId = idCounter++; // our id, and increase the idocunter by one
     private ServerSocket ss; // our socket
-    public HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
+    public HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected com.client
     private HashMap<String, AbstractCommand> commandList = new HashMap<>();
     private boolean running = true; // are we running right now?
 
@@ -35,7 +35,7 @@ public class Server {
 
         port = getInt("The Port you are hosting on"); // Get the open port
         try {
-            ss = new ServerSocket(port); // Create a new server socket
+            ss = new ServerSocket(port); // Create a new com.server socket
 
             initCommands();
 
@@ -43,7 +43,7 @@ public class Server {
             System.out.println("Getting IP adress...");
             System.out.println("My IP adress: " + getPublicIp());
 
-            // Start new thread that will handle all the messages the server will send
+            // Start new thread that will handle all the messages the com.server will send
             /*
             ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this); // instanciate new thread
             threadHandleMessagesServer.start(); // Start new thread
@@ -53,8 +53,8 @@ public class Server {
 
             // Accept incoming connections
             acceptConnections();
-        } catch (IOException e) { // Catch error if we can't create a server socket
-            System.out.println("Cant create server socket! VERY BAD");
+        } catch (IOException e) { // Catch error if we can't create a com.server socket
+            System.out.println("Cant create com.server socket! VERY BAD");
         }
     }
 
@@ -80,15 +80,15 @@ public class Server {
         return clientMap.get(clientId).getUsername();
     }
 
-    // Add a new client to the HashMap
+    // Add a new com.client to the HashMap
     private void addClientToMap(int id, String username, Socket s) { // Get the id, username and the socket
         clientMap.put(id, new ServerClient(id, username, s)); // Create a new ServerClient Instance and safe it in the HashMap
     }
 
-    // a single client is disconnecting on its own
+    // a single com.client is disconnecting on its own
     public boolean removeClientFromMap(int clientId) {
         if(checkIfClientExists(clientId)) {
-            clientMap.remove(clientId); // remove the client from the hashmap
+            clientMap.remove(clientId); // remove the com.client from the hashmap
             return true;
         }
         return false;
@@ -99,7 +99,7 @@ public class Server {
     }
 
     public void sendToClientNoText(int receiverId, byte messageType) {
-        Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
+        Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current com.client
 
         if(checkIfClientExists(receiverId)) {
             try {
@@ -107,14 +107,14 @@ public class Server {
                 dOut.writeByte(messageType);
                 dOut.flush(); // Send off the data
             } catch (IOException e) { // Catch error
-                System.out.println("Can't send messagetype " + messageType + "from server to client \"" + receiverId + "\"! VERY BAD");
+                System.out.println("Can't send messagetype " + messageType + "from com.server to com.client \"" + receiverId + "\"! VERY BAD");
             }
         } else {
             if(receiverId == myId) {
-                printMessageForMyself("Can't send message to client " + receiverId + "! user does not exist! \n" +
+                printMessageForMyself("Can't send message to com.client " + receiverId + "! user does not exist! \n" +
                         "messagetype: " + MessageTypes.values()[messageType]);
             } else {
-                sendToClientWithText(myId, receiverId, MessageTypes.NORMAL_MESSAGE.getValue(), "Can't send message to client " + receiverId + "! user does not exist! \n" +
+                sendToClientWithText(myId, receiverId, MessageTypes.NORMAL_MESSAGE.getValue(), "Can't send message to com.client " + receiverId + "! user does not exist! \n" +
                         "messagetype: " + MessageTypes.values()[messageType]);
             }
         }
@@ -128,7 +128,7 @@ public class Server {
 
     public void sendToClientWithText(int senderId, int receiverId, byte messageType, String message) {
         if(checkIfClientExists(receiverId)) {
-            Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
+            Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current com.client
             String senderName = getSenderName(senderId);
 
             try {
@@ -139,15 +139,15 @@ public class Server {
                 dOut.writeUTF(message);
                 dOut.flush(); // Send off the data
             } catch (IOException e) { // Catch error
-                System.out.println("Can't send messagetype " + messageType + " from server to client \"" + receiverId + "\"! VERY BAD");
+                System.out.println("Can't send messagetype " + messageType + " from com.server to com.client \"" + receiverId + "\"! VERY BAD");
             }
         } else {
             if(senderId == myId) {
-                printMessageForMyself("Can't send message to client " + receiverId + "! user does not exist! \n" +
+                printMessageForMyself("Can't send message to com.client " + receiverId + "! user does not exist! \n" +
                         "messagetype: " + MessageTypes.values()[messageType] + "\n" +
                         "message: '" + message + "'");
             } else {
-                sendToClientWithText(myId, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "Can't send message to client " + receiverId + "! user does not exist! \n" +
+                sendToClientWithText(myId, senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "Can't send message to com.client " + receiverId + "! user does not exist! \n" +
                         "messagetype: " + MessageTypes.values()[messageType] + "\n" +
                         "message: '" + message + "'");
             }
@@ -180,24 +180,24 @@ public class Server {
     }
 
     private void acceptConnections() {
-        while (running) { // Only while the server is running (this is to avoid errors as I haven't found another workaround)
+        while (running) { // Only while the com.server is running (this is to avoid errors as I haven't found another workaround)
             try {
-                Socket s = ss.accept(); // Wait for a request from a client
+                Socket s = ss.accept(); // Wait for a request from a com.client
 
-                // Tell the client what ID he has
-                DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
+                // Tell the com.client what ID he has
+                DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the com.client that just connected
                 dOut.writeInt(idCounter); // increase id then write id
                 dOut.flush(); // Send off the data
 
-                // get the username from the client that just connected
+                // get the username from the com.client that just connected
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
                 String clientUsername = dIn.readUTF(); // Read text and save it
 
                 sendToAllClientsWithText(myId, MessageTypes.NORMAL_MESSAGE.getValue(), "Client \"" + clientUsername + "\" connected with ID " + idCounter); // Tell the other clients that someone new just connected
 
-                addClientToMap(idCounter, clientUsername, s); // Add the new client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
+                addClientToMap(idCounter, clientUsername, s); // Add the new com.client to the hashmap (after telling everyone that he joined, so that he's not getting the message)
 
-                ThreadHandleClient threadHandleClient = new ThreadHandleClient("HandleClient " + clientUsername + " " + idCounter, this, s, idCounter); // instanciate a new Thread which will handle this specific client
+                ThreadHandleClient threadHandleClient = new ThreadHandleClient("HandleClient " + clientUsername + " " + idCounter, this, s, idCounter); // instanciate a new Thread which will handle this specific com.client
                 threadHandleClient.start(); // start the new thread
 
                 idCounter++; // Increase the ID counter, to make sure that nobody gets the same ID
@@ -210,12 +210,12 @@ public class Server {
     public boolean handleCommandsClient(boolean isOp, String commandString, String[] args, int senderId) {
         if(commandList.containsKey(commandString)) { // Check if the command exists
             AbstractCommand command = commandList.get(commandString); // Store the command itself in a variable
-            if(command.isServerOnly()) { // The command is only for the server
-                // TODO: this command is only for the server and you are not the server! send a message to the client!
+            if(command.isServerOnly()) { // The command is only for the com.server
+                // TODO: this command is only for the com.server and you are not the com.server! send a message to the com.client!
                 return false;
             }
             if(command.isOpOnly() && !isOp) { // The command is only for that are operator and the clien is not one
-                // TODO: this command is only for people that are operator and you are not operator! send a message to the client!
+                // TODO: this command is only for people that are operator and you are not operator! send a message to the com.client!
                 return false;
             }
             command.clientExecute(isOp, args, senderId); // execute the command
@@ -232,7 +232,7 @@ public class Server {
         return false;
     }
 
-    // Get the public ip of the server, for easily sharing with others
+    // Get the public ip of the com.server, for easily sharing with others
     private String getPublicIp() {
         String result = null;
         try {

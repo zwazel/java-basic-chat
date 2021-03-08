@@ -1,6 +1,6 @@
-package view;
+package com.view;
 
-import main.JavaFXApplication;
+import com.main.JavaFXApplication;
 
 public class RootLayoutController {
     private JavaFXApplication parent;
