@@ -1,7 +1,7 @@
-package Main;
+package main;
 
-import Client.Client;
-import Server.Server;
+import client.Client;
+import server.Server;
 
 import java.util.Scanner;
 

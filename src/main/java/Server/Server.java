@@ -1,7 +1,7 @@
-package Server;
+package server;
 
-import ChatCommands.*;
-import util.MessageTypes;
+import chatCommands.*;
+import main.MessageTypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class Server {
     private static Server server;
-    private String username = "Server"; // Our username
+    private String username = "server"; // Our username
     private Scanner scanner;
     private final int port; // our free port
     private int idCounter = 0; // id counter

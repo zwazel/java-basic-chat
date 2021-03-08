@@ -1,6 +1,6 @@
-package ChatCommands;
+package chatCommands;
 
-import Server.Server;
+import server.Server;
 
 public abstract class AbstractCommand {
     public boolean serverOnly = false;

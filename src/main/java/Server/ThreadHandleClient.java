@@ -1,6 +1,6 @@
-package Server;
+package server;
 
-import util.MessageTypes;
+import main.MessageTypes;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class ThreadHandleClient implements Runnable {
                     case DISCONNECT: // the client is disconnecting
                         boolean removedClient = false;
                         while(!removedClient) {
-                            if (server.removeClientFromMap(myClientId)) { // get the ID of the client and disconnect him)
+                            if (server.removeClientFromMap(myClientId)) { // get the ID of the client and disconnect him
                                 String disconnectMessage = myClientUsername + " disconnected";
                                 server.sendToAllClientsWithText(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(), disconnectMessage);
                                 running = false; // Stop this thread

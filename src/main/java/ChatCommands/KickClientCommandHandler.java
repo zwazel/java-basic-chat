@@ -1,7 +1,7 @@
-package ChatCommands;
+package chatCommands;
 
-import util.MessageTypes;
-import Server.ServerClient;
+import main.MessageTypes;
+import server.ServerClient;
 
 import java.io.*;
 import java.nio.file.Files;
