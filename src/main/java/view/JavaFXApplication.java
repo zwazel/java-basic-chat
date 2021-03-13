@@ -9,6 +9,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class JavaFXApplication extends Application {
+
+    private static final int PREF_WIDTH = 750;
+    private static final int PREF_HEIGHT = 500;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -25,6 +29,9 @@ public class JavaFXApplication extends Application {
 
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
+
+            primaryStage.setMinWidth(PREF_WIDTH);
+            primaryStage.setMinHeight(PREF_HEIGHT);
 
             primaryStage.setTitle("Java Chat Lets Go");
             primaryStage.show();
