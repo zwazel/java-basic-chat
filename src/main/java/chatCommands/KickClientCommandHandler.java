@@ -1,7 +1,7 @@
 package chatCommands;
 
 import main.MessageTypes;
-import server.ServerClient;
+import ServerClient.server.ServerClient;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -32,9 +32,9 @@ public class KickClientCommandHandler extends AbstractCommand {
 
     private void kick(String[] args, int senderId) {
         if(senderId == server.getId()) {
-            System.out.println("Kicking client...");
+            System.out.println("Kicking ServerClient.client...");
         } else {
-            server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "Kicking client...");
+            server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "Kicking ServerClient.client...");
         }
 
         int argsLength = args.length;
@@ -65,7 +65,7 @@ public class KickClientCommandHandler extends AbstractCommand {
                     if (server.checkIfClientExists(i)) {
                         ServerClient clientTarget = server.clientMap.get(i);
                         String clientTargetUsername = clientTarget.getUsernameWithID();
-                        server.sendToClientWithText(senderId, i, MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
+                        server.sendToClientWithText(senderId, i, MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the ServerClient.client
                         server.sendToAllClientsWithText(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
                     } else {
                         if(senderId > 0) {

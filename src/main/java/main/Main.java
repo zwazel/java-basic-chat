@@ -1,7 +1,7 @@
 package main;
 
-import client.Client;
-import server.Server;
+import ServerClient.client.Client;
+import ServerClient.server.Server;
 
 import java.util.Scanner;
 
@@ -18,11 +18,11 @@ public class Main {
 
         // TODO: catch error if not number
         switch (Integer.parseInt(scanner.nextLine())) { // get the input as string, and convert it to an Integer
-            case 0: // case 0, behave as a server
-                new Server(args); // instantiate new server
+            case 0: // case 0, behave as a ServerClient.server
+                new Server(); // instantiate new ServerClient.server
                 return true; // our input is valid
-            case 1: // case 1, behave as a client
-                new Client(); // instantiate new client
+            case 1: // case 1, behave as a ServerClient.client
+                new Client(args); // instantiate new ServerClient.client
                 return true; // our input is valid
             default: // default, input is not valid
                 System.out.println("Invalid Input! Try again"); // tell the user whats wrong

@@ -1,6 +1,6 @@
 package chatCommands;
 
-import server.ServerClient;
+import ServerClient.server.ServerClient;
 import main.MessageTypes;
 
 public class SetOperatorCommandHandler extends AbstractCommand {
@@ -10,7 +10,7 @@ public class SetOperatorCommandHandler extends AbstractCommand {
 
     @Override
     public void clientExecute(boolean isOp, String[] args, int senderId) {
-        if(isOp) { // Only if the client is OP he can execute this command
+        if(isOp) { // Only if the ServerClient.client is OP he can execute this command
             if(args.length > 0) {
                 try {
                     int target = Integer.parseInt(args[0]);
