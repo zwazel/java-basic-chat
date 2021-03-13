@@ -1,6 +1,6 @@
-package com.main;
+package main;
 
-import com.view.JavaFXApplication;
+import view.JavaFXApplication;
 
 public class MainJFXApp {
     public static void main(String[] args) {

@@ -1,6 +1,6 @@
-package com.chatCommands;
+package chatCommands;
 
-import com.server.Server;
+import server.Server;
 
 public abstract class AbstractCommand {
     public boolean serverOnly = false;
@@ -10,7 +10,7 @@ public abstract class AbstractCommand {
     protected int[] targetList;
 
     protected String youNeedOp = "You need to have OP rights to use this command!";
-    protected String needTargetId = "Pls tell me who is the target of this command (ID of the com.client)";
+    protected String needTargetId = "Pls tell me who is the target of this command (ID of the client)";
     protected String thisUserDoesNotExist = "This user does not exist! use the command \"/lc\" to see the connected users!";
     protected String iNeedANumber = "Pls enter a number as an argument!";
 

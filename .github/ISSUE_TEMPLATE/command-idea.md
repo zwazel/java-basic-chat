@@ -9,7 +9,7 @@ assignees: ''
 
 ## Description
 ## Restrictions
-- [ ] com.server Only
+- [ ] server Only
 - [ ] OP Only
 ## Command structure
 (example: /command [argument] [argument])

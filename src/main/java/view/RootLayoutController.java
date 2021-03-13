@@ -1,4 +1,4 @@
-package com.view;
+package view;
 
 public class RootLayoutController {
     private JavaFXApplication parent;

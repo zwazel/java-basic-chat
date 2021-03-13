@@ -1,6 +1,6 @@
-package com.chatCommands;
+package chatCommands;
 
-import com.main.MessageTypes;
+import main.MessageTypes;
 
 public class ListAllConnectedClientsCommandHandler extends AbstractCommand {
     public ListAllConnectedClientsCommandHandler() {
