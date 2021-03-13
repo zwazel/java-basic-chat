@@ -23,7 +23,7 @@ public class JavaFXApplication extends Application {
             RootLayoutController controller = loader.getController();
             controller.setParent(this);
 
-            Scene scene = new Scene(root, 300, 250);
+            Scene scene = new Scene(root);
             primaryStage.setScene(scene);
 
             primaryStage.setTitle("Java Chat Lets Go");
@@ -38,16 +38,6 @@ public class JavaFXApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        /*
-        Scene scene = new Scene(new GridPane(), 300,250);
-
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("test");
-        primaryStage.show();
-
-        System.out.println("/com.view/RootLayout.fxml");
-         */
-
         initComponents(primaryStage);
     }
 }
