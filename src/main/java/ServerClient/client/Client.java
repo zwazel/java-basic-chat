@@ -26,8 +26,8 @@ public class Client extends ServerClientParentClass {
     public Client(String[] args) {
         scanner = new Scanner(System.in);
 
-        serverIp = getString("The IP of the ServerClient.server"); // Get the IP of the ServerClient.server
-        serverPort = getInt("The open Port of the ServerClient.server"); // Get the open port of the ServerClient.server
+        serverIp = getString("The IP of the Server"); // Get the IP of the ServerClient.server
+        serverPort = getInt("The open Port of the Server"); // Get the open port of the ServerClient.server
 
         username = getString("Your username"); // get my username
 
