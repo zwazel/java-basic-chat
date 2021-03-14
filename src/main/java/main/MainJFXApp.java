@@ -1,31 +1,30 @@
 package main;
 
-import ServerClient.server.Server;
 import view.JavaFXApplication;
 
-import javax.swing.*;
-
 public class MainJFXApp implements Runnable {
-    private Thread threadHandleMessagesServer;
+    private Thread mainJFXApp;
     private final String threadName;
-    private Server server;
-    private JTextField textInput;
 
-    public MainJFXApp(String threadName, Server server) {
+    public MainJFXApp(String threadName) {
         this.threadName = threadName;
-        this.server = server;
-    }
-
-    public static void main(String[] args) {
-        JavaFXApplication.main(args);
-    }
-
-    public boolean startJavaFXWindow(String[] args) {
-        return true;
     }
 
     @Override
     public void run() {
+        System.out.println("THREAD RUNNING " + threadName);
 
+        String[] args = {""};
+        JavaFXApplication.main(args);
+
+        System.out.println("THREAD ENDED " + threadName);
+    }
+
+    public void start() {
+        System.out.println("THREAD STARTED " + threadName);
+        if (mainJFXApp == null) {
+            mainJFXApp = new Thread(this, threadName);
+            mainJFXApp.start();
+        }
     }
 }

@@ -3,7 +3,6 @@ package ServerClient.client;
 import ServerClient.ServerClientParentClass;
 import main.MainJFXApp;
 import main.MessageTypes;
-import view.JavaFXApplication;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -20,7 +19,7 @@ public class Client extends ServerClientParentClass {
     private final int serverPort; // the open port of the ServerClient.server
     private boolean running = true; // are we running?
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
-    private MainJFXApp mainJFXApp;
+    private MainJFXApp javaFXApp;
     protected boolean operator = false;
 
     public Client(String[] args) {
@@ -56,7 +55,8 @@ public class Client extends ServerClientParentClass {
             threadHandleMessagesClient.start(); // Start new thread
             */
 
-            JavaFXApplication.main(args);
+            javaFXApp = new MainJFXApp("JavaFXApplication;" + username + ";" + myId);
+            javaFXApp.start();
 
             System.out.println("oy javaFX started now imma go and catch some messages :)");
 
