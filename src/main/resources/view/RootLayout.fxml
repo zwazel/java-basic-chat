@@ -35,7 +35,7 @@
                            <children>
                               <BorderPane prefHeight="121.0" prefWidth="148.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <bottom>
-                                    <Button fx:id="sendMessageButton" defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Send" BorderPane.alignment="CENTER" />
+                                    <Button fx:id="sendMessageButton" defaultButton="true" mnemonicParsing="false" onAction="#sendButtonPressed" prefHeight="25.0" prefWidth="150.0" text="Send" BorderPane.alignment="CENTER" />
                                  </bottom>
                                  <center>
                                     <TextArea fx:id="messageTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Enter text" BorderPane.alignment="CENTER" />

@@ -15,8 +15,8 @@ public class Client extends ServerClientParentClass {
     private String username; // my username
     private int myId; // My id
     private Socket s; // my socket
-    private final String serverIp; // The ip of the ServerClient.server
-    private final int serverPort; // the open port of the ServerClient.server
+    private final String serverIp; // The ip of the server
+    private final int serverPort; // the open port of the server
     private boolean running = true; // are we running?
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
     private MainJFXApp javaFXApp;
@@ -25,8 +25,8 @@ public class Client extends ServerClientParentClass {
     public Client(String[] args) {
         scanner = new Scanner(System.in);
 
-        serverIp = getString("The IP of the Server"); // Get the IP of the ServerClient.server
-        serverPort = getInt("The open Port of the Server"); // Get the open port of the ServerClient.server
+        serverIp = getString("The IP of the Server"); // Get the IP of the server
+        serverPort = getInt("The open Port of the Server"); // Get the open port of the server
 
         username = getString("Your username"); // get my username
 
@@ -44,23 +44,21 @@ public class Client extends ServerClientParentClass {
             myId = dIn.readInt(); // Read int from the ServerClient.server
             System.out.println("My ID: " + myId); // Set the ID to the number we got from ServerClient.server
 
-            // Sending my username to the ServerClient.server, so he can add us to the hashmap
+            // Sending my username to the server, so he can add us to the hashmap
             DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the ServerClient.client that just connected
             dOut.writeUTF(username); // put the username in the stream
             dOut.flush(); // Send off the data
 
-            // Start thread which handles our messages
             /*
             threadHandleMessagesClient = new ThreadHandleMessagesClient("HandleMessages " + username + " " + myId, username, myId, s, this); // instantiate new thread
             threadHandleMessagesClient.start(); // Start new thread
             */
 
+            // Start thread which handles our messages
             javaFXApp = new MainJFXApp("JavaFXApplication;" + username + ";" + myId);
             javaFXApp.start();
 
-            System.out.println("oy javaFX started now imma go and catch some messages :)");
-
-            // Get messages from ServerClient.server
+            // Get messages from server
             printMessageFromServer();
         } catch (IOException e) {
             System.out.println("Can't create new socket! VERY BAD");
@@ -70,7 +68,7 @@ public class Client extends ServerClientParentClass {
     private void printMessageFromServer() {
         while (running) { // While we are running
             try {
-                DataInputStream dIn = new DataInputStream(s.getInputStream()); // instantiate new dataInputStream which is linked to the ServerClient.client
+                DataInputStream dIn = new DataInputStream(s.getInputStream()); // instantiate new dataInputStream which is linked to the client
                 MessageTypes messageType = MessageTypes.values()[dIn.readByte()]; // read the byte (message type) and get the corresponding enum
 
                 int senderId = -1;
@@ -79,7 +77,7 @@ public class Client extends ServerClientParentClass {
 
                 // TODO: Find a way to intelligently check if we get an empty message or if we have stuff to read, can we read sender ID, senderName, etc, or not?
                 switch (messageType) { // Check what type of message we got
-                    case DISCONNECT: // message tells us the ServerClient.server disconnected
+                    case DISCONNECT: // message tells us the server disconnected
                         System.out.println("Server disconnected! Disconnecting myself..."); // print what happened
                         running = false; // Stop everything
                         break;
@@ -119,7 +117,8 @@ public class Client extends ServerClientParentClass {
 
         // If we shouldn't run anymore, end it
         System.out.println("Thread ended Client " + username); // Tell the user that this thread has stopped
-        threadHandleMessagesClient.stopWindow(); // Close the window
+        // TODO: stop the program or something idk
+        //threadHandleMessagesClient.stopWindow(); // Close the window
     }
 
     public boolean isOperator() {

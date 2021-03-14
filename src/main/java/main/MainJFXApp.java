@@ -15,6 +15,7 @@ public class MainJFXApp implements Runnable {
         System.out.println("THREAD RUNNING " + threadName);
 
         String[] args = {""};
+
         JavaFXApplication.main(args);
 
         System.out.println("THREAD ENDED " + threadName);
