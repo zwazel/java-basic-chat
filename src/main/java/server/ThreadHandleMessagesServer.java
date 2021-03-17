@@ -1,4 +1,4 @@
-package ServerClient.server;
+package server;
 
 import main.MessageTypes;
 
@@ -96,7 +96,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     @Override
     public void windowClosing(WindowEvent e) {
         System.out.println("Closing " + threadName); // Tell the user that the window is closing
-        server.sendToAllClientsNoText(MessageTypes.DISCONNECT.getValue()); // the ServerClient.server is disconnecting, so we tell all the connected clients that they need to disconnect
+        server.sendToAllClientsNoText(MessageTypes.DISCONNECT.getValue()); // the server is disconnecting, so we tell all the connected clients that they need to disconnect
     }
 
     @Override

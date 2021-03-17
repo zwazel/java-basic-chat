@@ -1,6 +1,5 @@
-package ServerClient.client;
+package client;
 
-import ServerClient.ServerClientParentClass;
 import main.MainJFXApp;
 import main.MessageTypes;
 
@@ -10,7 +9,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Client extends ServerClientParentClass {
+public class Client {
     private Scanner scanner;
     private String username; // my username
     private int myId; // My id
@@ -20,7 +19,7 @@ public class Client extends ServerClientParentClass {
     private boolean running = true; // are we running?
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
     private MainJFXApp javaFXApp;
-    protected boolean operator = false;
+    public boolean operator = false;
 
     public Client(String[] args) {
         scanner = new Scanner(System.in);
@@ -36,16 +35,16 @@ public class Client extends ServerClientParentClass {
     private void init(String[] args) {
         try {
             s = new Socket(serverIp, serverPort); // instantiate new socket with IP and PORT
-            System.out.println("Connected to ServerClient.server " + serverIp + " on port " + serverPort + " with username " + username); // Tell the user that we have successfully established a connection to the ServerClient.server
+            System.out.println("Connected to server " + serverIp + " on port " + serverPort + " with username " + username); // Tell the user that we have successfully established a connection to the server
 
             // Reading my ID
             System.out.println("Getting ID from Server..."); // Tell the user that we're getting our ID right now
             DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
-            myId = dIn.readInt(); // Read int from the ServerClient.server
-            System.out.println("My ID: " + myId); // Set the ID to the number we got from ServerClient.server
+            myId = dIn.readInt(); // Read int from the server
+            System.out.println("My ID: " + myId); // Set the ID to the number we got from server
 
             // Sending my username to the server, so he can add us to the hashmap
-            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the ServerClient.client that just connected
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
             dOut.writeUTF(username); // put the username in the stream
             dOut.flush(); // Send off the data
 
@@ -57,6 +56,7 @@ public class Client extends ServerClientParentClass {
             // Start thread which handles our messages
             javaFXApp = new MainJFXApp("JavaFXApplication;" + username + ";" + myId);
             javaFXApp.start();
+            javaFXApp.setParent(this);
 
             // Get messages from server
             printMessageFromServer();
@@ -119,6 +119,43 @@ public class Client extends ServerClientParentClass {
         System.out.println("Thread ended Client " + username); // Tell the user that this thread has stopped
         // TODO: stop the program or something idk
         //threadHandleMessagesClient.stopWindow(); // Close the window
+    }
+
+    public void sendMessageToServer(String message) {
+        try {
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
+            dOut.writeByte(1); // Declare type of message (1 = normal message)
+            dOut.writeUTF(message);
+            dOut.flush(); // Send off the data
+        } catch (IOException e) {
+            System.out.println("Can't send message in RootLayoutController, VERY BAD");
+        }
+    }
+
+    public void sendCommandToServer(String command, String[] args) {
+        try {
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream());
+            dOut.writeByte(MessageTypes.CLIENT_COMMAND.getValue()); // Declare type of message (2 = command)
+            dOut.writeBoolean(operator);
+            dOut.writeUTF(command);
+            dOut.writeInt(args.length); // Tell the receiver how many arguments there are
+            for(int i = 0; i<args.length; i++) {
+                dOut.writeUTF(args[i]);
+            }
+            dOut.flush(); // Send off the data
+        } catch (IOException e) {
+            System.out.println("Can't send command in RootLayoutController, VERY BAD");
+        }
+    }
+
+    public void disconnect() {
+        try {
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // instanciate new data output stream
+            dOut.writeByte(MessageTypes.DISCONNECT.getValue()); // Declare type of message (0 = disconnect)
+            dOut.flush(); // Send off the data
+        } catch (IOException e) {
+            System.out.println("Can't disconnect from Server in RootLayoutController, VERY BAD");
+        }
     }
 
     public boolean isOperator() {

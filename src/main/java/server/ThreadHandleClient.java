@@ -1,4 +1,4 @@
-package ServerClient.server;
+package server;
 
 import main.MessageTypes;
 
@@ -9,8 +9,8 @@ import java.net.Socket;
 public class ThreadHandleClient implements Runnable {
     private Thread threadHandleClients;
     private final String threadName;
-    private Server server; // The ServerClient.server socket
-    private Socket socket; // the ServerClient.client socket
+    private Server server; // The server socket
+    private Socket socket; // the client socket
     private boolean running = true; // are we running or should we end?
     private int myClientId;
     private String myClientUsername;
@@ -39,11 +39,11 @@ public class ThreadHandleClient implements Runnable {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create a new dataInputStream
                 MessageTypes messageType = MessageTypes.values()[dIn.readByte()];
 
-                switch (messageType) { // Check what type of message the ServerClient.client sends us
-                    case DISCONNECT: // the ServerClient.client is disconnecting
+                switch (messageType) { // Check what type of message the client sends us
+                    case DISCONNECT: // the client is disconnecting
                         boolean removedClient = false;
                         while(!removedClient) {
-                            if (server.removeClientFromMap(myClientId)) { // get the ID of the ServerClient.client and disconnect him
+                            if (server.removeClientFromMap(myClientId)) { // get the ID of the client and disconnect him
                                 String disconnectMessage = myClientUsername + " disconnected";
                                 server.sendToAllClientsWithText(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(), disconnectMessage);
                                 running = false; // Stop this thread
@@ -53,7 +53,7 @@ public class ThreadHandleClient implements Runnable {
                         break;
 
                     case NORMAL_MESSAGE: // Normal message
-                        server.sendToAllClientsWithText(myClientId, messageType.getValue(), dIn.readUTF()); // read text from the ServerClient.client and send it to the ServerClient.server and to all the other clients. and don't send it to me back
+                        server.sendToAllClientsWithText(myClientId, messageType.getValue(), dIn.readUTF()); // read text from the client and send it to the server and to all the other clients. and don't send it to me back
                         break;
 
                     case CLIENT_COMMAND:
@@ -75,12 +75,12 @@ public class ThreadHandleClient implements Runnable {
                         if(message.equals("")) {
                             message = "null";
                         }
-                        System.out.println("Got undefined Message Type from ServerClient.client in thread " + threadName + "! Message: " + message);
+                        System.out.println("Got undefined Message Type from client in thread " + threadName + "! Message: " + message);
                         server.sendToClientWithText(server.getId(), myClientId, messageType.getValue(),"Undefined Message Type!");
                         break;
                 }
             } catch (IOException e) {
-                System.out.println("Can't get message from ServerClient.client in thread " + threadName);
+                System.out.println("Can't get message from client in thread " + threadName);
             }
         }
     }

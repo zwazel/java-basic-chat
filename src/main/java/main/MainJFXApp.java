@@ -1,13 +1,20 @@
 package main;
 
+import client.Client;
 import view.JavaFXApplication;
 
 public class MainJFXApp implements Runnable {
     private Thread mainJFXApp;
     private final String threadName;
+    private Client parent;
 
     public MainJFXApp(String threadName) {
         this.threadName = threadName;
+    }
+
+    public void setParent(Client parent) {
+        this.parent = parent;
+        System.out.println("Set parent of MainJFXApp");
     }
 
     @Override
@@ -17,6 +24,7 @@ public class MainJFXApp implements Runnable {
         String[] args = {""};
 
         JavaFXApplication.main(args);
+        JavaFXApplication.setControllerParent(parent);
 
         System.out.println("THREAD ENDED " + threadName);
     }
