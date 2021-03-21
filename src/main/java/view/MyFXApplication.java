@@ -1,6 +1,5 @@
 package view;
 
-import client.Client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class JavaFXApplication extends Application {
+public class MyFXApplication extends Application {
     private static final int PREF_WIDTH = 750;
     private static final int PREF_HEIGHT = 500;
 
@@ -25,6 +24,9 @@ public class JavaFXApplication extends Application {
             loader.setLocation(getClass().getResource("/view/RootLayout.fxml"));
             root = loader.load();
 
+            RootLayoutController controller = loader.getController();
+            controller.setParent(this);
+
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
 
@@ -39,11 +41,6 @@ public class JavaFXApplication extends Application {
         }
 
         return true;
-    }
-
-    public static void setControllerParent(Client parent) {
-        RootLayoutController controller = loader.getController();
-        controller.setParent(parent);
     }
 
     @Override

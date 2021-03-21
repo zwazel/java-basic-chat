@@ -6,14 +6,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
 public class RootLayoutController {
-    private Client parent;
+    private MyFXApplication parent;
 
     @FXML
     private Button sendMessageButton;
     @FXML
     private TextArea messageTextArea;
 
-    public void setParent(Client parent) {
+    public void setParent(MyFXApplication parent) {
         this.parent = parent;
     }
 

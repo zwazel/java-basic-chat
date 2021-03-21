@@ -1,7 +1,7 @@
 package main;
 
 import client.Client;
-import view.JavaFXApplication;
+import view.MyFXApplication;
 
 public class MainJFXApp implements Runnable {
     private Thread mainJFXApp;
@@ -23,8 +23,8 @@ public class MainJFXApp implements Runnable {
 
         String[] args = {""};
 
-        JavaFXApplication.main(args);
-        JavaFXApplication.setControllerParent(parent);
+        MyFXApplication.main(args);
+        MyFXApplication.setControllerParent(parent);
 
         System.out.println("THREAD ENDED " + threadName);
     }
