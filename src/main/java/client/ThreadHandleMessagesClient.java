@@ -1,6 +1,7 @@
 package client;
 
 import main.MessageTypes;
+import view.MyFXApplication;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +20,9 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private Socket serverSocket;
     private JTextField textInput;
     private int myId;
-    Client client;
+    MyFXApplication client;
 
-    public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket, Client client) {
+    public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket, MyFXApplication client) {
         this.threadName = threadName;
         this.username = username;
         this.myId = myId;
