@@ -2,6 +2,7 @@ package Client;
 
 import GlobalStuff.MessageTypes;
 
+import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -84,6 +85,7 @@ public class Client {
                         senderName += ": ";
 
                         System.out.println(senderName + messageBody); // we got a Normal message
+                        threadHandleMessagesClient.append(senderName + messageBody + "\n", threadHandleMessagesClient.getTextPane(), Color.WHITE);
                         break;
                     case TOGGLE_OP: // OP should be toggled
                         toggleOperator();

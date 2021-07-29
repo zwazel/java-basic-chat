@@ -3,6 +3,7 @@ package Client;
 import GlobalStuff.MessageTypes;
 
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,10 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private Socket serverSocket;
     private JTextField textInput;
     private int myId;
+
+
+    private JTextPane textPane;
+    private JScrollPane scrollPane;
     Client client;
 
     public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket, Client client) {
@@ -29,29 +34,55 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         this.client = client;
     }
 
+    public JTextPane getTextPane() {
+        return textPane;
+    }
+
     private void initInputWindow() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle(threadName);
-
+        setTitle("Chatroom von "  + username);
+        JPanel interactionPanel =  new JPanel();
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
 
         textInput = new JTextField(15);
         northPanel.add(textInput);
-        add(northPanel, BorderLayout.NORTH);
+        interactionPanel.add(northPanel, BorderLayout.NORTH);
+
+        textPane = new JTextPane();
+        textPane.setBackground(Color.BLACK);
+        textPane.setForeground(Color.LIGHT_GRAY);
+        textPane.setFont(new Font(Font.MONOSPACED, Font.BOLD, 14)); //MONOSPACED
+        textPane.setEditable(false);
+        scrollPane = new JScrollPane(textPane);
+        DefaultCaret caret = (DefaultCaret) textPane.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         JButton sendMessageButton = new JButton("Send Message"); // instanciate new button
         sendMessageButton.addActionListener(this); // Add actionlistener to the button
         JPanel centerPanel = new JPanel();
         centerPanel.add(sendMessageButton); // add the button to the panel
 
-        add(centerPanel, BorderLayout.CENTER);
-
+        interactionPanel.add(centerPanel, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
+        add(interactionPanel, BorderLayout.SOUTH);
         addWindowListener(this); // Add a window listener to the window with which we check if the window is closing or not
 
-        setSize(300,200); // Set the size
+        setSize(600,300); // Set the size
         setVisible(true); // Make the window visible
+        append("Hello  " + username + " welcome to the chatroom!\n", textPane,Color.WHITE);
+    }
+
+    public void append(String s, JTextPane pane, Color c) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+        try {
+            Document doc = pane.getDocument();
+            doc.insertString(doc.getLength(), s, aset);
+        } catch (BadLocationException exc) {
+            exc.printStackTrace();
+        }
     }
 
     public void stopWindow() {

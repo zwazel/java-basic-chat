@@ -1,6 +1,9 @@
 package Server;
 
-import ChatCommands.*;
+import ChatCommands.AbstractCommand;
+import ChatCommands.KickClientCommandHandler;
+import ChatCommands.ListAllConnectedClientsCommandHandler;
+import ChatCommands.SetOperatorCommandHandler;
 import GlobalStuff.MessageTypes;
 
 import java.io.DataInputStream;
