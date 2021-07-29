@@ -1,3 +1,3 @@
-Forken from [java-basic-chat](https://github.com/zwazel/java-basic-chat) by [Zwazel](https://github.com/Zwazel) .
+Forken from [java-basic-chat](https://github.com/zwazel/java-basic-chat) by [Zwazel](https://github.com/Zwazel).
 
-Just changed and added new GUI :)
+Just changed the GUI :)
