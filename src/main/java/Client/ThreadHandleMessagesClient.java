@@ -12,6 +12,7 @@ import java.awt.event.WindowListener;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ThreadHandleMessagesClient extends JFrame implements Runnable, ActionListener, WindowListener {
     private Thread threadMessageHandlerClient;
@@ -41,14 +42,16 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private void initInputWindow() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Chatroom von "  + username);
-        JPanel interactionPanel =  new JPanel();
+        setTitle("Chatroom von " + username);
+        JPanel interactionPanel = new JPanel();
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
-
+        JPanel userpanel = new JPanel();
+        userpanel.setLayout(new GridLayout(0, 1));
         textInput = new JTextField(15);
         northPanel.add(textInput);
         interactionPanel.add(northPanel, BorderLayout.NORTH);
+        ArrayList<JLabel> userlabels = new ArrayList<>();
 
         textPane = new JTextPane();
         textPane.setBackground(Color.BLACK);
@@ -64,14 +67,24 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         JPanel centerPanel = new JPanel();
         centerPanel.add(sendMessageButton); // add the button to the panel
 
+        userpanel.setPreferredSize(new Dimension(150, 400));
+        JLabel usertitle = new JLabel("Alle Clients:  ");
+        userpanel.add(usertitle, BorderLayout.NORTH);
+        userlabels.add(new JLabel(username + " ID: " + client.getMyId()));
+
+        for (JLabel jl : userlabels) {
+            userpanel.add(jl);
+        }
         interactionPanel.add(centerPanel, BorderLayout.CENTER);
         add(scrollPane, BorderLayout.CENTER);
         add(interactionPanel, BorderLayout.SOUTH);
+        add(userpanel, BorderLayout.EAST);
         addWindowListener(this); // Add a window listener to the window with which we check if the window is closing or not
 
-        setSize(600,300); // Set the size
+        setSize(900, 400); // Set the size
         setVisible(true); // Make the window visible
-        append("The start of an epic discussion!\n", textPane,Color.WHITE);
+        append("The start of an epic discussion!\n" +
+                "*************************************\n", textPane, Color.WHITE);
     }
 
     public void append(String s, JTextPane pane, Color c) {
@@ -114,7 +127,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
             dOut.writeBoolean(isOp);
             dOut.writeUTF(command);
             dOut.writeInt(args.length); // Tell the receiver how many arguments there are
-            for(int i = 0; i<args.length; i++) {
+            for (int i = 0; i < args.length; i++) {
                 dOut.writeUTF(args[i]);
             }
             dOut.flush(); // Send off the data
@@ -144,7 +157,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     @Override
     public void actionPerformed(ActionEvent e) {
         String text = textInput.getText();
-        if(text.startsWith("/")) {
+        if (text.startsWith("/")) {
             text = text.toLowerCase();
             text = text.substring(1);
             String[] commandParts = text.split(" ");
@@ -152,7 +165,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
             String[] args = new String[commandParts.length - 1];
             // Copy the elements of the commandParts array from index 1 into args from index 0
-            if(args.length > 0) {
+            if (args.length > 0) {
                 System.arraycopy(commandParts, 1, args, 0, commandParts.length - 1);
             }
             sendCommandToServer(client.operator, command, args);

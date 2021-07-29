@@ -18,8 +18,8 @@ public class Client {
     private final int serverPort; // the open port of the server
     private boolean running = true; // are we running?
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
-    protected boolean operator = false;
-    private Color messageColor = Color.WHITE;
+    protected boolean operator = false; //is the user an operator?
+    private Color messageColor = Color.WHITE; // The Color of the users messages
 
     public Client() {
         scanner = new Scanner(System.in);
@@ -31,7 +31,9 @@ public class Client {
 
         init();
     }
-
+    public int getMyId(){
+        return myId;
+    }
     private void init() {
         try {
             s = new Socket(serverIp, serverPort); // instantiate new socket with IP and PORT
@@ -104,6 +106,9 @@ public class Client {
                         senderName += ": ";
 
                         System.out.println(senderName + messageBody);
+                        messageColor = Color.RED;
+                        threadHandleMessagesClient.append(senderName + messageBody + "\n", threadHandleMessagesClient.getTextPane(),messageColor);
+                        messageColor = Color.WHITE;
                         running = false;
                         break;
                 }

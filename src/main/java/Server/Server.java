@@ -18,15 +18,15 @@ import java.util.Scanner;
 
 public class Server {
     private static Server server;
-    private String username = "Server"; // Our username
-    private Scanner scanner;
+    private final String username = "Server"; // Our username
+    private final Scanner scanner;
     private final int port; // our free port
     private int idCounter = 0; // id counter
     private final int myId = idCounter++; // our id, and increase the idocunter by one
     private ServerSocket ss; // our socket
     public HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
-    private HashMap<String, AbstractCommand> commandList = new HashMap<>();
-    private boolean running = true; // are we running right now?
+    private final HashMap<String, AbstractCommand> commandList = new HashMap<>();
+    private final boolean running = true; // are we running right now?
 
     public Server() {
         scanner = new Scanner(System.in); // instantiate a scanner
@@ -54,11 +54,7 @@ public class Server {
     }
 
     public boolean checkIfClientExists(int clientId) {
-        if(clientMap.containsKey(clientId)) {
-            return true;
-        }
-
-        return false;
+        return clientMap.containsKey(clientId);
     }
 
     public int getId() {
