@@ -71,7 +71,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
         setSize(600,300); // Set the size
         setVisible(true); // Make the window visible
-        append("Hello  " + username + " welcome to the chatroom!\n", textPane,Color.WHITE);
+        append("The start of an epic discussion!\n", textPane,Color.WHITE);
     }
 
     public void append(String s, JTextPane pane, Color c) {
