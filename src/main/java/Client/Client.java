@@ -19,6 +19,7 @@ public class Client {
     private boolean running = true; // are we running?
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
     protected boolean operator = false;
+    private Color messageColor = Color.WHITE;
 
     public Client() {
         scanner = new Scanner(System.in);
@@ -81,11 +82,13 @@ public class Client {
 
                         if(senderId == myId) {
                             senderName += " (Me)";
+                            messageColor = Color.YELLOW;
                         }
                         senderName += ": ";
 
                         System.out.println(senderName + messageBody); // we got a Normal message
-                        threadHandleMessagesClient.append(senderName + messageBody + "\n", threadHandleMessagesClient.getTextPane(), Color.WHITE);
+                        threadHandleMessagesClient.append(senderName + messageBody + "\n", threadHandleMessagesClient.getTextPane(),messageColor);
+                        messageColor = Color.WHITE;
                         break;
                     case TOGGLE_OP: // OP should be toggled
                         toggleOperator();
