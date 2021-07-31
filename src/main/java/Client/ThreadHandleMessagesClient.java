@@ -21,8 +21,6 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private Socket serverSocket;
     private JTextField textInput;
     private int myId;
-
-
     private JTextPane textPane;
     private JScrollPane scrollPane;
     Client client;
