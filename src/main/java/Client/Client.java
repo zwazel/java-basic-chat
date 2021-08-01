@@ -81,12 +81,14 @@ public class Client {
                         senderId = dIn.readInt();
                         senderName = dIn.readUTF();
                         messageBody = dIn.readUTF();
-
-                        if(senderId == myId) {
-                            senderName += " (Me)";
-                            messageColor = Color.YELLOW;
+                        //check if the Message was from a client or just a information for this user
+                        if(senderId > -1) {
+                            if (senderId == myId) {
+                                senderName += " (Me)";
+                                messageColor = Color.YELLOW;
+                            }
+                            senderName += ": ";
                         }
-                        senderName += ": ";
 
                         System.out.println(senderName + messageBody); // we got a Normal message
                         threadHandleMessagesClient.append(senderName + messageBody + "\n", threadHandleMessagesClient.getTextPane(),messageColor);
@@ -102,6 +104,7 @@ public class Client {
 
                         if(senderId == myId) {
                             senderName += " (Me)";
+                            messageColor = Color.YELLOW;
                         }
                         senderName += ": ";
 
