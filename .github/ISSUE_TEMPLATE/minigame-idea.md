@@ -1,7 +1,7 @@
 ---
 name: Minigame Idea
 about: Propose an Idea for a minigame
-title: ""
+title: ''
 labels: Minigame Idea
 assignees: ''
 

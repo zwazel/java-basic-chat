@@ -1,15 +1,16 @@
 ---
 name: Command Idea
 about: Propose an Idea for a command
-title: ""
+title: ''
 labels: Command Idea
 assignees: ''
 
 ---
 
 ## Description
-## Restrictions
-- [ ] Server Only
-- [ ] OP Only
+## Who can use it
+- [ ] Server
+- [ ] OP
+- [ ] Client
 ## Command structure
 (example: /command [argument] [argument])
