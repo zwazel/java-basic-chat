@@ -23,7 +23,10 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private int myId;
     private JTextPane textPane;
     private JScrollPane scrollPane;
-    Client client;
+    private Client client;
+    private JRadioButton available;
+    private JRadioButton away;
+    private JRadioButton doNotDisturb;
 
     public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket, Client client) {
         this.threadName = threadName;
@@ -44,13 +47,21 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         JPanel interactionPanel = new JPanel();
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
-        JPanel userpanel = new JPanel();
-        userpanel.setLayout(new GridLayout(0, 1));
+        JPanel userPanel = new JPanel();
+        JPanel statusPanel = new JPanel();
+        JPanel eastPanel = new JPanel();
+        userPanel.setLayout(new GridLayout(0, 1));
+        statusPanel.setLayout(new GridLayout(0, 1));
         textInput = new JTextField(15);
         northPanel.add(textInput);
         interactionPanel.add(northPanel, BorderLayout.NORTH);
         ArrayList<JLabel> userlabels = new ArrayList<>();
-
+        available = new JRadioButton("Available", true);
+        away = new JRadioButton("Away");
+        doNotDisturb = new JRadioButton("Do not disturb");
+        JLabel statusTitle = new JLabel("Select your status");
+        statusPanel.add(statusTitle);
+        ButtonGroup statusGroup = new ButtonGroup();
         textPane = new JTextPane();
         textPane.setBackground(Color.BLACK);
         textPane.setForeground(Color.LIGHT_GRAY);
@@ -65,18 +76,28 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         JPanel centerPanel = new JPanel();
         centerPanel.add(sendMessageButton); // add the button to the panel
 
-        userpanel.setPreferredSize(new Dimension(150, 400));
+        userPanel.setPreferredSize(new Dimension(150, 400));
         JLabel usertitle = new JLabel("Alle Clients:  ");
-        userpanel.add(usertitle, BorderLayout.NORTH);
+        userPanel.add(usertitle, BorderLayout.NORTH);
         userlabels.add(new JLabel(username + " ID: " + client.getMyId()));
-
         for (JLabel jl : userlabels) {
-            userpanel.add(jl);
+            userPanel.add(jl);
         }
+        statusGroup.add(available);
+        statusGroup.add(away);
+        statusGroup.add(doNotDisturb);
+        statusPanel.add(available);
+        statusPanel.add(away);
+        statusPanel.add(doNotDisturb);
+        doNotDisturb.addActionListener(this);
+        available.addActionListener(this);
+        away.addActionListener(this);
+        eastPanel.add(userPanel, BorderLayout.NORTH);
+        eastPanel.add(statusPanel, BorderLayout.SOUTH);
         interactionPanel.add(centerPanel, BorderLayout.CENTER);
         add(scrollPane, BorderLayout.CENTER);
         add(interactionPanel, BorderLayout.SOUTH);
-        add(userpanel, BorderLayout.EAST);
+        add(eastPanel, BorderLayout.EAST);
         addWindowListener(this); // Add a window listener to the window with which we check if the window is closing or not
 
         setSize(900, 400); // Set the size
@@ -154,23 +175,34 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String text = textInput.getText();
-        if (text.startsWith("/")) {
-            text = text.toLowerCase();
-            text = text.substring(1);
-            String[] commandParts = text.split(" ");
-            String command = commandParts[0];
 
-            String[] args = new String[commandParts.length - 1];
-            // Copy the elements of the commandParts array from index 1 into args from index 0
-            if (args.length > 0) {
-                System.arraycopy(commandParts, 1, args, 0, commandParts.length - 1);
+        String text = textInput.getText();
+        if (text.length() > 0) {
+            if (text.startsWith("/")) {
+                text = text.toLowerCase();
+                text = text.substring(1);
+                String[] commandParts = text.split(" ");
+                String command = commandParts[0];
+
+                String[] args = new String[commandParts.length - 1];
+                // Copy the elements of the commandParts array from index 1 into args from index 0
+                if (args.length > 0) {
+                    System.arraycopy(commandParts, 1, args, 0, commandParts.length - 1);
+                }
+                sendCommandToServer(client.operator, command, args);
+            } else {
+                sendMessageToServer(text); // Get the text inside of the input field and send it to all the connected clients
             }
-            sendCommandToServer(client.operator, command, args);
+            textInput.setText(""); // Reset the input field
         } else {
-            sendMessageToServer(text); // Get the text inside of the input field and send it to all the connected clients
+            if (doNotDisturb.isSelected()) {
+                client.setClientStatus(Status.DONOTDISTURB);
+            } else if (away.isSelected()) {
+                client.setClientStatus(Status.AWAY);
+            } else if (available.isSelected()) {
+                client.setClientStatus(Status.AVAILABLE);
+            }
         }
-        textInput.setText(""); // Reset the input field
     }
 
     @Override
@@ -181,6 +213,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     @Override
     public void windowClosing(WindowEvent e) {
         System.out.println("Closing " + getTitle()); // Tell the user that the window is closing
+        client.setClientStatus(Status.OFFLINE);
         disconnect(); // disconnect from the server
     }
 

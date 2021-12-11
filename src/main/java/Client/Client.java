@@ -20,6 +20,7 @@ public class Client {
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
     protected boolean operator = false; //is the user an operator?
     private Color messageColor = Color.WHITE; // The Color of the users messages
+    private Status clientStatus = Status.AVAILABLE;
 
     public Client() {
         scanner = new Scanner(System.in);
@@ -31,9 +32,11 @@ public class Client {
 
         init();
     }
-    public int getMyId(){
+
+    public int getMyId() {
         return myId;
     }
+
     private void init() {
         try {
             s = new Socket(serverIp, serverPort); // instantiate new socket with IP and PORT
@@ -82,16 +85,20 @@ public class Client {
                         senderName = dIn.readUTF();
                         messageBody = dIn.readUTF();
                         //check if the Message was from a client or just a information for this user
-                        if(senderId > -1) {
+                        if (senderId > -1) {
                             if (senderId == myId) {
                                 senderName += " (Me)";
                                 messageColor = Color.YELLOW;
+                                senderName += ": ";
+                            } else {
+                                senderName += ": ";
+                                sendSystemMessage(senderName + messageBody, TrayIcon.MessageType.INFO, "New message");
                             }
-                            senderName += ": ";
+
                         }
 
                         System.out.println(senderName + messageBody); // we got a Normal message
-                        threadHandleMessagesClient.append(senderName + messageBody + "\n", threadHandleMessagesClient.getTextPane(),messageColor);
+                        threadHandleMessagesClient.append(senderName + messageBody + "\n", threadHandleMessagesClient.getTextPane(), messageColor);
                         messageColor = Color.WHITE;
                         break;
                     case TOGGLE_OP: // OP should be toggled
@@ -102,7 +109,7 @@ public class Client {
                         senderName = dIn.readUTF();
                         messageBody = dIn.readUTF();
 
-                        if(senderId == myId) {
+                        if (senderId == myId) {
                             senderName += " (Me)";
                             messageColor = Color.YELLOW;
                         }
@@ -110,7 +117,7 @@ public class Client {
 
                         System.out.println(senderName + messageBody);
                         messageColor = Color.RED;
-                        threadHandleMessagesClient.append(senderName + messageBody + "\n", threadHandleMessagesClient.getTextPane(),messageColor);
+                        threadHandleMessagesClient.append(senderName + messageBody + "\n", threadHandleMessagesClient.getTextPane(), messageColor);
                         messageColor = Color.WHITE;
                         running = false;
                         break;
@@ -132,10 +139,38 @@ public class Client {
     public void toggleOperator() {
         this.operator = !this.operator;
 
-        if(operator) {
+        if (operator) {
             System.out.println("You are now operator!");
         } else {
             System.out.println("You're no longer operator!");
+        }
+    }
+
+    private void sendSystemMessage(String message, TrayIcon.MessageType messageType, String title) {
+        if (SystemTray.isSupported()) {
+            //Obtain only one instance of the SystemTray object
+            SystemTray tray = SystemTray.getSystemTray();
+
+            //If the icon is a file
+            Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+            //Alternative (if the icon is on the classpath):
+            //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("icon.png"));
+
+            TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
+            //Let the system resize the image if needed
+            trayIcon.setImageAutoSize(true);
+            //Set tooltip text for the tray icon
+            trayIcon.setToolTip("System tray icon demo");
+            try {
+                tray.add(trayIcon);
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+            if (clientStatus != Status.DONOTDISTURB) {
+                trayIcon.displayMessage(title, message, messageType);
+            }
+        } else {
+            System.err.println("System tray not supported!");
         }
     }
 
@@ -158,5 +193,13 @@ public class Client {
 
     public static void main(String[] args) {
         new Client();
+    }
+
+    public Status getClientStatus() {
+        return clientStatus;
+    }
+
+    public void setClientStatus(Status status) {
+        clientStatus = status;
     }
 }
