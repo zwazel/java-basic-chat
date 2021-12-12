@@ -1,8 +1,12 @@
 package Server;
 
-import ChatCommands.*;
+import ChatCommands.AbstractCommand;
+import ChatCommands.KickClientCommandHandler;
+import ChatCommands.ListAllConnectedClientsCommandHandler;
+import ChatCommands.SetOperatorCommandHandler;
 import GlobalStuff.MessageTypes;
 
+import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -15,15 +19,15 @@ import java.util.Scanner;
 
 public class Server {
     private static Server server;
-    private String username = "Server"; // Our username
-    private Scanner scanner;
+    private final String username = "Server"; // Our username
+    private final Scanner scanner;
     private final int port; // our free port
     private int idCounter = 0; // id counter
     private final int myId = idCounter++; // our id, and increase the idocunter by one
     private ServerSocket ss; // our socket
     public HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
-    private HashMap<String, AbstractCommand> commandList = new HashMap<>();
-    private boolean running = true; // are we running right now?
+    private final HashMap<String, AbstractCommand> commandList = new HashMap<>();
+    private final boolean running = true; // are we running right now?
 
     public Server() {
         scanner = new Scanner(System.in); // instantiate a scanner
@@ -44,6 +48,7 @@ public class Server {
             threadHandleMessagesServer.start(); // Start new thread
 
             // Accept incoming connections
+            sendSystemMessage("New server started on port " + port, TrayIcon.MessageType.INFO, "Server started");
             acceptConnections();
         } catch (IOException e) { // Catch error if we can't create a server socket
             System.out.println("Cant create server socket! VERY BAD");
@@ -51,11 +56,7 @@ public class Server {
     }
 
     public boolean checkIfClientExists(int clientId) {
-        if(clientMap.containsKey(clientId)) {
-            return true;
-        }
-
-        return false;
+        return clientMap.containsKey(clientId);
     }
 
     public int getId() {
@@ -269,6 +270,39 @@ public class Server {
         // TODO: Catch error if not number
         // Get the number as a String, and convert it to an Integer. by doing so, we won't have a problem with the scanner "skipping a line"!
         return Integer.parseInt(scanner.nextLine());
+    }
+
+    /**
+     * Method is used to send a system notification
+     * @param message shown on screen
+     * @param messageType of the message (Info, Warning, Error)
+     * @param title shown at the message
+     */
+    private void sendSystemMessage(String message, TrayIcon.MessageType messageType, String title){
+        if (SystemTray.isSupported()) {
+    //Obtain only one instance of the SystemTray object
+            SystemTray tray = SystemTray.getSystemTray();
+
+            //If the icon is a file
+            Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+            //Alternative (if the icon is on the classpath):
+            //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("icon.png"));
+            System.out.println(image.toString());
+            TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
+            //Let the system resize the image if needed
+            trayIcon.setImageAutoSize(true);
+            //Set tooltip text for the tray icon
+            trayIcon.setToolTip("System tray icon demo");
+            try {
+                tray.add(trayIcon);
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+
+            trayIcon.displayMessage(title, message, messageType);
+        } else {
+            System.err.println("System tray not supported!");
+        }
     }
 
     public static void main(String[] args) {

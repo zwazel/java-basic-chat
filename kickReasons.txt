@@ -32,3 +32,6 @@ Chan en USB Stick bim erste Versuech richtig istecke!
 Hät es Konto bi de CS
 IT DO NOT THE WORK!!!!!!!!!
 Eifach öppis
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+JETZT CHASCH VALHEIM SPIELE!!! VIEL SPASSSSSSSSS!!!
+ES MACHT KEI SPASS ES GUI MIT SWING Z MACHE!
