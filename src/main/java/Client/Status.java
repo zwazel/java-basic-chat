@@ -3,6 +3,6 @@ package Client;
 public enum Status {
     AVAILABLE,
     AWAY,
-    DONOTDISTURB,
+    DO_NOT_DISTURB,
     OFFLINE
 }

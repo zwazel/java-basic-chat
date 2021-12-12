@@ -39,7 +39,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     public JTextPane getTextPane() {
         return textPane;
     }
-
+    
     private void initInputWindow() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
