@@ -146,8 +146,8 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
             dOut.writeBoolean(isOp);
             dOut.writeUTF(command);
             dOut.writeInt(args.length); // Tell the receiver how many arguments there are
-            for (int i = 0; i < args.length; i++) {
-                dOut.writeUTF(args[i]);
+            for (String arg : args) {
+                dOut.writeUTF(arg);
             }
             dOut.flush(); // Send off the data
         } catch (IOException e) {
