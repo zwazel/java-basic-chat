@@ -1,6 +1,7 @@
 package Client;
 
 import GlobalStuff.MessageTypes;
+
 import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -21,14 +22,13 @@ public class Client {
     private Color messageColor = Color.WHITE; // The Color of the users messages
     private Status clientStatus = Status.AVAILABLE;
 
-  public Client() {
-    scanner = new Scanner(System.in);
+    public Client() {
+        scanner = new Scanner(System.in);
 
-    serverIp = getString("The IP of the server"); // Get the IP of the server
-    serverPort = getInt(
-        "The open Port of the server"); // Get the open port of the server
+        serverIp = getString("The IP of the server"); // Get the IP of the server
+        serverPort = getInt("The open Port of the server"); // Get the open port of the server
 
-    username = getString("Your username"); // get my username
+        username = getString("Your username"); // get my username
 
         init();
     }
@@ -42,50 +42,37 @@ public class Client {
             s = new Socket(serverIp, serverPort); // instantiate new socket with IP and PORT
             System.out.println("Connected to server " + serverIp + " on port " + serverPort + " with username " + username); // Tell the user that we have successfully established a connection to the server
 
-      // Reading my ID
-      System.out.println(
-          "Getting ID from Server..."); // Tell the user that we're getting our
-                                        // ID right now
-      DataInputStream dIn =
-          new DataInputStream(s.getInputStream()); // Create new input stream
-      myId = dIn.readInt();                        // Read int from the server
-      System.out.println("My ID: " +
-                         myId); // Set the ID to the number we got from server
+            // Reading my ID
+            System.out.println("Getting ID from Server..."); // Tell the user that we're getting our ID right now
+            DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create new input stream
+            myId = dIn.readInt(); // Read int from the server
+            System.out.println("My ID: " + myId); // Set the ID to the number we got from server
 
-      // Sending my username to the server, so he can add us to the hashmap
-      DataOutputStream dOut = new DataOutputStream(
-          s.getOutputStream()); // Create new output stream, linked with the
-                                // client that just connected
-      dOut.writeUTF(username);  // put the username in the stream
-      dOut.flush();             // Send off the data
+            // Sending my username to the server, so he can add us to the hashmap
+            DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream, linked with the client that just connected
+            dOut.writeUTF(username); // put the username in the stream
+            dOut.flush(); // Send off the data
 
-      // Start thread which handles our messages
-      threadHandleMessagesClient = new ThreadHandleMessagesClient(
-          "HandleMessages " + username + " " + myId, username, myId, s,
-          this);                          // instantiate new thread
-      threadHandleMessagesClient.start(); // Start new thread
+            // Start thread which handles our messages
+            threadHandleMessagesClient = new ThreadHandleMessagesClient("HandleMessages " + username + " " + myId, username, myId, s, this); // instantiate new thread
+            threadHandleMessagesClient.start(); // Start new thread
 
-      // Get messages from server
-      printMessageFromServer();
-    } catch (IOException e) {
-      System.out.println("Can't create new socket! VERY BAD");
+            // Get messages from server
+            printMessageFromServer();
+        } catch (IOException e) {
+            System.out.println("Can't create new socket! VERY BAD");
+        }
     }
-  }
 
-  private void printMessageFromServer() {
-    while (running) { // While we are running
-      try {
-        DataInputStream dIn = new DataInputStream(
-            s.getInputStream()); // instantiate new dataInputStream which is
-                                 // linked to the client
-        MessageTypes messageType =
-            MessageTypes
-                .values()[dIn.readByte()]; // read the byte (message type) and
-                                           // get the corresponding enum
+    private void printMessageFromServer() {
+        while (running) { // While we are running
+            try {
+                DataInputStream dIn = new DataInputStream(s.getInputStream()); // instantiate new dataInputStream which is linked to the client
+                MessageTypes messageType = MessageTypes.values()[dIn.readByte()]; // read the byte (message type) and get the corresponding enum
 
-        int senderId = -1;
-        String senderName = "";
-        String messageBody = "";
+                int senderId = -1;
+                String senderName = "";
+                String messageBody = "";
 
                 // TODO: Find a way to intelligently check if we get an empty message or if we have stuff to read, can we read sender ID, senderName, etc, or not?
                 switch (messageType) { // Check what type of message we got
@@ -139,18 +126,18 @@ public class Client {
                 System.out.println("Can't print message! VERY BAD");
             }
         }
-      } catch (IOException e) {
-        System.out.println("Can't print message! VERY BAD");
-      }
+
+        // If we shouldn't run anymore, end it
+        System.out.println("Thread ended Client " + username); // Tell the user that this thread has stopped
+        threadHandleMessagesClient.stopWindow(); // Close the window
     }
 
-    // If we shouldn't run anymore, end it
-    System.out.println("Thread ended Client " +
-                       username); // Tell the user that this thread has stopped
-    threadHandleMessagesClient.stopWindow(); // Close the window
-  }
+    public boolean isOperator() {
+        return operator;
+    }
 
-  public boolean isOperator() { return operator; }
+    public void toggleOperator() {
+        this.operator = !this.operator;
 
         if (operator) {
             System.out.println("You are now operator!");
@@ -158,7 +145,6 @@ public class Client {
             System.out.println("You're no longer operator!");
         }
     }
-  }
 
     private void sendSystemMessage(String message, TrayIcon.MessageType messageType, String title) {
         if (SystemTray.isSupported()) {
@@ -196,12 +182,13 @@ public class Client {
         return scanner.nextLine();
     }
 
-    return scanner.nextLine();
-  }
+    private int getInt(String command) {
+        if (!command.equals("-1")) {
+            System.out.print(command + " > ");
+        }
 
-  private int getInt(String command) {
-    if (!command.equals("-1")) {
-      System.out.print(command + " > ");
+        // TODO: catch error if not number
+        return Integer.parseInt(scanner.nextLine());
     }
 
     public static void main(String[] args) {
