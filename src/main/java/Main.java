@@ -8,7 +8,11 @@ public class Main {
 
     public Main() {
         scanner = new Scanner(System.in);
-        while (!init()); // While our input isn't valid
+        while (!init()) ; // While our input isn't valid
+    }
+
+    public static void main(String[] args) {
+        new Main();
     }
 
     private boolean init() {
@@ -26,9 +30,5 @@ public class Main {
                 System.out.println("Invalid Input! Try again"); // tell the user whats wrong
                 return false; // input is not valid
         }
-    }
-
-    public static void main(String[] args) {
-        new Main();
     }
 }

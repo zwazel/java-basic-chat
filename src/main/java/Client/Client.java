@@ -10,15 +10,15 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
+    private final String serverIp; // The ip of the server
+    private final int serverPort; // the open port of the server
+    protected boolean operator = false; //is the user an operator?
     private Scanner scanner;
     private String username; // my username
     private int myId; // My id
     private Socket s; // my socket
-    private final String serverIp; // The ip of the server
-    private final int serverPort; // the open port of the server
     private boolean running = true; // are we running?
     private ThreadHandleMessagesClient threadHandleMessagesClient; // Our thread which handles our messages
-    protected boolean operator = false; //is the user an operator?
     private Color messageColor = Color.WHITE; // The Color of the users messages
     private Status clientStatus = Status.AVAILABLE;
 
@@ -31,6 +31,10 @@ public class Client {
         username = getString("Your username"); // get my username
 
         init();
+    }
+
+    public static void main(String[] args) {
+        new Client();
     }
 
     public int getMyId() {
@@ -189,10 +193,6 @@ public class Client {
 
         // TODO: catch error if not number
         return Integer.parseInt(scanner.nextLine());
-    }
-
-    public static void main(String[] args) {
-        new Client();
     }
 
     public Status getClientStatus() {
