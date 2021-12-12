@@ -10,8 +10,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class ThreadHandleMessagesServer extends JFrame implements Runnable, ActionListener, WindowListener {
-    private Thread threadHandleMessagesServer;
     private final String threadName;
+    private Thread threadHandleMessagesServer;
     private Server server;
     private JTextField textInput;
 
@@ -41,7 +41,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
 
         addWindowListener(this); // Add a window listener with which we check if the window got closed or not
 
-        setSize(300,200); // Set the size of the window
+        setSize(300, 200); // Set the size of the window
         setVisible(true); // make it visible
     }
 
@@ -64,7 +64,7 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
     @Override
     public void actionPerformed(ActionEvent e) {
         String text = textInput.getText();
-        if(text.startsWith("/")) {
+        if (text.startsWith("/")) {
             text = text.toLowerCase();
             text = text.substring(1);
             String[] commandParts = text.split(" ");
@@ -72,15 +72,15 @@ public class ThreadHandleMessagesServer extends JFrame implements Runnable, Acti
 
             String[] args = new String[commandParts.length - 1];
             // Copy the elements of the commandParts array from index 1 into args from index 0
-            if(args.length > 0) {
+            if (args.length > 0) {
                 System.arraycopy(commandParts, 1, args, 0, commandParts.length - 1);
             }
 
-            if(!server.handleCommandsServer(command, args)) {
+            if (!server.handleCommandsServer(command, args)) {
                 System.out.println("Unknown command!");
             }
         } else {
-            server.sendToAllClientsWithText(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(),text); // Get the text inside of the input field and send it to all the connected clients
+            server.sendToAllClientsWithText(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(), text); // Get the text inside of the input field and send it to all the connected clients
         }
         textInput.setText(""); // Reset the input field
     }

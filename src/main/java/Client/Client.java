@@ -170,7 +170,7 @@ public class Client {
             } catch (AWTException e) {
                 e.printStackTrace();
             }
-            if (clientStatus != Status.DONOTDISTURB) {
+            if (clientStatus != Status.DO_NOT_DISTURB) {
                 trayIcon.displayMessage(title, message, messageType);
             }
         } else {

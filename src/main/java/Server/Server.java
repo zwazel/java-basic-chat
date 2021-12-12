@@ -22,37 +22,52 @@ public class Server {
     private final String username = "Server"; // Our username
     private final Scanner scanner;
     private final int port; // our free port
+    private final HashMap<String, AbstractCommand> commandList = new HashMap<>();
+    private final boolean running = true; // are we running right now?
+    public HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll save a reference for each connected client
     private int idCounter = 0; // id counter
     private final int myId = idCounter++; // our id, and increase the idocunter by one
     private ServerSocket ss; // our socket
-    public HashMap<Integer, ServerClient> clientMap = new HashMap<>(); // hashmap where we'll safe a reference for each connected client
-    private final HashMap<String, AbstractCommand> commandList = new HashMap<>();
-    private final boolean running = true; // are we running right now?
 
     public Server() {
         scanner = new Scanner(System.in); // instantiate a scanner
         server = this;
 
         port = getInt("The Port you are hosting on"); // Get the open port
-        try {
-            ss = new ServerSocket(port); // Create a new server socket
+        boolean success = false;
+        int tries = 0;
+        while (!success || tries < 50) {
+            try {
+                tries++;
+                ss = new ServerSocket(port); // Create a new server socket
 
-            initCommands();
+                initCommands();
 
-            // Get IP (Not needed, but used for the user to easily copy and send to others)
-            System.out.println("Getting IP adress...");
-            System.out.println("My IP adress: " + getPublicIp());
+                // Get IP (Not needed, but used for the user to easily copy and send to others)
+                System.out.println("Getting IP address...");
+                System.out.println("My IP address: " + getPublicIp());
 
-            // Start new thread that will handle all the messages the server will send
-            ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this); // instanciate new thread
-            threadHandleMessagesServer.start(); // Start new thread
+                // Start new thread that will handle all the messages the server will send
+                ThreadHandleMessagesServer threadHandleMessagesServer = new ThreadHandleMessagesServer("threadServerHandlerOutput", this); // instanciate new thread
+                threadHandleMessagesServer.start(); // Start new thread
 
-            // Accept incoming connections
-            sendSystemMessage("New server started on port " + port, TrayIcon.MessageType.INFO, "Server started");
-            acceptConnections();
-        } catch (IOException e) { // Catch error if we can't create a server socket
-            System.out.println("Cant create server socket! VERY BAD");
+                // Accept incoming connections
+                sendSystemMessage("New server started on port " + port, TrayIcon.MessageType.INFO, "Server started");
+                success = true;
+                acceptConnections();
+            } catch (IOException e) { // Catch error if we can't create a server socket
+                System.out.println("Cant create server socket! VERY BAD");
+                success = false;
+            }
         }
+    }
+
+    public static Server get() {
+        return server;
+    }
+
+    public static void main(String[] args) {
+        new Server();
     }
 
     public boolean checkIfClientExists(int clientId) {
@@ -69,10 +84,6 @@ public class Server {
         commandList.put("kick", new KickClientCommandHandler());
     }
 
-    public static Server get() {
-        return server;
-    }
-
     public String getClientUsername(int clientId) {
         return clientMap.get(clientId).getUsername();
     }
@@ -84,7 +95,7 @@ public class Server {
 
     // a single client is disconnecting on its own
     public boolean removeClientFromMap(int clientId) {
-        if(checkIfClientExists(clientId)) {
+        if (checkIfClientExists(clientId)) {
             clientMap.remove(clientId); // remove the client from the hashmap
             return true;
         }
@@ -98,7 +109,7 @@ public class Server {
     public void sendToClientNoText(int receiverId, byte messageType) {
         Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
 
-        if(checkIfClientExists(receiverId)) {
+        if (checkIfClientExists(receiverId)) {
             try {
                 DataOutputStream dOut = new DataOutputStream(s.getOutputStream()); // Create new output stream
                 dOut.writeByte(messageType);
@@ -107,7 +118,7 @@ public class Server {
                 System.out.println("Can't send messagetype " + messageType + "from server to client \"" + receiverId + "\"! VERY BAD");
             }
         } else {
-            if(receiverId == myId) {
+            if (receiverId == myId) {
                 printMessageForMyself("Can't send message to client " + receiverId + "! user does not exist! \n" +
                         "messagetype: " + MessageTypes.values()[messageType]);
             } else {
@@ -124,7 +135,7 @@ public class Server {
     }
 
     public void sendToClientWithText(int senderId, int receiverId, byte messageType, String message) {
-        if(checkIfClientExists(receiverId)) {
+        if (checkIfClientExists(receiverId)) {
             Socket s = clientMap.get(receiverId).getSocket(); // Get the socket of the current client
             String senderName = getSenderName(senderId);
 
@@ -139,7 +150,7 @@ public class Server {
                 System.out.println("Can't send messagetype " + messageType + " from server to client \"" + receiverId + "\"! VERY BAD");
             }
         } else {
-            if(senderId == myId) {
+            if (senderId == myId) {
                 printMessageForMyself("Can't send message to client " + receiverId + "! user does not exist! \n" +
                         "messagetype: " + MessageTypes.values()[messageType] + "\n" +
                         "message: '" + message + "'");
@@ -152,7 +163,7 @@ public class Server {
     }
 
     public void sendToAllClientsWithText(int senderId, byte messageType, String message) {
-        if(senderId == 0) {
+        if (senderId == 0) {
             printMessageForMyself("Server (Me): " + message);
         } else {
             printMessageForMyself(getSenderName(senderId) + ": " + message);
@@ -166,7 +177,7 @@ public class Server {
     private String getSenderName(int senderId) {
         String senderName = "";
 
-        if(senderId == 0) {
+        if (senderId == 0) {
             senderName = username;
         } else if (senderId > 0 && checkIfClientExists(senderId)) {
             senderName = clientMap.get(senderId).getUsername();
@@ -205,13 +216,13 @@ public class Server {
     }
 
     public boolean handleCommandsClient(boolean isOp, String commandString, String[] args, int senderId) {
-        if(commandList.containsKey(commandString)) { // Check if the command exists
+        if (commandList.containsKey(commandString)) { // Check if the command exists
             AbstractCommand command = commandList.get(commandString); // Store the command itself in a variable
-            if(command.isServerOnly()) { // The command is only for the server
+            if (command.isServerOnly()) { // The command is only for the server
                 // TODO: this command is only for the server and you are not the server! send a message to the client!
                 return false;
             }
-            if(command.isOpOnly() && !isOp) { // The command is only for that are operator and the clien is not one
+            if (command.isOpOnly() && !isOp) { // The command is only for that are operator and the clien is not one
                 // TODO: this command is only for people that are operator and you are not operator! send a message to the client!
                 return false;
             }
@@ -222,7 +233,7 @@ public class Server {
     }
 
     public boolean handleCommandsServer(String command, String[] args) {
-        if(commandList.containsKey(command)) {
+        if (commandList.containsKey(command)) {
             commandList.get(command).serverExecute(args);
             return true;
         }
@@ -242,17 +253,17 @@ public class Server {
 
                 //Instantiating the StringBuffer class to hold the result
                 StringBuilder sb = new StringBuilder();
-                while(sc.hasNext()) {
+                while (sc.hasNext()) {
                     sb.append(sc.next());
                 }
                 //Retrieving the String from the String Buffer object
                 result = sb.toString();
                 result = result.replaceAll("<[^>]*>", ""); // Remove the html tags with some fancy black magic
-            // Catch error if we can't create an open stream to the provided url
+                // Catch error if we can't create an open stream to the provided url
             } catch (IOException e) {
                 System.out.println("Can't create openStream Scanner! VERY BAD");
             }
-        // Catch error if we can't connect to the website
+            // Catch error if we can't connect to the website
         } catch (MalformedURLException e) {
             System.out.println("Can't connect to URL! VERY BAD");
         }
@@ -274,13 +285,14 @@ public class Server {
 
     /**
      * Method is used to send a system notification
-     * @param message shown on screen
+     *
+     * @param message     shown on screen
      * @param messageType of the message (Info, Warning, Error)
-     * @param title shown at the message
+     * @param title       shown at the message
      */
-    private void sendSystemMessage(String message, TrayIcon.MessageType messageType, String title){
+    private void sendSystemMessage(String message, TrayIcon.MessageType messageType, String title) {
         if (SystemTray.isSupported()) {
-    //Obtain only one instance of the SystemTray object
+            //Obtain only one instance of the SystemTray object
             SystemTray tray = SystemTray.getSystemTray();
 
             //If the icon is a file
@@ -303,9 +315,5 @@ public class Server {
         } else {
             System.err.println("System tray not supported!");
         }
-    }
-
-    public static void main(String[] args) {
-        new Server();
     }
 }

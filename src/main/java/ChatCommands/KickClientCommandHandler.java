@@ -10,11 +10,11 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 public class KickClientCommandHandler extends AbstractCommand {
-    private String reasonForKickMain = "";
     private final String reasonForKickStartToKickedClient = "You've been kicked\n" +
             "Reason: ";
     private final String getReasonForKickStartToAllOtherClients = " has been kicked\n" +
-            "Reason: " ;
+            "Reason: ";
+    private String reasonForKickMain = "";
 
     public KickClientCommandHandler() {
         opOnly = true;
@@ -31,7 +31,7 @@ public class KickClientCommandHandler extends AbstractCommand {
     }
 
     private void kick(String[] args, int senderId) {
-        if(senderId == server.getId()) {
+        if (senderId == server.getId()) {
             System.out.println("Kicking client...");
         } else {
             server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "Kicking client...");
@@ -40,8 +40,8 @@ public class KickClientCommandHandler extends AbstractCommand {
         int argsLength = args.length;
 
         if (argsLength >= 1) {
-            if(argsLength >= 2) {
-                for(int i = 1; i < args.length; i++) {
+            if (argsLength >= 2) {
+                for (int i = 1; i < args.length; i++) {
                     String reasonPart = args[i];
                     reasonForKickMain += reasonPart + " ";
                 }
@@ -49,14 +49,14 @@ public class KickClientCommandHandler extends AbstractCommand {
                 reasonForKickMain = getReasonForKickMain();
             }
         } else {
-            if(senderId > 0) {
+            if (senderId > 0) {
                 server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), needTargetId);
             } else {
                 System.out.println(needTargetId);
             }
         }
 
-        if(args[0].equalsIgnoreCase("all")) {
+        if (args[0].equalsIgnoreCase("all")) {
             server.sendToAllClientsWithText(server.getId(), MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain);
         } else {
             String[] multipleTargetsString = args[0].split(",");
@@ -68,7 +68,7 @@ public class KickClientCommandHandler extends AbstractCommand {
                         server.sendToClientWithText(senderId, i, MessageTypes.KICK_CLIENT.getValue(), reasonForKickStartToKickedClient + reasonForKickMain); // Kick the client
                         server.sendToAllClientsWithText(senderId, MessageTypes.NORMAL_MESSAGE.getValue(), clientTargetUsername + getReasonForKickStartToAllOtherClients + reasonForKickMain); // Tell all the other clients who got kicked
                     } else {
-                        if(senderId > 0) {
+                        if (senderId > 0) {
                             server.sendToClientWithText(server.getId(), senderId, MessageTypes.NORMAL_MESSAGE.getValue(), "User with ID " + i + " does not exist!");
                         } else {
                             System.out.println("User with ID " + i + " does not exist!");
@@ -86,7 +86,7 @@ public class KickClientCommandHandler extends AbstractCommand {
         int amountOfLines = 0;
         String filename = "kickReasons.txt";
         File kickReasons = new File(filename);
-        if(kickReasons.exists()) {
+        if (kickReasons.exists()) {
             try {
                 reader = new BufferedReader(new FileReader(kickReasons));
 

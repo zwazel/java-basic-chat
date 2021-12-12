@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ThreadHandleClient implements Runnable {
-    private Thread threadHandleClients;
     private final String threadName;
+    private Thread threadHandleClients;
     private Server server; // The server socket
     private Socket socket; // the client socket
     private boolean running = true; // are we running or should we end?
@@ -34,7 +34,7 @@ public class ThreadHandleClient implements Runnable {
     }
 
     private void getMessageFromClient(Socket s) {
-        while(running) { // While we're running
+        while (running) { // While we're running
             try {
                 DataInputStream dIn = new DataInputStream(s.getInputStream()); // Create a new dataInputStream
                 MessageTypes messageType = MessageTypes.values()[dIn.readByte()];
@@ -42,7 +42,7 @@ public class ThreadHandleClient implements Runnable {
                 switch (messageType) { // Check what type of message the client sends us
                     case DISCONNECT: // the client is disconnecting
                         boolean removedClient = false;
-                        while(!removedClient) {
+                        while (!removedClient) {
                             if (server.removeClientFromMap(myClientId)) { // get the ID of the client and disconnect him)
                                 String disconnectMessage = myClientUsername + " disconnected";
                                 server.sendToAllClientsWithText(server.getId(), MessageTypes.NORMAL_MESSAGE.getValue(), disconnectMessage);
@@ -65,18 +65,18 @@ public class ThreadHandleClient implements Runnable {
                             args[i] = dIn.readUTF();
                         }
 
-                        if(!server.handleCommandsClient(isOp, command, args, myClientId)) {
+                        if (!server.handleCommandsClient(isOp, command, args, myClientId)) {
                             server.sendToClientWithText(server.getId(), myClientId, MessageTypes.NORMAL_MESSAGE.getValue(), "Unknown command!");
                         }
                         break;
 
                     default:
                         String message = dIn.readUTF();
-                        if(message.equals("")) {
+                        if (message.equals("")) {
                             message = "null";
                         }
                         System.out.println("Got undefined Message Type from client in thread " + threadName + "! Message: " + message);
-                        server.sendToClientWithText(server.getId(), myClientId, messageType.getValue(),"Undefined Message Type!");
+                        server.sendToClientWithText(server.getId(), myClientId, messageType.getValue(), "Undefined Message Type!");
                         break;
                 }
             } catch (IOException e) {

@@ -38,6 +38,7 @@ public abstract class AbstractCommand {
     public abstract void clientExecute(boolean isOp, String[] args, int senderId);
 
     public abstract void serverExecute(String[] args);
+
     // TODO: actually implement this method
     public abstract void printDescription(); // If using this command with "help" as an argument, call this method
 }
