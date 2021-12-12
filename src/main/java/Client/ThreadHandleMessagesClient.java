@@ -39,7 +39,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     public JTextPane getTextPane() {
         return textPane;
     }
-    
+
     private void initInputWindow() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -196,7 +196,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
             textInput.setText(""); // Reset the input field
         } else {
             if (doNotDisturb.isSelected()) {
-                client.setClientStatus(Status.DONOTDISTURB);
+                client.setClientStatus(Status.DO_NOT_DISTURB);
             } else if (away.isSelected()) {
                 client.setClientStatus(Status.AWAY);
             } else if (available.isSelected()) {
