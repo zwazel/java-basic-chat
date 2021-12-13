@@ -1,4 +1,4 @@
-package Client;
+package GlobalStuff;
 
 public enum Status {
     AVAILABLE,

@@ -1,6 +1,7 @@
 package Client;
 
 import GlobalStuff.MessageTypes;
+import GlobalStuff.Status;
 
 import javax.swing.*;
 import javax.swing.text.*;

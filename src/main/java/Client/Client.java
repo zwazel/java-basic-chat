@@ -1,6 +1,7 @@
 package Client;
 
 import GlobalStuff.MessageTypes;
+import GlobalStuff.Status;
 
 import java.awt.*;
 import java.io.DataInputStream;
@@ -73,7 +74,7 @@ public class Client {
                 int senderId = -1;
                 String senderName = "";
                 String messageBody = "";
-
+                System.out.println("message Type is: " + messageType + " Message body is: " + messageBody);
                 // TODO: Find a way to intelligently check if we get an empty message or if we have stuff to read, can we read sender ID, senderName, etc, or not?
                 switch (messageType) { // Check what type of message we got
                     case DISCONNECT: // message tells us the server disconnected
