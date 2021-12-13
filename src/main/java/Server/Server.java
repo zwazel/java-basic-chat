@@ -57,6 +57,7 @@ public class Server {
     }
 
     public void sendAllClientsToClient() {
+        System.out.println("All clinets reached");
         HashMap<Integer, String> allClientsInStrings = new HashMap<>();
         for (Map.Entry<Integer, ServerClient> singleClient : clientMap.entrySet()) {
             Integer clientID = singleClient.getKey();
@@ -64,10 +65,19 @@ public class Server {
             allClientsInStrings.put(clientID, clientValue.getUsername());
         }
 
-        for (ServerClient value : clientMap.values()) {
-            // ...
+        for (Integer clientKeyID : clientMap.keySet()) {
+            ServerClient serverClient = clientMap.get(clientKeyID);
+            Socket clientSocket = serverClient.getSocket();
+            try {
+                System.out.println("Data OutpuStream reached");
+                DataOutputStream dOut = new DataOutputStream(clientSocket.getOutputStream()); // Create new output stream
+                dOut.writeUTF(clientMap.get(clientKeyID).getUsername());
+                dOut.writeInt(clientKeyID);
+                dOut.flush(); // Send off the data
+            } catch (IOException e) { // Catch error
+                System.out.println("Error sending all clients to a client! Not so good...");
+            }
         }
-
     }
 
     public boolean checkIfClientExists(int clientId) {
@@ -213,6 +223,7 @@ public class Server {
                 threadHandleClient.start(); // start the new thread
 
                 idCounter++; // Increase the ID counter, to make sure that nobody gets the same ID
+                sendAllClientsToClient();
             } catch (IOException e) { // catch error
                 System.out.println("Can't accept socket connection! VERY BAD");
             }
