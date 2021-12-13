@@ -15,6 +15,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Server {
@@ -53,6 +54,20 @@ public class Server {
         } catch (IOException e) { // Catch error if we can't create a server socket
             System.out.println("Cant create server socket! VERY BAD");
         }
+    }
+
+    public void sendAllClientsToClient() {
+        HashMap<Integer, String> allClientsInStrings = new HashMap<>();
+        for (Map.Entry<Integer, ServerClient> singleClient : clientMap.entrySet()) {
+            Integer clientID = singleClient.getKey();
+            ServerClient clientValue = singleClient.getValue();
+            allClientsInStrings.put(clientID, clientValue.getUsername());
+        }
+
+        for (ServerClient value : clientMap.values()) {
+            // ...
+        }
+
     }
 
     public boolean checkIfClientExists(int clientId) {

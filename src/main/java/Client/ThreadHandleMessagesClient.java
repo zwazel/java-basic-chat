@@ -13,6 +13,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ThreadHandleMessagesClient extends JFrame implements Runnable, ActionListener, WindowListener {
     private Thread threadMessageHandlerClient;
@@ -27,6 +28,8 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private JRadioButton available;
     private JRadioButton away;
     private JRadioButton doNotDisturb;
+
+    private HashMap<Integer, String> allClientsString;
 
     public ThreadHandleMessagesClient(String threadName, String username, int myId, Socket serverSocket, Client client) {
         this.threadName = threadName;
@@ -79,7 +82,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         userPanel.setPreferredSize(new Dimension(150, 400));
         JLabel usertitle = new JLabel("Alle Clients:  ");
         userPanel.add(usertitle, BorderLayout.NORTH);
-        userlabels.add(new JLabel(username + " ID: " + client.getMyId()));
+        userlabels = stringClientsToLabelClients(userlabels);
         for (JLabel jl : userlabels) {
             userPanel.add(jl);
         }
@@ -104,6 +107,12 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         setVisible(true); // Make the window visible
         append("The start of an epic discussion!\n" +
                 "*************************************\n", textPane, Color.WHITE);
+    }
+
+    private ArrayList<JLabel> stringClientsToLabelClients(ArrayList<JLabel> userlabels) {
+        userlabels.add(new JLabel(username + " ID: " + client.getMyId()));
+
+        return userlabels;
     }
 
     public void append(String s, JTextPane pane, Color c) {
@@ -171,6 +180,15 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
             threadMessageHandlerClient = new Thread(this, threadName);
             threadMessageHandlerClient.start();
         }
+    }
+
+
+    public HashMap<Integer, String> getAllClientsString() {
+        return allClientsString;
+    }
+
+    public void setAllClientsString(HashMap<Integer, String> allClientsString) {
+        this.allClientsString = allClientsString;
     }
 
     @Override
