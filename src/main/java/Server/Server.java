@@ -223,7 +223,7 @@ public class Server {
                 threadHandleClient.start(); // start the new thread
 
                 idCounter++; // Increase the ID counter, to make sure that nobody gets the same ID
-                sendAllClientsToClient();
+                //   sendAllClientsToClient();
             } catch (IOException e) { // catch error
                 System.out.println("Can't accept socket connection! VERY BAD");
             }

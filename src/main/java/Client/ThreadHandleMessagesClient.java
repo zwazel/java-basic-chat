@@ -29,6 +29,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     private JRadioButton available;
     private JRadioButton away;
     private JRadioButton doNotDisturb;
+    private JButton sendMessageButton;
 
     private HashMap<Integer, String> allClientsString;
 
@@ -58,6 +59,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         statusPanel.setLayout(new GridLayout(0, 1));
         textInput = new JTextField(15);
         northPanel.add(textInput);
+        textInput.addActionListener(this);
         interactionPanel.add(northPanel, BorderLayout.NORTH);
         ArrayList<JLabel> userlabels = new ArrayList<>();
         available = new JRadioButton("Available", true);
@@ -75,7 +77,7 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
         DefaultCaret caret = (DefaultCaret) textPane.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-        JButton sendMessageButton = new JButton("Send Message"); // instanciate new button
+        sendMessageButton = new JButton("Send Message"); // instanciate new button
         sendMessageButton.addActionListener(this); // Add actionlistener to the button
         JPanel centerPanel = new JPanel();
         centerPanel.add(sendMessageButton); // add the button to the panel
@@ -196,6 +198,12 @@ public class ThreadHandleMessagesClient extends JFrame implements Runnable, Acti
     public void actionPerformed(ActionEvent e) {
 
         String text = textInput.getText();
+
+        if (e.getSource() == textInput) {
+            System.out.println("Hello World!");
+        } else if (e.getSource() == sendMessageButton) {
+            System.out.println("Byee World!");
+        }
         if (text.length() > 0) {
             if (text.startsWith("/")) {
                 text = text.toLowerCase();
