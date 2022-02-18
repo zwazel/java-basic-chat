@@ -9,3 +9,11 @@
 - You have the possibility to set your status and won't get notifications if you are selected a specific status - New
   since 12.12.2021
 - New website for the public api (old was no longer available) - New since 13.12.2021
+
+
+
+## Next changes:
+
+- Credits
+- First Minigame
+- Client can see all other clients
