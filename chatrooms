@@ -1,0 +1,11 @@
+Is your feature request related to a problem? Please describe.
+Nein
+
+Describe the solution you'd like
+Verschiedenen Chatrooms. Es kann auf dem Server ein neuer Chatroom erstellt werden. Der Client muss nun neben IP und Port auch noch den Chatroom angeben. Der Server sieht alle Chatrooms, der Client jedoch nur den aktuellen, in welchem er sich befindet
+
+Describe alternatives you've considered
+Man kann sich in mehreren Chatrooms aufhalten. (Tolle Alternative, ich weiss :) )
+
+Additional context
+Nix
