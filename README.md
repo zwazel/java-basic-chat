@@ -1,6 +1,4 @@
-# Forked from [java-basic-chat](https://github.com/zwazel/java-basic-chat) by [Zwazel](https://github.com/Zwazel).
-
-## Some changes I made to the chat:
+## Some enhancements I made and problems I fixed to the chat:
 
 - There is now a swing GUI - New since 01.08.2021
 - The application uses maven - New since 27.07.2021
